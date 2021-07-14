@@ -40,5 +40,5 @@ add_subdirectory(../dechamps_CMakeUtils/version version EXCLUDE_FROM_ALL)
 
 add_subdirectory(FlexASIOUtil EXCLUDE_FROM_ALL)
 add_subdirectory(FlexASIO)
-add_subdirectory(FlexASIOTest)
-add_subdirectory(PortAudioDevices)
+# add_subdirectory(FlexASIOTest)
+# add_subdirectory(PortAudioDevices)
