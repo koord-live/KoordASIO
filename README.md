@@ -1,10 +1,17 @@
-# FlexASIO, the flexible universal ASIO driver
-*Brought to you by [Etienne Dechamps][] - [GitHub][]*
-
-**If you are looking for an installer, see the
-[GitHub releases page][releases].**
+# KoordASIO - an easy-to-use universal ASIO driver
 
 ## Description
+
+KoordASIO aims to provide a simple, accessible solution for low-latency
+audio on Windows.
+It does this by taking the work of FlexASIO/PortAudio authors, and 
+providing a streamlined package together with a simple GUI control.
+
+https://koord.live/
+
+
+
+## FlexASIO info (upstream):
 
 FlexASIO is a *universal [ASIO][] driver*, meaning that it is not tied to
 specific audio hardware. Other examples of universal ASIO drivers include
