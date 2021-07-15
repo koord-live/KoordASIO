@@ -75,23 +75,17 @@ private:
     QAudioDeviceInfo m_inputDeviceInfo;
     QAudioDeviceInfo m_outputDeviceInfo;
     QAudioFormat m_settings;
+    int bufferSize;
+    bool exclusive_mode;
+    QString outputDeviceName;
+    QString inputDeviceName;
 
 private slots:
-//    void modeChanged(int idx);
     void bufferSizeChanged(int idx);
     void exclusiveModeChanged();
     void writeTomlFile();
     void inputDeviceChanged(int idx);
     void outputDeviceChanged(int idx);
-//    void sampleRateChanged(int idx);
-//    void channelChanged(int idx);
-//    void codecChanged(int idx);
-//    void sampleSizeChanged(int idx);
-//    void sampleTypeChanged(int idx);
-//    void endianChanged(int idx);
-//    void test();
-//    void populateTable();
-
 };
 
 #endif

@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>KdASIOConfigBase</class>
  <widget class="QMainWindow" name="KdASIOConfigBase">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -37,9 +40,15 @@
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="10" column="0">
-         <widget class="QRadioButton" name="radioButton">
+         <widget class="QRadioButton" name="exclusiveButton">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="text">
            <string>Exclusive Mode</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
