@@ -24,25 +24,25 @@ ExternalProject_Add(
     EXCLUDE_FROM_ALL
 )
 
-check_git_submodule(cxxopts)
-ExternalProject_Add(
-    cxxopts
-    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/cxxopts"
-    INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
-	CMAKE_ARGS ${CMAKE_ARGS}
-    BUILD_ALWAYS
-    EXCLUDE_FROM_ALL
-)
+# check_git_submodule(cxxopts)
+# ExternalProject_Add(
+#     cxxopts
+#     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/cxxopts"
+#     INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
+# 	CMAKE_ARGS ${CMAKE_ARGS}
+#     BUILD_ALWAYS
+#     EXCLUDE_FROM_ALL
+# )
 
-check_git_submodule(libsndfile)
-ExternalProject_Add(
-    libsndfile
-    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/libsndfile"
-    INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
-	CMAKE_ARGS ${CMAKE_ARGS} -DBUILD_PROGRAMS=OFF -DBUILD_SHARED_LIBS=ON
-    BUILD_ALWAYS USES_TERMINAL_BUILD TRUE
-    EXCLUDE_FROM_ALL
-)
+# check_git_submodule(libsndfile)
+# ExternalProject_Add(
+#     libsndfile
+#     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/libsndfile"
+#     INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
+# 	CMAKE_ARGS ${CMAKE_ARGS} -DBUILD_PROGRAMS=OFF -DBUILD_SHARED_LIBS=ON
+#     BUILD_ALWAYS USES_TERMINAL_BUILD TRUE
+#     EXCLUDE_FROM_ALL
+# )
 
 check_git_submodule(portaudio)
 ExternalProject_Add(
@@ -66,15 +66,15 @@ ExternalProject_Add(
 	EXCLUDE_FROM_ALL
 )
 
-check_git_submodule(dechamps_cpplog)
-ExternalProject_Add(
-    dechamps_cpplog
-    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/dechamps_cpplog"
-    BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
-    INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
-    CMAKE_ARGS ${CMAKE_ARGS}
-	EXCLUDE_FROM_ALL
-)
+# check_git_submodule(dechamps_cpplog)
+# ExternalProject_Add(
+#     dechamps_cpplog
+#     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/dechamps_cpplog"
+#     BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
+#     INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
+#     CMAKE_ARGS ${CMAKE_ARGS}
+# 	EXCLUDE_FROM_ALL
+# )
 
 check_git_submodule(dechamps_ASIOUtil)
 ExternalProject_Add(
@@ -88,16 +88,16 @@ ExternalProject_Add(
 	DEPENDS dechamps_cpputil
 )
 
-check_git_submodule(ASIOTest)
-ExternalProject_Add(
-    ASIOTest
-    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/ASIOTest"
-    BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
-    INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
-    CMAKE_ARGS ${CMAKE_ARGS}
-	EXCLUDE_FROM_ALL
-	DEPENDS cxxopts dechamps_cpputil dechamps_cpplog dechamps_ASIOUtil libsndfile
-)
+# check_git_submodule(ASIOTest)
+# ExternalProject_Add(
+#     ASIOTest
+#     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/ASIOTest"
+#     BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
+#     INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
+#     CMAKE_ARGS ${CMAKE_ARGS}
+# 	EXCLUDE_FROM_ALL
+# 	DEPENDS cxxopts dechamps_cpputil dechamps_cpplog dechamps_ASIOUtil libsndfile
+# )
 
 ExternalProject_Add(
     FlexASIO
@@ -105,7 +105,8 @@ ExternalProject_Add(
     BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
     INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
     CMAKE_ARGS ${CMAKE_ARGS}
-    DEPENDS tinytoml portaudio dechamps_cpputil dechamps_cpplog dechamps_ASIOUtil ASIOTest
+    # DEPENDS tinytoml portaudio dechamps_cpputil dechamps_cpplog dechamps_ASIOUtil ASIOTest
+    DEPENDS tinytoml portaudio dechamps_cpputil dechamps_ASIOUtil
 )
 
 install(DIRECTORY "${INTERNAL_INSTALL_PREFIX}/" DESTINATION "${CMAKE_INSTALL_PREFIX}")
