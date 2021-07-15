@@ -3,7 +3,8 @@ TARGET = kdasioconfig
 
 QT += multimedia
 
-HEADERS       = kdasioconfig.h
+HEADERS       = kdasioconfig.h \
+    toml.h
 
 SOURCES       = kdasioconfig.cpp \
                 main.cpp

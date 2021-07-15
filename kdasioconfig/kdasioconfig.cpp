@@ -3,6 +3,7 @@
 */
 
 #include "kdasioconfig.h"
+#include "toml.h"
 
 // Utility functions for converting QAudioFormat fields into text
 
@@ -54,6 +55,7 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
 {
     connect(inputDeviceBox, QOverload<int>::of(&QComboBox::activated), this, &KdASIOConfig::inputDeviceChanged);
     connect(outputDeviceBox, QOverload<int>::of(&QComboBox::activated), this, &KdASIOConfig::outputDeviceChanged);
+    connect(bufferSizeBox, QOverload<int>::of(&QComboBox::activated), this, &KdASIOConfig::bufferSizeChanged);
 
     inputDeviceBox->clear();
     const QAudio::Mode input_mode = QAudio::AudioInput;
@@ -70,14 +72,52 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
     outputDeviceBox->setCurrentIndex(0);
     outputDeviceChanged(0);
 
-    // parse FlexASIO.toml
-    // only recognise our accepted INPUT values - the others are hardcoded
-        //bufferSizeSamples = 480
+    // Add standard bufferSize choices
+    QStringList bufferSizes;
+    bufferSizes << "32" << "64" << "128" << "256" << "512" << "1024" << "2048";
+    bufferSizeBox->addItems(bufferSizes);
+//    for (int i = 0; i < bufferSizes.size(); ++i)
+//        bufferSizeBox->addItem(bufferSizes.at(i).toLocal8Bit().constData(), "arse");
 
+    // parse FlexASIO.toml, read into config map
+    std::ifstream ifs("foo.toml");
+    toml::ParseResult pr = toml::parse(ifs);
+
+    if (!pr.valid()) {
+        cout << pr.errorReason << endl;
+        return;
+    }
+
+
+    // only recognise our accepted INPUT values - the others are hardcoded
+    // bufferSizeSamples = readTomlBufferSize()
+//    if (bufferSize not one of "32" , "64" , "128" , "256" , "512" , "1024" , "2048")
+//    {
+//        bufferSize = "64";
+//    }
+//    if (inputDevice == "")
+//    {
+//        inputDevice = "default";
+//    }
+//    if (inputExclusiveMode == "")
+//    {
+//        exclusiveMode = false;
+//    }
+//    if (outputDevice == "")
+//    {
+//        outputDevice = "default";
+//    }
+//    if (outputExclusiveMode == "")
+//    {
+//        exclusiveMode = false;
+//    }
+
+        //bufferSizeSamples = 480
+        //
         //[input]
         //device="default"
         //wasapiExclusiveMode = true|false
-
+        //
         //[output]
         //device="default"
         //wasapiExclusiveMode = true|false
@@ -90,17 +130,17 @@ void KdASIOConfig::writeTomlFile()
     // JUST WRITE THIS TO FlexASIO.toml !
     // "
         //backend = "Windows WASAPI"
-        //bufferSizeSamples = 480
+        //bufferSizeSamples = bufferSize
 
         //[input]
-        //device="default"
+        //device=inputDevice
         //suggestedLatencySeconds = 0.0
-        //wasapiExclusiveMode = true|false
+        //wasapiExclusiveMode = inputExclusiveMode
 
         //[output]
-        //device="default"
+        //device=outputDevice
         //suggestedLatencySeconds = 0.0
-        //wasapiExclusiveMode = true|false
+        //wasapiExclusiveMode = outputExclusiveMode
     // "
 }
 
