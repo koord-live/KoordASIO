@@ -2,3 +2,5 @@
 .vs/
 CMakeSettings.json
 out/
+build-*/
+*.pro.user

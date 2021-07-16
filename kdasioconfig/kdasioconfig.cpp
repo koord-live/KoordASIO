@@ -3,12 +3,10 @@
 */
 #include <QFile>
 #include <QTextStream>
+#include <QDir>
 #include "kdasioconfig.h"
 #include "toml.h"
-//#include <string>
-
 #include <QDebug>
-
 
 KdASIOConfigBase::KdASIOConfigBase(QWidget *parent)
     : QMainWindow(parent)
@@ -17,7 +15,6 @@ KdASIOConfigBase::KdASIOConfigBase(QWidget *parent)
 }
 
 KdASIOConfigBase::~KdASIOConfigBase() {}
-
 
 KdASIOConfig::KdASIOConfig(QWidget *parent)
     : KdASIOConfigBase(parent)
@@ -31,14 +28,18 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
     // populate input device choices
     inputDeviceBox->clear();
     const QAudio::Mode input_mode = QAudio::AudioInput;
-    for (auto &deviceInfo: QAudioDeviceInfo::availableDevices(input_mode))
-        inputDeviceBox->addItem(deviceInfo.deviceName(), QVariant::fromValue(deviceInfo));
+    for (auto &deviceInfo: QAudioDeviceInfo::availableDevices(input_mode)) {
+        // add realm check due to https://bugreports.qt.io/browse/QTBUG-75781
+        if (deviceInfo.realm() == "wasapi")
+            inputDeviceBox->addItem(deviceInfo.deviceName(), QVariant::fromValue(deviceInfo));
+    }
 
     // populate output device choices
     outputDeviceBox->clear();
     const QAudio::Mode output_mode = QAudio::AudioOutput;
     for (auto &deviceInfo: QAudioDeviceInfo::availableDevices(output_mode))
-        outputDeviceBox->addItem(deviceInfo.deviceName(), QVariant::fromValue(deviceInfo));
+        if (deviceInfo.realm() == "wasapi")
+            outputDeviceBox->addItem(deviceInfo.deviceName(), QVariant::fromValue(deviceInfo));
 
     // Add standard bufferSize choices
     QStringList bufferSizes;
@@ -49,80 +50,93 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
     std::ifstream ifs;
     ifs.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
     try {
-        ifs.open("/home/dan/code/KoordASIO/kdasioconfig/FlexASIO.toml", std::ifstream::in);
+        ifs.open(fullpath.toStdString(), std::ifstream::in);
+        toml::ParseResult pr = toml::parse(ifs);
+        qDebug("Attempted to parse toml file...");
+        ifs.close();
+        if (!pr.valid()) {
+            setDefaults();
+        } else {
+            setValuesFromToml(&ifs, &pr);
+        }
     }
     catch (std::ifstream::failure e) {
         qDebug("Failed to open file ...");
+        setDefaults();
     }
-    toml::ParseResult pr = toml::parse(ifs);
-    qDebug("Parsed toml file");
-    ifs.close();
-    if (!pr.valid()) {
-        // set defaults
-        qInfo("Setting defaults");
-        bufferSize = 64;
-        exclusive_mode = false;
-        inputDeviceName = "default";
-        outputDeviceName = "default";
-        // set stuff - up to 4 file updates in quick succession - problem ??
+
+}
+
+void KdASIOConfig::setValuesFromToml(std::ifstream *ifs, toml::ParseResult *pr)
+{
+    qInfo("We have parsed a valid TOML file.");
+    // only recognise our accepted INPUT values - the others are hardcoded
+    const toml::Value& v = pr->value;
+    // get bufferSize
+    const toml::Value* bss = v.find("bufferSizeSamples");
+    if (bss && bss->is<int>()) {
+        if (bss->as<int>() == 32||64||128||256||512||1024||2048) {
+            bufferSize = bss->as<int>();
+        } else {
+            bufferSize = 64;
+        }
         bufferSizeBox->setCurrentText(QString::number(bufferSize));
         bufferSizeChanged(bufferSizeBox->currentIndex());
-        inputDeviceBox->setCurrentText(inputDeviceName);
-        inputDeviceChanged(inputDeviceBox->currentIndex());
-        outputDeviceBox->setCurrentText(outputDeviceName);
-        outputDeviceChanged(outputDeviceBox->currentIndex());
-        exclusiveModeChanged();
-    } else {
-        qInfo("We have parsed a valid TOML file.");
-        // only recognise our accepted INPUT values - the others are hardcoded
-        const toml::Value& v = pr.value;
-        // get bufferSize
-        const toml::Value* bss = v.find("bufferSizeSamples");
-        if (bss && bss->is<int>()) {
-            if (bss->as<int>() == 32||64||128||256||512||1024||2048) {
-                bufferSize = bss->as<int>();
-            } else {
-                bufferSize = 64;
-            }
-            bufferSizeBox->setCurrentText(QString::number(bufferSize));
-            bufferSizeChanged(bufferSizeBox->currentIndex());
-        }
-        // get input stream stuff
-        const toml::Value* input_dev = v.find("input.device");
-        if (input_dev && input_dev->is<std::string>()) {
-            // are we validating here at all?
-            inputDeviceBox->setCurrentText(QString::fromStdString(input_dev->as<std::string>()));
-            inputDeviceChanged(inputDeviceBox->currentIndex());
-        } else {
-            inputDeviceBox->setCurrentText("default");
-            inputDeviceChanged(inputDeviceBox->currentIndex());
-        }
-        const toml::Value* input_excl = v.find("input.wasapiExclusiveMode");
-        if (input_excl && input_excl->is<bool>()) {
-            exclusive_mode = input_excl->as<bool>();
-        } else {
-            exclusive_mode = false;
-        }
-        // get output stream stuff
-        const toml::Value* output_dev = v.find("output.device");
-        if (output_dev && output_dev->is<std::string>()) {
-            // are we validating here at all?
-            outputDeviceBox->setCurrentText(QString::fromStdString(output_dev->as<std::string>()));
-            outputDeviceChanged(outputDeviceBox->currentIndex());
-        } else {
-            outputDeviceBox->setCurrentText("default");
-            outputDeviceChanged(outputDeviceBox->currentIndex());
-        }
-        const toml::Value* output_excl = v.find("output.wasapiExclusiveMode");
-        if (output_excl && output_excl->is<bool>()) {
-            exclusive_mode = output_excl->as<bool>();
-        } else {
-            exclusive_mode = false;
-        }
-        exclusiveButton->setChecked(exclusive_mode);
-        exclusiveModeChanged();
     }
+    // get input stream stuff
+    const toml::Value* input_dev = v.find("input.device");
+    if (input_dev && input_dev->is<std::string>()) {
+        // if setCurrentText fails some sensible choice is made
+        inputDeviceBox->setCurrentText(QString::fromStdString(input_dev->as<std::string>()));
+        inputDeviceChanged(inputDeviceBox->currentIndex());
+    } else {
+        inputDeviceBox->setCurrentText("Default Input Device");
+        inputDeviceChanged(inputDeviceBox->currentIndex());
+    }
+    const toml::Value* input_excl = v.find("input.wasapiExclusiveMode");
+    if (input_excl && input_excl->is<bool>()) {
+        exclusive_mode = input_excl->as<bool>();
+    } else {
+        exclusive_mode = false;
+    }
+    // get output stream stuff
+    const toml::Value* output_dev = v.find("output.device");
+    if (output_dev && output_dev->is<std::string>()) {
+        // if setCurrentText fails some sensible choice is made
+        outputDeviceBox->setCurrentText(QString::fromStdString(output_dev->as<std::string>()));
+        outputDeviceChanged(outputDeviceBox->currentIndex());
+    } else {
+        outputDeviceBox->setCurrentText("Default Output Device");
+        outputDeviceChanged(outputDeviceBox->currentIndex());
+    }
+    const toml::Value* output_excl = v.find("output.wasapiExclusiveMode");
+    if (output_excl && output_excl->is<bool>()) {
+        exclusive_mode = output_excl->as<bool>();
+    } else {
+        exclusive_mode = false;
+    }
+    exclusiveButton->setChecked(exclusive_mode);
+    exclusiveModeChanged();
 }
+
+void KdASIOConfig::setDefaults()
+{
+    // set defaults
+    qInfo("Setting defaults");
+    bufferSize = 64;
+    exclusive_mode = false;
+    inputDeviceName = "Default Input Device";
+    outputDeviceName = "Default Output Device";
+    // set stuff - up to 4 file updates in quick succession
+    bufferSizeBox->setCurrentText(QString::number(bufferSize));
+    bufferSizeChanged(bufferSizeBox->currentIndex());
+    inputDeviceBox->setCurrentText(inputDeviceName);
+    inputDeviceChanged(inputDeviceBox->currentIndex());
+    outputDeviceBox->setCurrentText(outputDeviceName);
+    outputDeviceChanged(outputDeviceBox->currentIndex());
+    exclusiveModeChanged();
+}
+
 
 void KdASIOConfig::writeTomlFile()
 {
@@ -142,7 +156,7 @@ void KdASIOConfig::writeTomlFile()
         suggestedLatencySeconds = 0.0
         wasapiExclusiveMode = outputExclusiveMode
     */
-    QFile file("/home/dan//code/KoordASIO/kdasioconfig/FlexASIO.toml");
+    QFile file(fullpath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
     QTextStream out(&file);

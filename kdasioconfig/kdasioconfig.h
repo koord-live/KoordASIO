@@ -54,6 +54,8 @@
 #include <QAudioDeviceInfo>
 #include <QMainWindow>
 #include <QObject>
+#include <QDir>
+#include "toml.h"
 
 #include "ui_kdasioconfigbase.h"
 
@@ -79,6 +81,7 @@ private:
     bool exclusive_mode;
     QString outputDeviceName;
     QString inputDeviceName;
+    QString fullpath = QDir::homePath() + "/" + "FlexASIO.toml";
 
 private slots:
     void bufferSizeChanged(int idx);
@@ -86,6 +89,8 @@ private slots:
     void writeTomlFile();
     void inputDeviceChanged(int idx);
     void outputDeviceChanged(int idx);
+    void setDefaults();
+    void setValuesFromToml(std::ifstream *ifs, toml::ParseResult *pr);
 };
 
 #endif
