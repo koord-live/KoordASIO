@@ -3,7 +3,7 @@
 #include <shlobj.h>
 #include <windows.h>
 
-#include <dechamps_CMakeUtils/version.h>
+// #include <dechamps_CMakeUtils/version.h>
 
 #include "../FlexASIOUtil/shell.h"
 
@@ -34,7 +34,8 @@ namespace flexasio {
 				}
 
 				FlexASIOLogSink(const std::filesystem::path& path) : file_sink(path) {
-					::dechamps_cpplog::Logger(this) << "FlexASIO " << BUILD_CONFIGURATION << " " << BUILD_PLATFORM << " " << ::dechamps_CMakeUtils_gitDescriptionDirty << " built on " << ::dechamps_CMakeUtils_buildTime;
+					//::dechamps_cpplog::Logger(this) << "FlexASIO " << BUILD_CONFIGURATION << " " << BUILD_PLATFORM << " " << ::dechamps_CMakeUtils_gitDescriptionDirty << " built on " << ::dechamps_CMakeUtils_buildTime;
+
 				}
 
 				void Write(const std::string_view str) override { return preamble_sink.Write(str); }

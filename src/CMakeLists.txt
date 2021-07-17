@@ -1,4 +1,4 @@
-# FlexASIO CMake superbuild.
+ # FlexASIO CMake superbuild.
 
 cmake_minimum_required(VERSION 3.11)
 project(flexasio DESCRIPTION "FlexASIO Universal ASIO Driver Superbuild")
@@ -9,11 +9,6 @@ set(CMAKE_ARGS
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
 )
 
-include(check_git_submodule.cmake)
-
-check_git_submodule(dechamps_CMakeUtils)
-
-check_git_submodule(tinytoml)
 ExternalProject_Add(
     tinytoml
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tinytoml"
@@ -24,27 +19,6 @@ ExternalProject_Add(
     EXCLUDE_FROM_ALL
 )
 
-# check_git_submodule(cxxopts)
-# ExternalProject_Add(
-#     cxxopts
-#     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/cxxopts"
-#     INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
-# 	CMAKE_ARGS ${CMAKE_ARGS}
-#     BUILD_ALWAYS
-#     EXCLUDE_FROM_ALL
-# )
-
-# check_git_submodule(libsndfile)
-# ExternalProject_Add(
-#     libsndfile
-#     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/libsndfile"
-#     INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
-# 	CMAKE_ARGS ${CMAKE_ARGS} -DBUILD_PROGRAMS=OFF -DBUILD_SHARED_LIBS=ON
-#     BUILD_ALWAYS USES_TERMINAL_BUILD TRUE
-#     EXCLUDE_FROM_ALL
-# )
-
-check_git_submodule(portaudio)
 ExternalProject_Add(
 	portaudio
 	SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/portaudio"
@@ -56,7 +30,6 @@ ExternalProject_Add(
 	EXCLUDE_FROM_ALL
 )
 
-check_git_submodule(dechamps_cpputil)
 ExternalProject_Add(
     dechamps_cpputil
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/dechamps_cpputil"
@@ -66,17 +39,15 @@ ExternalProject_Add(
 	EXCLUDE_FROM_ALL
 )
 
-# check_git_submodule(dechamps_cpplog)
-# ExternalProject_Add(
-#     dechamps_cpplog
-#     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/dechamps_cpplog"
-#     BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
-#     INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
-#     CMAKE_ARGS ${CMAKE_ARGS}
-# 	EXCLUDE_FROM_ALL
-# )
+ExternalProject_Add(
+    dechamps_cpplog
+    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/dechamps_cpplog"
+    BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
+    INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
+    CMAKE_ARGS ${CMAKE_ARGS}
+	EXCLUDE_FROM_ALL
+)
 
-check_git_submodule(dechamps_ASIOUtil)
 ExternalProject_Add(
     dechamps_ASIOUtil
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/dechamps_ASIOUtil"
@@ -88,24 +59,12 @@ ExternalProject_Add(
 	DEPENDS dechamps_cpputil
 )
 
-# check_git_submodule(ASIOTest)
-# ExternalProject_Add(
-#     ASIOTest
-#     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/ASIOTest"
-#     BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
-#     INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
-#     CMAKE_ARGS ${CMAKE_ARGS}
-# 	EXCLUDE_FROM_ALL
-# 	DEPENDS cxxopts dechamps_cpputil dechamps_cpplog dechamps_ASIOUtil libsndfile
-# )
-
 ExternalProject_Add(
     FlexASIO
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/flexasio"
     BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
     INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
     CMAKE_ARGS ${CMAKE_ARGS}
-    # DEPENDS tinytoml portaudio dechamps_cpputil dechamps_cpplog dechamps_ASIOUtil ASIOTest
     DEPENDS tinytoml portaudio dechamps_cpputil dechamps_ASIOUtil
 )
 

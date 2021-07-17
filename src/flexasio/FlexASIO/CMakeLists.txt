@@ -22,7 +22,7 @@ add_library(FlexASIO_cflexasio STATIC EXCLUDE_FROM_ALL cflexasio.cpp)
 target_link_libraries(FlexASIO_cflexasio
 	PRIVATE FlexASIO_flexasio
 	PRIVATE FlexASIO_idl
-	# PRIVATE FlexASIO_log
+	PRIVATE FlexASIO_log
 	PRIVATE FlexASIOUtil_shell
 	PRIVATE dechamps_cpputil::exception
 	PRIVATE dechamps_ASIOUtil::asiosdk_iasiodrv
@@ -34,7 +34,7 @@ target_compile_definitions(FlexASIO_comdll PRIVATE _WINDLL)
 
 add_library(FlexASIO_config STATIC EXCLUDE_FROM_ALL config.cpp)
 target_link_libraries(FlexASIO_config
-	# PRIVATE FlexASIO_log
+	PRIVATE FlexASIO_log
 	PRIVATE FlexASIOUtil_shell
 	PRIVATE dechamps_cpputil::exception
 	PRIVATE tinytoml
@@ -42,7 +42,7 @@ target_link_libraries(FlexASIO_config
 
 add_library(FlexASIO_log STATIC EXCLUDE_FROM_ALL log.cpp)
 target_link_libraries(FlexASIO_log
-	# PUBLIC dechamps_cpplog::log
+	PUBLIC dechamps_cpplog::log
 	PRIVATE FlexASIOUtil_shell
 	# PRIVATE dechamps_CMakeUtils_version
 )
@@ -60,7 +60,7 @@ target_link_libraries(FlexASIO_flexasio
 	PUBLIC FlexASIO_config
 	PUBLIC FlexASIOUtil_portaudio
 	PRIVATE dechamps_ASIOUtil::asio
-	# PRIVATE FlexASIO_log
+	PRIVATE FlexASIO_log
 	PRIVATE dechamps_cpputil::endian
 	PRIVATE dechamps_cpputil::exception
 	PRIVATE dechamps_cpputil::string
