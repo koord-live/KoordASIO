@@ -32,7 +32,7 @@ set(PROJECT_SOURCES
         main.cpp
         kdasioconfig.cpp
         kdasioconfig.h
-        kdasioconfig.ui
+        kdasioconfigbase.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
