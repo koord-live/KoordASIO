@@ -170,6 +170,7 @@ Function Initialize-Build-Environment
     # Setup Qt executables paths for later calls
     Set-Item Env:QtQmakePath "$QtMsvcSpecPath\qmake.exe"
     Set-Item Env:QtCmakePath  "$QtPath\Tools\CMake_64\bin\cmake.exe"
+    Set-Item Env:QtCmakePath  "C:\Qt\Tools\CMake_64\bin\cmake.exe"
     Set-Item Env:QtWinDeployPath "$QtMsvcSpecPath\windeployqt.exe"
 
     ""
