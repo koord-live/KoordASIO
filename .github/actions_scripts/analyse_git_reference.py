@@ -62,13 +62,13 @@ reflist = fullref.split("/", 2)
 pushed_name = reflist[2]
 
 
-# run Changelog-script
-os.system('perl "{}"/.github/actions_scripts/getChangelog.pl "{}"/ChangeLog "{}" > "{}"/autoLatestChangelog.md'.format(
-    os.environ['GITHUB_WORKSPACE'],
-    os.environ['GITHUB_WORKSPACE'],
-    version_from_changelog,
-    os.environ['GITHUB_WORKSPACE']
-))
+# # run Changelog-script
+# os.system('perl "{}"/.github/actions_scripts/getChangelog.pl "{}"/ChangeLog "{}" > "{}"/autoLatestChangelog.md'.format(
+#     os.environ['GITHUB_WORKSPACE'],
+#     os.environ['GITHUB_WORKSPACE'],
+#     version_from_changelog,
+#     os.environ['GITHUB_WORKSPACE']
+# ))
 
 # decisions about release, prerelease, title and tag
 if fullref.startswith("refs/tags/"):
