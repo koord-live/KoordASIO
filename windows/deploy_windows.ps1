@@ -1,5 +1,6 @@
 param(
     # Replace default path with system Qt installation folder if necessary
+    [string] $QtPath = "C:\Qt",
     [string] $QtInstallPath = "C:\Qt\5.15.2",
     [string] $QtCompile32 = "msvc2019",
     [string] $QtCompile64 = "msvc2019_64",
@@ -168,7 +169,7 @@ Function Initialize-Build-Environment
 
     # Setup Qt executables paths for later calls
     Set-Item Env:QtQmakePath "$QtMsvcSpecPath\qmake.exe"
-    Set-Item Env:QtCmakePath  "$QtInstallPath/Tools/CMake_64/bin/cmake.exe"
+    Set-Item Env:QtCmakePath  "$QtPath/Tools/CMake_64/bin/cmake.exe"
     Set-Item Env:QtWinDeployPath "$QtMsvcSpecPath\windeployqt.exe"
 
     ""
@@ -198,7 +199,7 @@ Function Initialize-Build-Environment
 
     if (-Not (Test-Path -Path $Env:QtCmakePath))
     {
-        Throw "The Qt binaries for CMake for Microsoft Visual C++ 2017 or above could not be located at $QtInstallPath. " + `
+        Throw "The Qt binaries for CMake for Microsoft Visual C++ 2017 or above could not be located at $QtPath. " + `
             "Please install Qt with support for MSVC 2017 or above before running this script," + `
             "then call this script with the Qt install location, for example C:\Qt\5.15.2"
     }
