@@ -137,7 +137,7 @@ jobs:
           # modules: 'qtcharts qtwebengine'
           cached: 'false'
           setup-python: 'true'
-          tools: 'tools_vcredist 2020-05-19-1  qt.tools.vcredist_msvc2019_x64'
+          tools: 'tools_vcredist,2020-05-19-1,qt.tools.vcredist_msvc2019_x64'
           set-env: 'false'
           tools-only: 'false'
           aqtversion: '==1.1.3'
