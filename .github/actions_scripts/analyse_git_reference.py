@@ -15,20 +15,21 @@ import os
 import re
 import subprocess
 
-# get the jamulus version from the .pro file
-def get_jamulus_version(repo_path_on_disk):
-    jamulus_version = ""
-    with open (repo_path_on_disk + '/Koord-RealTime.pro','r') as f:
-        pro_content = f.read()
-    pro_content = pro_content.replace('\r','')
-    pro_lines = pro_content.split('\n')
-    for line in pro_lines:
-        line = line.strip()
-        VERSION_LINE_STARTSWITH = 'VERSION = '
-        if line.startswith(VERSION_LINE_STARTSWITH):
-            jamulus_version = line[len(VERSION_LINE_STARTSWITH):]
-            return jamulus_version
-    return "UNKNOWN_VERSION"
+# get the koordasio version from the CMakeLists file
+def get_koordasio_version(repo_path_on_disk):
+#     koordasio_version = ""
+#     with open (repo_path_on_disk + '/CMakeLists.txt','r') as f:
+#         pro_content = f.read()
+#     pro_content = pro_content.replace('\r','')
+#     pro_lines = pro_content.split('\n')
+#     for line in pro_lines:
+#         line = line.strip()
+#         VERSION_LINE_STARTSWITH = 'set(VERSION '
+#         if line.startswith(VERSION_LINE_STARTSWITH):
+#             koordasio_version = line[len(VERSION_LINE_STARTSWITH):]
+#             return koordasio_version
+    # return "UNKNOWN_VERSION"
+    return "0.9.0" # hardcode for now
 
 def get_git_hash():
     return subprocess.check_output(['git', 'describe', '--match=xxxxxxxxxxxxxxxxxxxx', '--always', '--abbrev', '--dirty']).decode('ascii').strip()
@@ -47,7 +48,7 @@ else:
 repo_path_on_disk = os.environ['GITHUB_WORKSPACE'] 
 
 # derive git related variables
-version_from_changelog = get_jamulus_version(repo_path_on_disk)
+version_from_changelog = get_koordasio_version(repo_path_on_disk)
 if "dev" in version_from_changelog:
     release_version_name = "{}-{}".format(version_from_changelog, get_git_hash())
     print("building an intermediate version: ", release_version_name)
@@ -112,6 +113,6 @@ set_github_variable("IS_PRERELEASE", str(is_prerelease).lower())
 set_github_variable("RELEASE_TITLE", release_title)
 set_github_variable("RELEASE_TAG", release_tag) 
 set_github_variable("PUSHED_NAME", pushed_name)
-set_github_variable("JAMULUS_VERSION", release_version_name)
+set_github_variable("KOORDASIO_VERSION", release_version_name)
 set_github_variable("RELEASE_VERSION_NAME", release_version_name)
 set_github_variable("X_GITHUB_WORKSPACE", os.environ['GITHUB_WORKSPACE'])

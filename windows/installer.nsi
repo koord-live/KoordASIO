@@ -86,7 +86,7 @@ Page Custom ASIOCheckInstalled ExitASIOInstalled
 
 !include "${ROOT_PATH}\src\res\translation\wininstaller\installerlng.nsi"
 
-; Abort the installer/uninstaller if Jamulus is running
+; Abort the installer/uninstaller if KoordASIO is running
 
 !macro _AbortOnRunningApp
 
@@ -169,12 +169,12 @@ Var bRunApp
     WriteRegStr HKLM "${APP_UNINSTALL_KEY}" "DisplayIcon"     "$INSTDIR\${APP_EXE},0"
     WriteRegStr HKLM "${APP_UNINSTALL_KEY}" "UninstallString" '"$INSTDIR\${UNINSTALL_EXE}"'
 
-    ; Add the registry keys so that Koord Jamulus handles koord:// URLs
-    WriteRegStr "HKCR" "koord" "" "URL: koord Protocol"
-    WriteRegStr "HKCR" "koord" "URL Protocol" ""
-    WriteRegStr "HKCR" "koord\shell" "" ""
-    WriteRegStr "HKCR" "koord\shell\open" "" ""
-    WriteRegStr "HKCR" "koord\shell\open\command" "" '"c:\Program Files\KoordASIO\KoordASIO.exe" "-x" "%1"'
+    ; ; Add the registry keys so that KoordASIO handles koord:// URLs
+    ; WriteRegStr "HKCR" "koord" "" "URL: koord Protocol"
+    ; WriteRegStr "HKCR" "koord" "URL Protocol" ""
+    ; WriteRegStr "HKCR" "koord\shell" "" ""
+    ; WriteRegStr "HKCR" "koord\shell\open" "" ""
+    ; WriteRegStr "HKCR" "koord\shell\open\command" "" '"c:\Program Files\KoordASIO\KoordASIO.exe" "-x" "%1"'
 
     ; Add the uninstaller
     WriteUninstaller "$INSTDIR\${UNINSTALL_EXE}"
