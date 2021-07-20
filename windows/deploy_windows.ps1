@@ -168,6 +168,7 @@ Function Initialize-Build-Environment
 
     # Setup Qt executables paths for later calls
     Set-Item Env:QtQmakePath "$QtMsvcSpecPath\qmake.exe"
+    Set-Item Env:QtCmakePath  "$QtInstallPath/Tools/CMake_64/bin/cmake.exe"
     Set-Item Env:QtWinDeployPath "$QtMsvcSpecPath\windeployqt.exe"
 
     ""
@@ -191,6 +192,13 @@ Function Initialize-Build-Environment
     if (-Not (Test-Path -Path $Env:QtQmakePath))
     {
         Throw "The Qt binaries for Microsoft Visual C++ 2017 or above could not be located at $QtMsvcSpecPath. " + `
+            "Please install Qt with support for MSVC 2017 or above before running this script," + `
+            "then call this script with the Qt install location, for example C:\Qt\5.15.2"
+    }
+
+    if (-Not (Test-Path -Path $Env:QtCmakePath))
+    {
+        Throw "The Qt binaries for CMake for Microsoft Visual C++ 2017 or above could not be located at $QtInstallPath. " + `
             "Please install Qt with support for MSVC 2017 or above before running this script," + `
             "then call this script with the Qt install location, for example C:\Qt\5.15.2"
     }
@@ -223,6 +231,10 @@ Function Build-App
 
     Invoke-Native-Command -Command "$Env:QtQmakePath" `
         -Arguments ("$RootPath\$AppName.pro", "CONFIG+=$BuildConfig $BuildArch", `
+        "-o", "$BuildPath\Makefile")
+
+    Invoke-Native-Command -Command "$Env:QtCmakePath" `
+        -Arguments ("$RootPath\CMakeLists.txt", "CONFIG+=$BuildConfig $BuildArch", `
         "-o", "$BuildPath\Makefile")
 
     Set-Location -Path $BuildPath
