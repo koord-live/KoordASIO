@@ -231,9 +231,9 @@ Function Build-App
         [string] $BuildArch
     )
 
-    Invoke-Native-Command -Command "$Env:QtQmakePath" `
-        -Arguments ("$RootPath\$AppName.pro", "CONFIG+=$BuildConfig $BuildArch", `
-        "-o", "$BuildPath\Makefile")
+    # Invoke-Native-Command -Command "$Env:QtQmakePath" `
+    #     -Arguments ("$RootPath\$AppName.pro", "CONFIG+=$BuildConfig $BuildArch", `
+    #     "-o", "$BuildPath\Makefile")
 
     Invoke-Native-Command -Command "$Env:QtCmakePath" `
         -Arguments ("$RootPath\CMakeLists.txt", "CONFIG+=$BuildConfig $BuildArch", `
