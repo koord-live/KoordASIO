@@ -42,15 +42,6 @@ ExternalProject_Add(
 )
 
 ExternalProject_Add(
-    dechamps_cpplog
-    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/dechamps_cpplog"
-    BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
-    INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
-    CMAKE_ARGS ${CMAKE_ARGS}
-	EXCLUDE_FROM_ALL
-)
-
-ExternalProject_Add(
     dechamps_ASIOUtil
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/dechamps_ASIOUtil"
 	USES_TERMINAL_CONFIGURE TRUE

@@ -244,7 +244,7 @@ Function Build-App
     #         "-B", "$BuildPath", `
     #         "-G", "NMake Makefiles")
     Invoke-Native-Command -Command "$Env:QtCmakePath" `
-        -Arguments ("-DCMAKE_PREFIX_PATH='$QtInstallPath\$QtCompile64\lib\cmake:$RootPath\src\dechamps_cpplog:$RootPath\src\dechamps_cpputil:$RootPath\src\dechamps_ASIOUtil'", `
+        -Arguments ("-DCMAKE_PREFIX_PATH='$QtInstallPath\$QtCompile64\lib\cmake:$RootPath\src\dechamps_cpputil:$RootPath\src\dechamps_ASIOUtil'", `
             "-S", "$RootPath\src", `
             "-B", "$BuildPath", `
             "-G", "NMake Makefiles")

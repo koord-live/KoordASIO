@@ -42,7 +42,6 @@ target_link_libraries(FlexASIO_config
 
 add_library(FlexASIO_log STATIC EXCLUDE_FROM_ALL log.cpp)
 target_link_libraries(FlexASIO_log
-	PUBLIC dechamps_cpplog::log
 	PRIVATE FlexASIOUtil_shell
 	# PRIVATE dechamps_CMakeUtils_version
 )
