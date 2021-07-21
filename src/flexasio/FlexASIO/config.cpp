@@ -22,9 +22,10 @@ namespace flexasio {
 			try {
 				stream.open(path);
 			}
-			catch (const std::exception& exception) {
+			// catch (const std::exception& exception) {
+			catch (...) {
 				//Log() << "Unable to open configuration file: " << exception.what();
-				exception.what();
+				// exception.what();
 				return toml::Table();
 			}
 			stream.exceptions(stream.badbit);
@@ -298,9 +299,10 @@ namespace flexasio {
 			newConfig = LoadConfig(configLoader.configDirectory / configFileName);
 		}
 		// catch (const std::exception& exception) {
-		// 	//Log() << "Unable to load config, ignoring event: " << ::dechamps_cpputil::GetNestedExceptionMessage(exception);
-		// 	return;
-		// }
+		catch (...) {
+		 	//Log() << "Unable to load config, ignoring event: " << ::dechamps_cpputil::GetNestedExceptionMessage(exception);
+			return;
+		}
 		if (newConfig == configLoader.Initial()) {
 			//Log() << "New config is identical to initial config, not taking any action";
 			return;
