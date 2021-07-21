@@ -27,7 +27,7 @@ namespace flexasio {
 	void StreamDeleter::operator()(PaStream* stream) throw() {
 		//Log() << "Closing PortAudio stream " << stream;
 		const auto error = Pa_CloseStream(stream);
-		if (error != paNoError)
+		// if (error != paNoError)
 			//Log() << "Unable to close PortAudio stream: " << Pa_GetErrorText(error);
 	}
 
@@ -104,7 +104,7 @@ namespace flexasio {
 	ActiveStream::~ActiveStream() {
 		//Log() << "Stopping PortAudio stream " << stream;
 		const auto error = Pa_StopStream(stream);
-		if (error != paNoError)
+		// if (error != paNoError)
 			//Log() << "Unable to stop PortAudio stream: " << Pa_GetErrorText(error);
 	}
 
