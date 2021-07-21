@@ -239,7 +239,8 @@ Function Build-App
         # -Arguments ("$RootPath\CMakeLists.txt", "CONFIG+=$BuildConfig $BuildArch", `
         # "-o", "$BuildPath\Makefile")
     Invoke-Native-Command -Command "$Env:QtCmakePath" `
-        -Arguments ("$RootPath\CMakeLists.txt", "CONFIG+=$BuildConfig $BuildArch", `
+        -Arguments ("-S", "$RootPath\kdasioconfig\", `
+        "-B", "$BuildPath\"
         "-G", "NMake Makefiles")
 
     Set-Location -Path $BuildPath
