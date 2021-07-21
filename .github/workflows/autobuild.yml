@@ -125,26 +125,6 @@ jobs:
           koordasio_project_path:     ${{ github.workspace }}
           koordasio_buildversionstring: ${{ needs.create_release.outputs.version_name }}
 
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v2
-        with:
-          version: '5.15.2'
-          host: 'windows'
-          target: 'desktop'
-          arch: 'win64_msvc2019_64'
-          dir: 'C:\'
-          install-deps: 'true'
-          # modules: 'qtcharts qtwebengine'
-          cached: 'false'
-          setup-python: 'true'
-          tools: 'tools_vcredist,2020-05-19-1,qt.tools.vcredist_msvc2019_x64'
-          set-env: 'false'
-          tools-only: 'false'
-          aqtversion: '==1.1.3'
-          py7zrversion: '==0.14.0'
-          extra: '--external 7z'
-
-
       # Initialize CodeQL tools for code-scanning for security
       - name:                       Initialize CodeQL
         if:                         matrix.config.uses_codeql
