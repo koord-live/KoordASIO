@@ -111,7 +111,7 @@ Function Install-Dependency
     if (Test-Path -Path "$WindowsPath\$Destination") { return }
 
     $TempFileName = [System.IO.Path]::GetTempFileName() + ".zip"
-    $TempDir = [System.IO.Path]::GetTempPath()
+    $TempDir = [System.IO.Path]::GetTempPath()QtCompile64
 
     if ($Uri -Match "downloads.sourceforge.net")
     {
@@ -239,9 +239,10 @@ Function Build-App
         # -Arguments ("$RootPath\CMakeLists.txt", "CONFIG+=$BuildConfig $BuildArch", `
         # "-o", "$BuildPath\Makefile")
     Invoke-Native-Command -Command "$Env:QtCmakePath" `
-        -Arguments ("-S", "$RootPath\kdasioconfig", `
-        "-B", "$BuildPath", `
-        "-G", "NMake Makefiles")
+        -Arguments ("-DCMAKE_PREFIX_PATH='$QtInstallPath\$QtCompile64\lib\cmake'", `
+            "-S", "$RootPath\kdasioconfig", `
+            "-B", "$BuildPath", `
+            "-G", "NMake Makefiles")
 
     Set-Location -Path $BuildPath
     Invoke-Native-Command -Command "nmake" -Arguments ("$BuildConfig")
