@@ -4,7 +4,7 @@
 #include "flexasio.rc.h"
 #include "flexasio_h.h"
 
-#include "log.h"
+//#include "log.h"
 
 #include <dechamps_cpputil/exception.h>
 #include <dechamps_ASIOUtil/asiosdk/iasiodrv.h>

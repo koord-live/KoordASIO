@@ -1,6 +1,6 @@
 #include "portaudio.h"
 
-#include "log.h"
+//#include "log.h"
 #include "../FlexASIOUtil/portaudio.h"
 
 #include <Objbase.h>

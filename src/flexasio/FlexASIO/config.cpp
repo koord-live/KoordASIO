@@ -5,7 +5,7 @@
 #include <dechamps_cpputil/exception.h>
 #include <toml/toml.h>
 
-#include "log.h"
+//#include "log.h"
 #include "../FlexASIOUtil/shell.h"
 
 namespace flexasio {
@@ -24,6 +24,7 @@ namespace flexasio {
 			}
 			catch (const std::exception& exception) {
 				//Log() << "Unable to open configuration file: " << exception.what();
+				exception.what();
 				return toml::Table();
 			}
 			stream.exceptions(stream.badbit);
@@ -178,9 +179,10 @@ namespace flexasio {
 				else throw std::system_error(::GetLastError(), std::system_category(), "Unable to wait for events");
 			}			
 		}
-		catch (const std::exception& exception) {
-			//Log() << "Config watcher thread encountered error: " << ::dechamps_cpputil::GetNestedExceptionMessage(exception);
-		}
+		// catch (const std::exception& exception) {
+		// 	//Log() << "Config watcher thread encountered error: " << ::dechamps_cpputil::GetNestedExceptionMessage(exception);
+		// 	exception.what();
+		// }
 		catch (...) {
 			//Log() << "Config watcher thread encountered unknown exception";
 		}
@@ -246,8 +248,8 @@ namespace flexasio {
 			if (fileName == configFileName) {
 				// Here we can safely log.
 				//Log() << "Configuration file directory change received: NextEntryOffset = " << fileNotifyInformationHeader.NextEntryOffset
-					<< " Action = " << fileNotifyInformationHeader.Action
-					<< " FileNameLength = " << fileNotifyInformationHeader.FileNameLength;
+					// << " Action = " << fileNotifyInformationHeader.Action
+					// << " FileNameLength = " << fileNotifyInformationHeader.FileNameLength;
 
 				if (fileNotifyInformationHeader.Action == FILE_ACTION_ADDED ||
 					fileNotifyInformationHeader.Action == FILE_ACTION_REMOVED ||
@@ -295,10 +297,10 @@ namespace flexasio {
 		try {
 			newConfig = LoadConfig(configLoader.configDirectory / configFileName);
 		}
-		catch (const std::exception& exception) {
-			//Log() << "Unable to load config, ignoring event: " << ::dechamps_cpputil::GetNestedExceptionMessage(exception);
-			return;
-		}
+		// catch (const std::exception& exception) {
+		// 	//Log() << "Unable to load config, ignoring event: " << ::dechamps_cpputil::GetNestedExceptionMessage(exception);
+		// 	return;
+		// }
 		if (newConfig == configLoader.Initial()) {
 			//Log() << "New config is identical to initial config, not taking any action";
 			return;

@@ -21,7 +21,7 @@
 #include "portaudio.h"
 #include "pa_win_wasapi.h"
 
-#include "log.h"
+//#include "log.h"
 
 namespace flexasio {
 
