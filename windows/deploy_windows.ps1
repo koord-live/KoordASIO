@@ -238,9 +238,14 @@ Function Build-App
     # Invoke-Native-Command -Command "$Env:QtCmakePath" `
         # -Arguments ("$RootPath\CMakeLists.txt", "CONFIG+=$BuildConfig $BuildArch", `
         # "-o", "$BuildPath\Makefile")
+    # Invoke-Native-Command -Command "$Env:QtCmakePath" `
+    #     -Arguments ("-DCMAKE_PREFIX_PATH='$QtInstallPath\$QtCompile64\lib\cmake'", `
+    #         "-S", "$RootPath\kdasioconfig", `
+    #         "-B", "$BuildPath", `
+    #         "-G", "NMake Makefiles")
     Invoke-Native-Command -Command "$Env:QtCmakePath" `
         -Arguments ("-DCMAKE_PREFIX_PATH='$QtInstallPath\$QtCompile64\lib\cmake'", `
-            "-S", "$RootPath\kdasioconfig", `
+            "-S", "$RootPath\src", `
             "-B", "$BuildPath", `
             "-G", "NMake Makefiles")
 
@@ -318,5 +323,5 @@ Function Build-Installer
 Clean-Build-Environment
 Install-Dependencies
 Build-App-Variants -QtInstallPath $QtInstallPath
-Build-NSProcess -QtInstallPath $QtInstallPath
+# Build-NSProcess -QtInstallPath $QtInstallPath
 Build-Installer
