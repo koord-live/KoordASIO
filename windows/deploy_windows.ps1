@@ -111,7 +111,7 @@ Function Install-Dependency
     if (Test-Path -Path "$WindowsPath\$Destination") { return }
 
     $TempFileName = [System.IO.Path]::GetTempFileName() + ".zip"
-    $TempDir = [System.IO.Path]::GetTempPath()QtCompile64
+    $TempDir = [System.IO.Path]::GetTempPath()
 
     if ($Uri -Match "downloads.sourceforge.net")
     {

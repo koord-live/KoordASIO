@@ -92,13 +92,13 @@ jobs:
       fail-fast:                    false
       matrix: # Think of this like a foreach loop. Basically runs the steps with every combination of the contents of this. More info: https://docs.github.com/en/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
         config:
-           - config_name:           WinRT (artifact+codeQL)
-             target_os:             winrt
-             building_on_os:        windows-latest
-             cmd1_prebuild:         powershell .\autobuild\windows\autobuild_windowsinstaller_1_prepare.ps1
-             cmd2_build:            powershell .\autobuild\windows\autobuild_windowsinstaller_2_build.ps1
-             cmd3_postbuild:        powershell .\autobuild\windows\autobuild_windowsinstaller_3_copy_files.ps1
-             uses_codeql:           true
+          #  - config_name:           WinRT (artifact+codeQL)
+          #    target_os:             winrt
+          #    building_on_os:        windows-latest
+          #    cmd1_prebuild:         powershell .\autobuild\windows\autobuild_windowsinstaller_1_prepare.ps1
+          #    cmd2_build:            powershell .\autobuild\windows\autobuild_windowsinstaller_2_build.ps1
+          #    cmd3_postbuild:        powershell .\autobuild\windows\autobuild_windowsinstaller_3_copy_files.ps1
+          #    uses_codeql:           true
 
            - config_name:           Windows (artifact+codeQL)
              target_os:             windows
@@ -125,15 +125,15 @@ jobs:
           koordasio_project_path:     ${{ github.workspace }}
           koordasio_buildversionstring: ${{ needs.create_release.outputs.version_name }}
 
-      # Initialize CodeQL tools for code-scanning for security
-      - name:                       Initialize CodeQL
-        if:                         matrix.config.uses_codeql
-        uses:                       github/codeql-action/init@v1
-        with:
-          languages: 'cpp'
-          # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python' ]
-          # Learn more:
-          # https://docs.github.com/en/free-pro-team@latest/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#changing-the-languages-that-are-analyzed
+      # # Initialize CodeQL tools for code-scanning for security
+      # - name:                       Initialize CodeQL
+      #   if:                         matrix.config.uses_codeql
+      #   uses:                       github/codeql-action/init@v1
+      #   with:
+      #     languages: 'cpp'
+      #     # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python' ]
+      #     # Learn more:
+      #     # https://docs.github.com/en/free-pro-team@latest/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#changing-the-languages-that-are-analyzed
 
       # Build
       - name:                       "Build for ${{ matrix.config.config_name }}"
