@@ -245,7 +245,8 @@ Function Build-App
             "-G", "NMake Makefiles")
 
     Set-Location -Path $BuildPath
-    Invoke-Native-Command -Command "nmake" -Arguments ("$BuildConfig")
+    # Invoke-Native-Command -Command "nmake" -Arguments ("$BuildConfig")
+    Invoke-Native-Command -Command "nmake"
     Invoke-Native-Command -Command "$Env:QtWinDeployPath" `
         -Arguments ("--$BuildConfig", "--compiler-runtime", "--dir=$DeployPath\$BuildArch",
         "$BuildPath\$BuildConfig\$AppName.exe")
