@@ -61,7 +61,7 @@ BrandingText "${APP_NAME}. Make music online. With friends. For free."
 
 ; Page Custom ASIOCheckInstalled ExitASIOInstalled
 
-!insertmacro MUI_PAGE_LICENSE "${ROOT_PATH}\COPYING"
+!insertmacro MUI_PAGE_LICENSE "${ROOT_PATH}\LICENSE.txt"
 !define MUI_PAGE_CUSTOMFUNCTION_LEAVE ValidateDestinationFolder
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -159,7 +159,7 @@ Var bRunApp
     !insertmacro InstallLib DLL $ALREADY_INSTALLED REBOOT_NOTPROTECTED portaudio_x64.dll $INSTDIR\portaudio_x64.dll $INSTDIR
 
     ; Add the redistribution license
-    File "/oname=$INSTDIR\COPYING" "${ROOT_PATH}\COPYING"
+    File "/oname=$INSTDIR\LICENSE.txt" "${ROOT_PATH}\LICENSE.txt"
     ; File "/oname=$INSTDIR\servericon.ico" "${SERVER_ICON}"
 
     ; Cleanup
@@ -415,7 +415,7 @@ FunctionEnd
     ; Remove files and folders
     !include "${files}"
 
-    Delete "$INSTDIR\COPYING"
+    Delete "$INSTDIR\LICENSE.txt"
     ; Delete "$INSTDIR\servericon.ico"
     Delete "$INSTDIR\${UNINSTALL_EXE}"
     RMDir  "$INSTDIR"

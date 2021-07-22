@@ -1,3 +1,12 @@
+
+NOTE: The licenses below only applies to the source code of KoordASIO itself. the
+ASIO trademark and ASIO SDK are subject to specific license terms; see
+"Steinberg ASIO Licensing Agreement" in the ASIO SDK.
+
+ASIO is a trademark and software of Steinberg Media Technologies GmbH.
+
+---
+
 Copyright (c) 2018 Etienne Dechamps <etienne@edechamps.fr>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -17,3 +26,9 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+----
+Copyright (c) 2021 Koord, Inc <contact@koord.live>
+
+all changes by Koord extend same permissions as upstream FlexASIO project
