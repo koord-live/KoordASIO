@@ -36,7 +36,7 @@ namespace flexasio {
 		//Log() << "Terminating PortAudio";
 		PaError error = Pa_Terminate();
 		if (error != paNoError)
-			;
+			{/* deliberately empty */} 
 		// 	//Log() << "PortAudio termination failed with " << Pa_GetErrorText(error);
 		// else
 		// 	//Log() << "PortAudio terminated successfully";
@@ -426,7 +426,7 @@ namespace flexasio {
 			std::stringstream channel_name;
 			channel_name << channel;
 			if (current_channel_speaker == SPEAKER_ALL)
-				;
+				{/* deliberately empty */} 
 				//Log() << "Channel " << channel << " is outside channel mask " << channelMask;
 			else
 			{
@@ -453,7 +453,7 @@ namespace flexasio {
 				case SPEAKER_TOP_BACK_RIGHT: pretty_name = "TBR (Top Back Right)"; break;
 				}
 				if (!pretty_name)
-					;
+					{/* deliberately empty */} 
 					//Log() << "Speaker " << current_channel_speaker << " is unknown";
 				else
 					channel_name << " " << pretty_name;
@@ -569,7 +569,7 @@ namespace flexasio {
 		if (result.stream != nullptr) {
 			const auto streamInfo = Pa_GetStreamInfo(result.stream.get());
 			if (streamInfo == nullptr) {
-				;
+				/* deliberately empty */ 
 				//Log() << "Unable to get stream info";
 			}
 			// else {
@@ -847,8 +847,8 @@ namespace flexasio {
 			return paContinue;
 		}
 
-		if (statusFlags & timeInfo) {
-			;
+		if (statusFlags && timeInfo) {  // prevent compiler warnings
+			/* deliberately empty */
 		}
 		// if (statusFlags & paInputOverflow && IsLoggingEnabled())
 		// 	//Log() << "INPUT OVERFLOW detected (some input data was discarded)";
@@ -901,7 +901,7 @@ namespace flexasio {
 				
 				//if (IsLoggingEnabled()) Log() << "bufferSwitchTimeInfo() complete, returned time info: " << (timeResult == nullptr ? "none" : ::dechamps_ASIOUtil::DescribeASIOTime(*timeResult));
 				if (timeResult) { // remove compile warning
-					;
+					/* deliberately empty */ 
 				}
 			}
 		}
