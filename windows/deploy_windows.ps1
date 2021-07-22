@@ -238,32 +238,34 @@ Function Build-App
     # Build kdasioconfig Qt project with CMake / nmake
     Invoke-Native-Command -Command "$Env:QtCmakePath" `
         -Arguments ("-DCMAKE_PREFIX_PATH='$QtInstallPath\$QtCompile64\lib\cmake'", `
+            "-DCMAKE_BUILD_TYPE=Release", `
             "-S", "$RootPath\src\kdasioconfig", `
-            "-B", "$BuildPath\kdasioconfig", `
+            "-B", "$BuildPath\$BuildConfig\kdasioconfig", `
             "-G", "NMake Makefiles")
-    Set-Location -Path "$BuildPath\kdasioconfig"
+    Set-Location -Path "$BuildPath\$BuildConfig\kdasioconfig"
     # Invoke-Native-Command -Command "nmake" -Arguments ("$BuildConfig")
     Invoke-Native-Command -Command "nmake"
 
     # Build FlexASIO dlls with CMake / nmake
     Invoke-Native-Command -Command "$Env:QtCmakePath" `
         -Arguments ("-DCMAKE_PREFIX_PATH='$QtInstallPath\$QtCompile64\lib\cmake:$RootPath\src\dechamps_cpputil:$RootPath\src\dechamps_ASIOUtil'", `
+            "-DCMAKE_BUILD_TYPE=Release", `
             "-S", "$RootPath\src", `
-            "-B", "$BuildPath\flexasio", `
+            "-B", "$BuildPath\$BuildConfig\flexasio", `
             "-G", "NMake Makefiles")
-    Set-Location -Path "$BuildPath\flexasio"
+    Set-Location -Path "$BuildPath\$BuildConfig\flexasio"
     # Invoke-Native-Command -Command "nmake" -Arguments ("$BuildConfig")
     Invoke-Native-Command -Command "nmake"
 
     #FIXME show complete file list
-    Tree /F $RootPath
+    # Tree /F $RootPath
     Get-ChildItem -Recurse $RootPath
 
     # Collect necessary Qt dlls for kdasioconfig
     Invoke-Native-Command -Command "$Env:QtWinDeployPath" `
         -Arguments ("--$BuildConfig", "--compiler-runtime", "--dir=$DeployPath\$BuildArch", `
         "--no-system-d3d-compiler",  "--no-opengl-sw", `
-        "$BuildPath\kdasioconfig\kdasioconfig.exe")
+        "$BuildPath\$BuildConfig\kdasioconfig\kdasioconfig.exe")
 
     # all build files:
         # kdasioconfig files inc qt dlls now in 
@@ -276,10 +278,10 @@ Function Build-App
                 # - portaudio_x64.dll 
 
     # Move kdasioconfig.exe to deploy dir
-    Move-Item -Path "$BuildPath\kdasioconfig\kdasioconfig.exe" -Destination "$DeployPath\$BuildArch" -Force
+    Move-Item -Path "$BuildPath\$BuildConfig\kdasioconfig\kdasioconfig.exe" -Destination "$DeployPath\$BuildArch" -Force
     # Move 2 x FlexASIO dlls to deploy dir 
-    Move-Item -Path "$BuildPath\flexasio\install\bin\FlexASIO.dll" -Destination "$DeployPath\$BuildArch" -Force
-    Move-Item -Path "$BuildPath\flexasio\install\bin\portaudio_x64.dll" -Destination "$DeployPath\$BuildArch" -Force
+    Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\FlexASIO.dll" -Destination "$DeployPath\$BuildArch" -Force
+    Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\portaudio_x64.dll" -Destination "$DeployPath\$BuildArch" -Force
 
     # Files to move from innosetup setup:
         # Source:"x64\install\bin\FlexASIO.dll"; DestDir: "{app}\x64"; Flags: ignoreversion regserver 64bit; Check: Is64BitInstallMode
