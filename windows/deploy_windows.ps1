@@ -278,7 +278,8 @@ function Build-App-Variants
         [string] $QtInstallPath
     )
 
-    foreach ($_ in ("x86_64", "x86"))
+    # foreach ($_ in ("x86_64", "x86"))
+    foreach ($_ in ("x86_64")) # only build x64 now
     {
         $OriginalEnv = Get-ChildItem Env:
         Initialize-Build-Environment -QtInstallPath $QtInstallPath -BuildArch $_

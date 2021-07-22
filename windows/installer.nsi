@@ -35,8 +35,8 @@ OutFile      "${DEPLOY_PATH}\${APP_NAME}-${APP_VERSION}-installer-win.exe"
 Caption      "${APP_NAME} ${APP_VERSION} Installer"
 BrandingText "${APP_NAME}. Make music online. With friends. For free."
 
- ; Additional plugin location (for nsProcess)
-!addplugindir "${WINDOWS_PATH}"
+;  ; Additional plugin location (for nsProcess)
+; !addplugindir "${WINDOWS_PATH}"
 
 ; Add support for copying registry keys
 
@@ -59,7 +59,7 @@ BrandingText "${APP_NAME}. Make music online. With friends. For free."
 !define MUI_PAGE_CUSTOMFUNCTION_PRE AbortOnRunningApp
 !insertmacro MUI_PAGE_WELCOME
 
-Page Custom ASIOCheckInstalled ExitASIOInstalled
+; Page Custom ASIOCheckInstalled ExitASIOInstalled
 
 !insertmacro MUI_PAGE_LICENSE "${ROOT_PATH}\COPYING"
 !define MUI_PAGE_CUSTOMFUNCTION_LEAVE ValidateDestinationFolder
