@@ -111,6 +111,9 @@ Var Button
 Var bInstallDtIcon
 Var bRunApp
 
+; Define already_installed var
+Var ALREADY_INSTALLED 
+
 ; Installer
 
 !macro InstallApplication buildArch
@@ -156,7 +159,7 @@ Var bRunApp
     new_installation:
 
     !insertmacro InstallLib REGDLL $ALREADY_INSTALLED REBOOT_NOTPROTECTED FlexASIO.dll $INSTDIR\FlexASIO.dll $INSTDIR
-    !insertmacro InstallLib DLL $ALREADY_INSTALLED REBOOT_NOTPROTECTED portaudio_x64.dll $INSTDIR\portaudio_x64.dll $INSTDIR
+    !insertmacro InstallLib DLL NOTSHARED REBOOT_NOTPROTECTED portaudio_x64.dll $INSTDIR\portaudio_x64.dll $INSTDIR
 
     ; Add the redistribution license
     File "/oname=$INSTDIR\LICENSE.txt" "${ROOT_PATH}\LICENSE.txt"
