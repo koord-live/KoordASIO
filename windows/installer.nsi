@@ -39,9 +39,8 @@ BrandingText "${APP_NAME}. Make music online. With friends. For free."
 ;  ; Additional plugin location (for nsProcess)
 ; !addplugindir "${WINDOWS_PATH}"
 
-; Add support for copying registry keys
-
-!insertmacro COPY_REGISTRY_KEY
+; ; Add support for copying registry keys
+; !insertmacro COPY_REGISTRY_KEY
 
 ; Installer graphical element configuration
 !define MUI_ICON                       "${WINDOWS_PATH}\mainicon.ico"
