@@ -261,7 +261,8 @@ Function Build-App
 
     # Collect necessary Qt dlls for kdasioconfig
     Invoke-Native-Command -Command "$Env:QtWinDeployPath" `
-        -Arguments ("--$BuildConfig", "--compiler-runtime", "--dir=$DeployPath\$BuildArch",
+        -Arguments ("--$BuildConfig", "--compiler-runtime", "--dir=$DeployPath\$BuildArch", `
+        "--no-system-d3d-compiler",  "--no-opengl-sw", `
         "$BuildPath\kdasioconfig\kdasioconfig.exe")
 
     # all build files:
@@ -274,6 +275,8 @@ Function Build-App
                 # - FlexASIO.dll
                 # - portaudio_x64.dll 
 
+    # Move kdasioconfig.exe to deploy dir
+    Move-Item -Path "$BuildPath\kdasioconfig\kdasioconfig.exe" -Destination "$DeployPath\$BuildArch" -Force
     # Move 2 x FlexASIO dlls to deploy dir 
     Move-Item -Path "$BuildPath\flexasio\install\bin\FlexASIO.dll" -Destination "$DeployPath\$BuildArch" -Force
     Move-Item -Path "$BuildPath\flexasio\install\bin\portaudio_x64.dll" -Destination "$DeployPath\$BuildArch" -Force
