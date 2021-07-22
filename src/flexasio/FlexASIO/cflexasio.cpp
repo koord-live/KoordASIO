@@ -151,7 +151,7 @@ namespace flexasio {
 
 		template <typename Functor> ASIOError CFlexASIO::Enter(std::string_view context, Functor functor) {
 			//if (IsLoggingEnabled()) Log() << "--- ENTERING CONTEXT: " << context;
-			if (context) { /* deliberately empty */ } // prevent compiler warning
+			if (context.empty() ) { /* deliberately empty */ } // prevent compiler warning
 			ASIOError result;
 			try {
 				functor();
