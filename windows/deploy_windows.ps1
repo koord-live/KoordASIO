@@ -264,7 +264,24 @@ Function Build-App
         -Arguments ("--$BuildConfig", "--compiler-runtime", "--dir=$DeployPath\$BuildArch",
         "$BuildPath\kdasioconfig\kdasioconfig.exe")
 
-    # Move-Item -Path "$BuildPath\$BuildConfig\$AppName.exe" -Destination "$DeployPath\$BuildArch" -Force
+    # all build files:
+        # kdasioconfig files inc qt dlls now in 
+            # D:/a/KoordASIO/KoordASIO/deploy/x86_64/
+                # - kdasioconfig.exe
+                # all qt dlls etc ...
+        # flexasio files in:
+            # D:\a\KoordASIO\KoordASIO\build\flexasio\install\bin
+                # - FlexASIO.dll
+                # - portaudio_x64.dll 
+
+    # Move 2 x FlexASIO dlls to deploy dir 
+    Move-Item -Path "$BuildPath\flexasio\install\bin\FlexASIO.dll" -Destination "$DeployPath\$BuildArch" -Force
+    Move-Item -Path "$BuildPath\flexasio\install\bin\portaudio_x64.dll" -Destination "$DeployPath\$BuildArch" -Force
+
+    # Files to move from innosetup setup:
+        # Source:"x64\install\bin\FlexASIO.dll"; DestDir: "{app}\x64"; Flags: ignoreversion regserver 64bit; Check: Is64BitInstallMode
+        # Source:"x64\install\bin\*"; DestDir: "{app}\x64"; Flags: ignoreversion 64bit; Check: Is64BitInstallMode
+
     Invoke-Native-Command -Command "nmake" -Arguments ("clean")
     Set-Location -Path $RootPath
 

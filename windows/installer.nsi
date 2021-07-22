@@ -7,6 +7,7 @@
 !include "Sections.nsh"                        ; Support for section selection
 !include "nsDialogs.nsh"                       ; Support custom pages with dialogs
 !include "NSISCopyRegistryKey\registry.nsh"    ; Support moving registry keys
+!include "Library.nsh"                         ; support installing DLLs
 
 
 ; Compile-time definitions
@@ -148,6 +149,16 @@ Var bRunApp
     CreateDirectory "$INSTDIR"
     !include "${files}"
 
+    ; ref: https://documentation.help/NSIS/SectionB.2.html#B.2
+     ;Add code here that sets $ALREADY_INSTALLED to a non-zero value if the application is
+    ;already installed. For example:
+    IfFileExists "$INSTDIR\kdasioconfig.exe" 0 new_installation ;Replace MyApp.exe with your application filename
+        StrCpy $ALREADY_INSTALLED 1
+    new_installation:
+
+    !insertmacro InstallLib REGDLL $ALREADY_INSTALLED REBOOT_NOTPROTECTED FlexASIO.dll $INSTDIR\FlexASIO.dll $INSTDIR
+    !insertmacro InstallLib DLL $ALREADY_INSTALLED REBOOT_NOTPROTECTED portaudio_x64.dll $INSTDIR\portaudio_x64.dll $INSTDIR
+
     ; Add the redistribution license
     File "/oname=$INSTDIR\COPYING" "${ROOT_PATH}\COPYING"
     ; File "/oname=$INSTDIR\servericon.ico" "${SERVER_ICON}"
@@ -208,54 +219,30 @@ Var bRunApp
 !define UnSelectSection '!insertmacro SecUnSelect'
 
 Section "Install_64Bit" INST_64
-    ; check if old, wrongly installed KoordASIO exists. See https://stackoverflow.com/questions/27839860/nsis-check-if-registry-key-value-exists#27841158
-    IfFileExists "$PROGRAMFILES32\KoordASIO\Uninstall.exe" 0 continueinstall
+    ; ; check if old, wrongly installed KoordASIO exists. See https://stackoverflow.com/questions/27839860/nsis-check-if-registry-key-value-exists#27841158
+    ; IfFileExists "$PROGRAMFILES32\KoordASIO\Uninstall.exe" 0 continueinstall
 
-        MessageBox MB_YESNOCANCEL|MB_ICONEXCLAMATION "$(OLD_WRONG_VER_FOUND)" /sd IDYES IDNO idontcare IDCANCEL quit
-            goto removeold
+    ;     MessageBox MB_YESNOCANCEL|MB_ICONEXCLAMATION "$(OLD_WRONG_VER_FOUND)" /sd IDYES IDNO idontcare IDCANCEL quit
+    ;         goto removeold
 
-        idontcare: ; Clicked no
-            MessageBox MB_YESNO|MB_ICONEXCLAMATION "$(OLD_WRONG_VER_FOUND_CONFIRM)" /sd IDNO IDYES continueinstall
-            goto removeold
+    ;     idontcare: ; Clicked no
+    ;         MessageBox MB_YESNO|MB_ICONEXCLAMATION "$(OLD_WRONG_VER_FOUND_CONFIRM)" /sd IDNO IDYES continueinstall
+    ;         goto removeold
 
-        removeold: ; Remove it
-            ExecWait '"$PROGRAMFILES32\KoordASIO\Uninstall.exe" /S' $0
-            ${IfNot} $0 == 0
-                MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "$(OLD_VER_REMOVE_FAILED)" /sd IDCANCEL IDOK continueinstall
-                goto quit
-            ${EndIf}
+    ;     removeold: ; Remove it
+    ;         ExecWait '"$PROGRAMFILES32\KoordASIO\Uninstall.exe" /S' $0
+    ;         ${IfNot} $0 == 0
+    ;             MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "$(OLD_VER_REMOVE_FAILED)" /sd IDCANCEL IDOK continueinstall
+    ;             goto quit
+    ;         ${EndIf}
 
-            ; Copy old ASIO4ALL registry configuration
 
-            IntOp $0 0 + 0
-            EnumStart:
-                EnumRegKey $R1 HKEY_USERS "" $0 ; foreach user
-                IntOp $0 $0 + 1
-                StrCmp $R1 ".DEFAULT" EnumStart
-                StrCmp $R1 "" EnumEnd
+    ;         goto continueinstall
 
-                ; check if new key already exists. If this is the case, we'll not continue
-                ClearErrors
-                EnumRegKey $1 HKU "$R1\SOFTWARE\ASIO4ALL v2 by Wuschel\7A49ECC9" 0
-                IfErrors 0 EnumStart ; if the above line gives an error, it cannot find the key --> We'll continue
+    ;     quit:
+    ;         Abort
 
-                ; check if old key exists. If this is true, we'll continue and move the content of the old one to the new one.
-                ClearErrors
-                EnumRegKey $1 HKU "$R1\SOFTWARE\ASIO4ALL v2 by Wuschel\8A9E7A56" 0
-                IfErrors EnumStart 0 ; if the above line gives an error, it cannot find the key --> skip this user
-
-                ; copy the registry key
-                ${COPY_REGISTRY_KEY} HKU "$R1\SOFTWARE\ASIO4ALL v2 by Wuschel\8A9E7A56" HKU "$R1\SOFTWARE\ASIO4ALL v2 by Wuschel\7A49ECC9"
-
-                goto EnumStart
-            EnumEnd:
-
-            goto continueinstall
-
-        quit:
-            Abort
-
-    continueinstall:
+    ; continueinstall:
 
     ; Install the main application
     !insertmacro InstallApplication x86_64
@@ -266,17 +253,17 @@ Section "Install_64Bit" INST_64
     Delete   "$INSTDIR\${VC_REDIST64_EXE}"
 SectionEnd
 
-Section "Install_32Bit" INST_32
+; Section "Install_32Bit" INST_32
 
-    ; Install the main application
-    !insertmacro InstallApplication x86
-    !insertmacro SetupShortcuts
+;     ; Install the main application
+;     !insertmacro InstallApplication x86
+;     !insertmacro SetupShortcuts
 
-    ; Install Microsoft Visual Studio redistributables and remove the installer afterwards
-    ExecWait "$\"$INSTDIR\${VC_REDIST32_EXE}$\" /q /norestart"
-    Delete   "$INSTDIR\${VC_REDIST32_EXE}"
+;     ; Install Microsoft Visual Studio redistributables and remove the installer afterwards
+;     ExecWait "$\"$INSTDIR\${VC_REDIST32_EXE}$\" /q /norestart"
+;     Delete   "$INSTDIR\${VC_REDIST32_EXE}"
 
-SectionEnd
+; SectionEnd
 
 Function .onInit
 
@@ -294,16 +281,16 @@ Function .onInit
         ${UnSelectSection} ${INST_32}
 
     ${Else}
-        SetRegView      32
+        ; SetRegView      32
 
-        ; Set default installation folder, retrieve from registry if available
-        ReadRegStr $INSTDIR HKLM "${APP_INSTALL_KEY}" "${APP_INSTALL_VALUE}"
-        IfErrors   0 +2
-        StrCpy     $INSTDIR "$PROGRAMFILES32\${APP_NAME}"
+        ; ; Set default installation folder, retrieve from registry if available
+        ; ReadRegStr $INSTDIR HKLM "${APP_INSTALL_KEY}" "${APP_INSTALL_VALUE}"
+        ; IfErrors   0 +2
+        ; StrCpy     $INSTDIR "$PROGRAMFILES32\${APP_NAME}"
 
-        ; enable the 32 bit install section
-        ${SelectSection} ${INST_32}
-        ${UnSelectSection} ${INST_64}
+        ; ; enable the 32 bit install section
+        ; ${SelectSection} ${INST_32}
+        ; ${UnSelectSection} ${INST_64}
     ${EndIf}
 
     ; Install for all users
@@ -371,45 +358,45 @@ Function createdesktopshortcut
    CreateShortCut  "$DESKTOP\${APP_NAME}.lnk" "$INSTDIR\${APP_EXE}"
 FunctionEnd
 
-Function ASIOCheckInstalled
+; Function ASIOCheckInstalled
 
-    ; insert ASIO install page if no ASIO driver was found
-    ClearErrors
-    EnumRegKey $0 HKLM "SOFTWARE\ASIO" 0
+;     ; insert ASIO install page if no ASIO driver was found
+;     ClearErrors
+;     EnumRegKey $0 HKLM "SOFTWARE\ASIO" 0
 
-    IfErrors 0 ASIOExists
-        !insertmacro MUI_HEADER_TEXT "$(ASIO_DRIVER_HEADER)" "$(ASIO_DRIVER_SUB)"
-        nsDialogs::Create 1018
-        Pop $Dialog
-        ${If} $Dialog == error
-            Abort
-        ${Endif}
+;     IfErrors 0 ASIOExists
+;         !insertmacro MUI_HEADER_TEXT "$(ASIO_DRIVER_HEADER)" "$(ASIO_DRIVER_SUB)"
+;         nsDialogs::Create 1018
+;         Pop $Dialog
+;         ${If} $Dialog == error
+;             Abort
+;         ${Endif}
 
-        ${NSD_CreateLabel} 0 0 100% 20u "$(ASIO_DRIVER_EXPLAIN)"
-        Pop $Label
-        ${NSD_CreateButton} 0 21u 100% 15u "$(ASIO_DRIVER_MORE_INFO)"
-        Pop $Button
-        ${NSD_OnClick} $Button OpenASIOHelpPage
+;         ${NSD_CreateLabel} 0 0 100% 20u "$(ASIO_DRIVER_EXPLAIN)"
+;         Pop $Label
+;         ${NSD_CreateButton} 0 21u 100% 15u "$(ASIO_DRIVER_MORE_INFO)"
+;         Pop $Button
+;         ${NSD_OnClick} $Button OpenASIOHelpPage
 
-        nsDialogs::Show
+;         nsDialogs::Show
 
-    ASIOExists:
+;     ASIOExists:
 
-FunctionEnd
+; FunctionEnd
 
-Function OpenASIOHelpPage
-    ExecShell "open" "$(ASIO_DRIVER_MORE_INFO_URL)"
-FunctionEnd
+; Function OpenASIOHelpPage
+;     ExecShell "open" "$(ASIO_DRIVER_MORE_INFO_URL)"
+; FunctionEnd
 
-Function ExitASIOInstalled
-    ClearErrors
-    EnumRegKey $0 HKLM "SOFTWARE\ASIO" 0
-    IfErrors 0 SkipMessage
-        MessageBox MB_YESNO|MB_ICONEXCLAMATION "$(ASIO_EXIT_NO_DRIVER)" /sd IDNO IDYES SkipMessage
-            Abort
-   SkipMessage:
+; Function ExitASIOInstalled
+;     ClearErrors
+;     EnumRegKey $0 HKLM "SOFTWARE\ASIO" 0
+;     IfErrors 0 SkipMessage
+;         MessageBox MB_YESNO|MB_ICONEXCLAMATION "$(ASIO_EXIT_NO_DRIVER)" /sd IDNO IDYES SkipMessage
+;             Abort
+;    SkipMessage:
 
-FunctionEnd
+; FunctionEnd
 
 ; Uninstaller
 !macro un.InstallFiles buildArch
