@@ -56,7 +56,7 @@ BrandingText "${APP_NAME}. Free & open-source universal ASIO driver."
 !define MUI_LANGDLL_REGISTRY_VALUENAME "InstallLanguage"
 
 ; Installer page configuration
-!define MUI_PAGE_CUSTOMFUNCTION_PRE AbortOnRunningApp
+; !define MUI_PAGE_CUSTOMFUNCTION_PRE AbortOnRunningApp
 !insertmacro MUI_PAGE_WELCOME
 
 ; Page Custom ASIOCheckInstalled ExitASIOInstalled
@@ -75,7 +75,7 @@ BrandingText "${APP_NAME}. Free & open-source universal ASIO driver."
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller page configuration
-!define MUI_PAGE_CUSTOMFUNCTION_PRE un.AbortOnRunningApp
+; !define MUI_PAGE_CUSTOMFUNCTION_PRE un.AbortOnRunningApp
 !insertmacro MUI_UNPAGE_WELCOME
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
@@ -88,17 +88,19 @@ BrandingText "${APP_NAME}. Free & open-source universal ASIO driver."
 
 ; Abort the installer/uninstaller if KoordASIO is running
 
-!macro _AbortOnRunningApp
+; !macro _AbortOnRunningApp
 
-    nsProcess::_FindProcess "${APP_EXE}"
-    Pop $R0
+;     ; nsProcess::_FindProcess "${APP_EXE}"
+;     ; Pop $R0
 
-    ${If} $R0 = 0
-        MessageBox MB_OK|MB_ICONEXCLAMATION "$(RUNNING_APP_MSG)" /sd IDOK
-        Quit
-    ${EndIf}
+;     ; ${If} $R0 = 0
+;     ;     MessageBox MB_OK|MB_ICONEXCLAMATION "$(RUNNING_APP_MSG)" /sd IDOK
+;     ;     Quit
+;     ; ${EndIf}
+;     ;FIXME - naive
+;     MessageBox MB_OK|MB_ICONEXCLAMATION "$(RUNNING_APP_MSG)" /sd IDOK
 
-!macroend
+; !macroend
 
 ; Define Dialog variables
 
@@ -319,54 +321,14 @@ Function FinishPage.Run ; run the app
     Exec '"$WINDIR\explorer.exe" "$INSTDIR\${APP_EXE}"' ; see http://mdb-blog.blogspot.com/2013/01/nsis-lunch-program-as-user-from-uac.html and http://nsis.sourceforge.net/Run_an_application_shortcut_after_an_install
 FunctionEnd
 
-Function AbortOnRunningApp
-    !insertmacro _AbortOnRunningApp
-FunctionEnd
+; Function AbortOnRunningApp
+;     !insertmacro _AbortOnRunningApp
+; FunctionEnd
 
 Function createdesktopshortcut
    WriteRegStr HKLM "${APP_INSTALL_KEY}" "${APP_INSTALL_ICON}" "1" ; remember that icon should be installed next time
    CreateShortCut  "$DESKTOP\${APP_NAME}.lnk" "$INSTDIR\${APP_EXE}"
 FunctionEnd
-
-; Function ASIOCheckInstalled
-
-;     ; insert ASIO install page if no ASIO driver was found
-;     ClearErrors
-;     EnumRegKey $0 HKLM "SOFTWARE\ASIO" 0
-
-;     IfErrors 0 ASIOExists
-;         !insertmacro MUI_HEADER_TEXT "$(ASIO_DRIVER_HEADER)" "$(ASIO_DRIVER_SUB)"
-;         nsDialogs::Create 1018
-;         Pop $Dialog
-;         ${If} $Dialog == error
-;             Abort
-;         ${Endif}
-
-;         ${NSD_CreateLabel} 0 0 100% 20u "$(ASIO_DRIVER_EXPLAIN)"
-;         Pop $Label
-;         ${NSD_CreateButton} 0 21u 100% 15u "$(ASIO_DRIVER_MORE_INFO)"
-;         Pop $Button
-;         ${NSD_OnClick} $Button OpenASIOHelpPage
-
-;         nsDialogs::Show
-
-;     ASIOExists:
-
-; FunctionEnd
-
-; Function OpenASIOHelpPage
-;     ExecShell "open" "$(ASIO_DRIVER_MORE_INFO_URL)"
-; FunctionEnd
-
-; Function ExitASIOInstalled
-;     ClearErrors
-;     EnumRegKey $0 HKLM "SOFTWARE\ASIO" 0
-;     IfErrors 0 SkipMessage
-;         MessageBox MB_YESNO|MB_ICONEXCLAMATION "$(ASIO_EXIT_NO_DRIVER)" /sd IDNO IDYES SkipMessage
-;             Abort
-;    SkipMessage:
-
-; FunctionEnd
 
 ; Uninstaller
 !macro un.InstallFiles buildArch
@@ -439,6 +401,6 @@ Function un.onInit
 
 FunctionEnd
 
-Function un.AbortOnRunningApp
-    !insertmacro _AbortOnRunningApp
-FunctionEnd
+; Function un.AbortOnRunningApp
+;     !insertmacro _AbortOnRunningApp
+; FunctionEnd
