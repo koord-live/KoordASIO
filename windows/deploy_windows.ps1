@@ -255,6 +255,10 @@ Function Build-App
     # Invoke-Native-Command -Command "nmake" -Arguments ("$BuildConfig")
     Invoke-Native-Command -Command "nmake"
 
+    #FIXME show complete file list
+    Tree $RootPath
+    Get-ChildItem -Recurse $RootPath
+
     # Collect necessary Qt dlls for kdasioconfig
     Invoke-Native-Command -Command "$Env:QtWinDeployPath" `
         -Arguments ("--$BuildConfig", "--compiler-runtime", "--dir=$DeployPath\$BuildArch",
@@ -263,6 +267,7 @@ Function Build-App
     # Move-Item -Path "$BuildPath\$BuildConfig\$AppName.exe" -Destination "$DeployPath\$BuildArch" -Force
     Invoke-Native-Command -Command "nmake" -Arguments ("clean")
     Set-Location -Path $RootPath
+
 }
 
 # Build and deploy KoordASIO 64bit and 32bit variants
