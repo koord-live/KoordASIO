@@ -129,6 +129,7 @@ namespace flexasio {
 			ASIOError future(long selector, void *) throw() final {
 				return Enter("future()", [&] {
 					//Log() << "Requested future selector: " << ::dechamps_ASIOUtil::GetASIOFutureSelectorString(selector);
+					if (selector) { /* deliberately empty */ } // prevent compiler warning
 					throw ASIOException(ASE_InvalidParameter, "future() is not supported");
 				});
 			}
@@ -150,6 +151,7 @@ namespace flexasio {
 
 		template <typename Functor> ASIOError CFlexASIO::Enter(std::string_view context, Functor functor) {
 			//if (IsLoggingEnabled()) Log() << "--- ENTERING CONTEXT: " << context;
+			if (context) { /* deliberately empty */ } // prevent compiler warning
 			ASIOError result;
 			try {
 				functor();
