@@ -214,31 +214,6 @@ Var ALREADY_INSTALLED
 !define UnSelectSection '!insertmacro SecUnSelect'
 
 Section "Install_64Bit" INST_64
-    ; ; check if old, wrongly installed KoordASIO exists. See https://stackoverflow.com/questions/27839860/nsis-check-if-registry-key-value-exists#27841158
-    ; IfFileExists "$PROGRAMFILES32\KoordASIO\Uninstall.exe" 0 continueinstall
-
-    ;     MessageBox MB_YESNOCANCEL|MB_ICONEXCLAMATION "$(OLD_WRONG_VER_FOUND)" /sd IDYES IDNO idontcare IDCANCEL quit
-    ;         goto removeold
-
-    ;     idontcare: ; Clicked no
-    ;         MessageBox MB_YESNO|MB_ICONEXCLAMATION "$(OLD_WRONG_VER_FOUND_CONFIRM)" /sd IDNO IDYES continueinstall
-    ;         goto removeold
-
-    ;     removeold: ; Remove it
-    ;         ExecWait '"$PROGRAMFILES32\KoordASIO\Uninstall.exe" /S' $0
-    ;         ${IfNot} $0 == 0
-    ;             MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "$(OLD_VER_REMOVE_FAILED)" /sd IDCANCEL IDOK continueinstall
-    ;             goto quit
-    ;         ${EndIf}
-
-
-    ;         goto continueinstall
-
-    ;     quit:
-    ;         Abort
-
-    ; continueinstall:
-
     ; Install the main application
     !insertmacro InstallApplication x86_64
     !insertmacro SetupShortcuts
@@ -273,7 +248,7 @@ Function .onInit
 
         ; enable the 64 bit install section
         ${SelectSection} ${INST_64}
-        ${UnSelectSection} ${INST_32}
+        ; ${UnSelectSection} ${INST_32}
 
     ${Else}
         ; SetRegView      32
