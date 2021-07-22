@@ -219,7 +219,7 @@ namespace flexasio {
 		const ConfigLoader configLoader;
 		const Config& config = configLoader.Initial();
 
-		PortAudioDebugRedirector portAudioDebugRedirector;
+		// PortAudioDebugRedirector portAudioDebugRedirector;
 		PortAudioHandle portAudioHandle;
 
 		const HostApi hostApi;

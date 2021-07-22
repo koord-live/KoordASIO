@@ -12,18 +12,18 @@
 
 namespace flexasio {
 
-	class PortAudioDebugRedirector final {
-	public:
-		using Write = std::function<void(std::string_view)>;
+	// class PortAudioDebugRedirector final {
+	// public:
+	// 	using Write = std::function<void(std::string_view)>;
 
-		explicit PortAudioDebugRedirector(Write write);
-		~PortAudioDebugRedirector();
+	// 	explicit PortAudioDebugRedirector(Write write);
+	// 	~PortAudioDebugRedirector();
 
-	private:
-		static void DebugPrint(const char*);
+	// private:
+	// 	static void DebugPrint(const char*);
 
-		static Write write;
-	};
+	// 	static Write write;
+	// };
 
 	std::string GetHostApiTypeIdString(PaHostApiTypeId hostApiTypeId);
 	std::string GetSampleFormatString(PaSampleFormat sampleFormat);

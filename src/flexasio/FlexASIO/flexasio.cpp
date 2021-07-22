@@ -35,7 +35,8 @@ namespace flexasio {
 	FlexASIO::PortAudioHandle::~PortAudioHandle() {
 		//Log() << "Terminating PortAudio";
 		PaError error = Pa_Terminate();
-		// if (error != paNoError)
+		if (error != paNoError)
+			;
 		// 	//Log() << "PortAudio termination failed with " << Pa_GetErrorText(error);
 		// else
 		// 	//Log() << "PortAudio terminated successfully";
@@ -290,7 +291,7 @@ namespace flexasio {
 	FlexASIO::FlexASIO(void* sysHandle) :
 		windowHandle(reinterpret_cast<decltype(windowHandle)>(sysHandle)),
 	// portAudioDebugRedirector([](std::string_view str) { if (IsLoggingEnabled()) Log() << "[PortAudio] " << str; }),
-	portAudioDebugRedirector([](std::string_view str) {}),
+	// portAudioDebugRedirector([](std::string_view str) {}),
 	hostApi([&] {
 		LogPortAudioApiList();
 		auto hostApi = config.backend.has_value() ? SelectHostApiByName(*config.backend) : SelectDefaultHostApi();
@@ -567,9 +568,10 @@ namespace flexasio {
 			sampleRate, framesPerBuffer, paPrimeOutputBuffersUsingStreamCallback, callback, callbackUserData);
 		if (result.stream != nullptr) {
 			const auto streamInfo = Pa_GetStreamInfo(result.stream.get());
-			// if (streamInfo == nullptr) {
-			// 	//Log() << "Unable to get stream info";
-			// }
+			if (streamInfo == nullptr) {
+				;
+				//Log() << "Unable to get stream info";
+			}
 			// else {
 			// 	//Log() << "Stream info: " << DescribeStreamInfo(*streamInfo);
 			// }
@@ -845,6 +847,9 @@ namespace flexasio {
 			return paContinue;
 		}
 
+		if (statusFlags & timeInfo) {
+			;
+		}
 		// if (statusFlags & paInputOverflow && IsLoggingEnabled())
 		// 	//Log() << "INPUT OVERFLOW detected (some input data was discarded)";
 		// if (statusFlags & paInputUnderflow && IsLoggingEnabled())
@@ -893,7 +898,11 @@ namespace flexasio {
 				time.timeInfo.sampleRate = preparedState.sampleRate;
 				//if (IsLoggingEnabled()) Log() << "Firing ASIO bufferSwitchTimeInfo() callback with buffer index: " << driverBufferIndex << ", time info: (" << ::dechamps_ASIOUtil::DescribeASIOTime(time) << ")";
 				const auto timeResult = preparedState.callbacks.bufferSwitchTimeInfo(&time, driverBufferIndex, ASIOTrue);
+				
 				//if (IsLoggingEnabled()) Log() << "bufferSwitchTimeInfo() complete, returned time info: " << (timeResult == nullptr ? "none" : ::dechamps_ASIOUtil::DescribeASIOTime(*timeResult));
+				if (timeResult) { // remove compile warning
+					;
+				}
 			}
 		}
 

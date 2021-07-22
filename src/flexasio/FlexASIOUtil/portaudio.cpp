@@ -37,30 +37,30 @@ typedef struct PaUtilHostApiSpecificStreamInfoHeader
 
 namespace flexasio {
 
-	PortAudioDebugRedirector::PortAudioDebugRedirector(Write write) {
-		write(std::string("PortAudio version: ") + Pa_GetVersionText());
-		write("Enabling PortAudio debug output redirection");
-		if (this->write) abort();
-		this->write = std::move(write);
-		PaUtil_SetDebugPrintFunction(DebugPrint);
-	}
+	// PortAudioDebugRedirector::PortAudioDebugRedirector(Write write) {
+	// 	write(std::string("PortAudio version: ") + Pa_GetVersionText());
+	// 	write("Enabling PortAudio debug output redirection");
+	// 	if (this->write) abort();
+	// 	this->write = std::move(write);
+	// 	PaUtil_SetDebugPrintFunction(DebugPrint);
+	// }
 
-	PortAudioDebugRedirector::~PortAudioDebugRedirector() {
-		this->write("Disabling PortAudio debug output redirection");
-		PaUtil_SetDebugPrintFunction(NULL);
-		if (!this->write) abort();
-		this->write = nullptr;
-	}
+	// PortAudioDebugRedirector::~PortAudioDebugRedirector() {
+	// 	this->write("Disabling PortAudio debug output redirection");
+	// 	PaUtil_SetDebugPrintFunction(NULL);
+	// 	if (!this->write) abort();
+	// 	this->write = nullptr;
+	// }
 
-	void PortAudioDebugRedirector::DebugPrint(const char* str) {
-		if (!PortAudioDebugRedirector::write) abort();
+	// void PortAudioDebugRedirector::DebugPrint(const char* str) {
+	// 	if (!PortAudioDebugRedirector::write) abort();
 
-		std::string_view line(str);
-		while (!line.empty() && isspace(static_cast<unsigned char>(line.back()))) line.remove_suffix(1);
-		PortAudioDebugRedirector::write(line);
-	}
+	// 	std::string_view line(str);
+	// 	while (!line.empty() && isspace(static_cast<unsigned char>(line.back()))) line.remove_suffix(1);
+	// 	PortAudioDebugRedirector::write(line);
+	// }
 
-	PortAudioDebugRedirector::Write PortAudioDebugRedirector::write;
+	// PortAudioDebugRedirector::Write PortAudioDebugRedirector::write;
 
 	std::string GetHostApiTypeIdString(PaHostApiTypeId hostApiTypeId) {
 		return ::dechamps_cpputil::EnumToString(hostApiTypeId, {
