@@ -34,7 +34,7 @@ RequestExecutionLevel admin  ; Administrator privileges are required for install
 Name         "${APP_NAME}"
 OutFile      "${DEPLOY_PATH}\${APP_NAME}-${APP_VERSION}-installer-win.exe"
 Caption      "${APP_NAME} ${APP_VERSION} Installer"
-BrandingText "${APP_NAME}. Make music online. With friends. For free."
+BrandingText "${APP_NAME}. Free & open-source universal ASIO driver."
 
 ;  ; Additional plugin location (for nsProcess)
 ; !addplugindir "${WINDOWS_PATH}"
@@ -84,7 +84,7 @@ BrandingText "${APP_NAME}. Make music online. With friends. For free."
 ; Supported languages configuration
 ; Additional languages can be added in the file installerlng.nsi in the wininstaller folder, see https://nsis.sourceforge.io/Examples/Modern%20UI/MultiLanguage.nsi
 
-!include "${ROOT_PATH}\src\res\translation\wininstaller\installerlng.nsi"
+; !include "${ROOT_PATH}\src\res\translation\wininstaller\installerlng.nsi"
 
 ; Abort the installer/uninstaller if KoordASIO is running
 
