@@ -33,7 +33,7 @@ if (($koordasio_buildversionstring -eq $null) -or ($koordasio_buildversionstring
 
 # Rename the files
 echo "rename exe file"
-$artifact_deploy_filename = "koord-asio_${Env:koordasio_buildversionstring}_win.exe"
+$artifact_deploy_filename = "KoordASIO_${Env:koordasio_buildversionstring}_win.exe"
 echo "rename deploy file to $artifact_deploy_filename"
 cp "$koordasio_project_path\deploy\KoordASIO*installer-win.exe" "$koordasio_project_path\deploy\$artifact_deploy_filename"
 

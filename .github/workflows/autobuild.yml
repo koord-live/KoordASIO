@@ -196,7 +196,8 @@ jobs:
           asset_name:               ${{ steps.step_cmd3_postbuild.outputs.artifact_2 }}
           asset_content_type:       application/octet-stream
 
-      # Run CodeQL tools for code-scanning for security
-      - name:                       Perform CodeQL Analysis
-        if:                         matrix.config.uses_codeql
-        uses:                       github/codeql-action/analyze@v1
+      #FIXME - leave out for now
+      # # Run CodeQL tools for code-scanning for security
+      # - name:                       Perform CodeQL Analysis
+      #   if:                         matrix.config.uses_codeql
+      #   uses:                       github/codeql-action/analyze@v1
