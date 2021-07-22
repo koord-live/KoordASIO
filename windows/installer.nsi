@@ -158,8 +158,8 @@ Var ALREADY_INSTALLED
         StrCpy $ALREADY_INSTALLED 1
     new_installation:
 
-    !insertmacro InstallLib REGDLL $ALREADY_INSTALLED REBOOT_NOTPROTECTED FlexASIO.dll $INSTDIR\FlexASIO.dll $INSTDIR
-    !insertmacro InstallLib DLL NOTSHARED REBOOT_NOTPROTECTED portaudio_x64.dll $INSTDIR\portaudio_x64.dll $INSTDIR
+    !insertmacro InstallLib REGDLL $ALREADY_INSTALLED REBOOT_NOTPROTECTED "${prefix}\FlexASIO.dll" "$INSTDIR\FlexASIO.dll" $INSTDIR
+    !insertmacro InstallLib DLL NOTSHARED REBOOT_NOTPROTECTED "${prefix}\portaudio_x64.dll" "$INSTDIR\portaudio_x64.dll" $INSTDIR
 
     ; Add the redistribution license
     File "/oname=$INSTDIR\LICENSE.txt" "${ROOT_PATH}\LICENSE.txt"
@@ -181,13 +181,6 @@ Var ALREADY_INSTALLED
     WriteRegStr HKLM "${APP_UNINSTALL_KEY}" "DisplayName"     "${APP_NAME}"
     WriteRegStr HKLM "${APP_UNINSTALL_KEY}" "DisplayIcon"     "$INSTDIR\${APP_EXE},0"
     WriteRegStr HKLM "${APP_UNINSTALL_KEY}" "UninstallString" '"$INSTDIR\${UNINSTALL_EXE}"'
-
-    ; ; Add the registry keys so that KoordASIO handles koord:// URLs
-    ; WriteRegStr "HKCR" "koord" "" "URL: koord Protocol"
-    ; WriteRegStr "HKCR" "koord" "URL Protocol" ""
-    ; WriteRegStr "HKCR" "koord\shell" "" ""
-    ; WriteRegStr "HKCR" "koord\shell\open" "" ""
-    ; WriteRegStr "HKCR" "koord\shell\open\command" "" '"c:\Program Files\KoordASIO\KoordASIO.exe" "-x" "%1"'
 
     ; Add the uninstaller
     WriteUninstaller "$INSTDIR\${UNINSTALL_EXE}"
