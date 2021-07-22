@@ -6,7 +6,7 @@
 !include "LogicLib.nsh"                        ; Logical operators
 !include "Sections.nsh"                        ; Support for section selection
 !include "nsDialogs.nsh"                       ; Support custom pages with dialogs
-!include "NSISCopyRegistryKey\registry.nsh"    ; Support moving registry keys
+; !include "NSISCopyRegistryKey\registry.nsh"    ; Support moving registry keys
 !include "Library.nsh"                         ; support installing DLLs
 
 
