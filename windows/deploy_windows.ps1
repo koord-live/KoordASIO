@@ -235,28 +235,32 @@ Function Build-App
     #     -Arguments ("$RootPath\$AppName.pro", "CONFIG+=$BuildConfig $BuildArch", `
     #     "-o", "$BuildPath\Makefile")
 
-    # Invoke-Native-Command -Command "$Env:QtCmakePath" `
-        # -Arguments ("$RootPath\CMakeLists.txt", "CONFIG+=$BuildConfig $BuildArch", `
-        # "-o", "$BuildPath\Makefile")
-    # Invoke-Native-Command -Command "$Env:QtCmakePath" `
-    #     -Arguments ("-DCMAKE_PREFIX_PATH='$QtInstallPath\$QtCompile64\lib\cmake'", `
-    #         "-S", "$RootPath\kdasioconfig", `
-    #         "-B", "$BuildPath", `
-    #         "-G", "NMake Makefiles")
+    # Build kdasioconfig Qt project with CMake / nmake
+    Invoke-Native-Command -Command "$Env:QtCmakePath" `
+        -Arguments ("-DCMAKE_PREFIX_PATH='$QtInstallPath\$QtCompile64\lib\cmake'", `
+            "-S", "$RootPath\src\kdasioconfig", `
+            "-B", "$BuildPath\kdasioconfig", `
+            "-G", "NMake Makefiles")
+    Set-Location -Path "$BuildPath\kdasioconfig"
+    # Invoke-Native-Command -Command "nmake" -Arguments ("$BuildConfig")
+    Invoke-Native-Command -Command "nmake"
+
+    # Build FlexASIO dlls with CMake / nmake
     Invoke-Native-Command -Command "$Env:QtCmakePath" `
         -Arguments ("-DCMAKE_PREFIX_PATH='$QtInstallPath\$QtCompile64\lib\cmake:$RootPath\src\dechamps_cpputil:$RootPath\src\dechamps_ASIOUtil'", `
             "-S", "$RootPath\src", `
-            "-B", "$BuildPath", `
+            "-B", "$BuildPath\flexasio", `
             "-G", "NMake Makefiles")
-
-    Set-Location -Path $BuildPath
+    Set-Location -Path "$BuildPath\flexasio"
     # Invoke-Native-Command -Command "nmake" -Arguments ("$BuildConfig")
     Invoke-Native-Command -Command "nmake"
+
+    # Collect necessary Qt dlls for kdasioconfig
     Invoke-Native-Command -Command "$Env:QtWinDeployPath" `
         -Arguments ("--$BuildConfig", "--compiler-runtime", "--dir=$DeployPath\$BuildArch",
-        "$BuildPath\$BuildConfig\$AppName.exe")
+        "$BuildPath\kdasioconfig\$BuildConfig\$AppName.exe")
 
-    Move-Item -Path "$BuildPath\$BuildConfig\$AppName.exe" -Destination "$DeployPath\$BuildArch" -Force
+    # Move-Item -Path "$BuildPath\$BuildConfig\$AppName.exe" -Destination "$DeployPath\$BuildArch" -Force
     Invoke-Native-Command -Command "nmake" -Arguments ("clean")
     Set-Location -Path $RootPath
 }
@@ -281,7 +285,7 @@ function Build-App-Variants
 # Build Windows installer
 Function Build-Installer
 {
-    foreach ($_ in Get-Content -Path "$RootPath\$AppName.pro")
+    foreach ($_ in Get-Content -Path "$RootPath\kdASIOVersion.txt")
     {
         if ($_ -Match "^VERSION *= *(.*)$")
         {

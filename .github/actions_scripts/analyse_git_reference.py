@@ -15,21 +15,21 @@ import os
 import re
 import subprocess
 
-# get the koordasio version from the CMakeLists file
+# get the koordasio version from the version file
 def get_koordasio_version(repo_path_on_disk):
-#     koordasio_version = ""
-#     with open (repo_path_on_disk + '/CMakeLists.txt','r') as f:
-#         pro_content = f.read()
-#     pro_content = pro_content.replace('\r','')
-#     pro_lines = pro_content.split('\n')
-#     for line in pro_lines:
-#         line = line.strip()
-#         VERSION_LINE_STARTSWITH = 'set(VERSION '
-#         if line.startswith(VERSION_LINE_STARTSWITH):
-#             koordasio_version = line[len(VERSION_LINE_STARTSWITH):]
-#             return koordasio_version
-    # return "UNKNOWN_VERSION"
-    return "0.9.0" # hardcode for now
+    koordasio_version = ""
+    with open (repo_path_on_disk + '/kdASIOVersion.txt','r') as f:
+        ver_content = f.read()
+    ver_content = ver_content.replace('\r','')
+    ver_lines = ver_content.split('\n')
+    for line in ver_lines:
+        line = line.strip()
+        VERSION_LINE_STARTSWITH = 'VERSION = '
+        if line.startswith(VERSION_LINE_STARTSWITH):
+            koordasio_version = line[len(VERSION_LINE_STARTSWITH):]
+            return koordasio_version
+    return "UNKNOWN_VERSION"
+    
 
 def get_git_hash():
     return subprocess.check_output(['git', 'describe', '--match=xxxxxxxxxxxxxxxxxxxx', '--always', '--abbrev', '--dirty']).decode('ascii').strip()

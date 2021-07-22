@@ -10,7 +10,7 @@
 echo "Install Qt..."
 # Install Qt
 #pip install aqtinstall
-# Install branch of aqtinstall to allow tools installations while mainline is broken
+#FIXME Install branch of aqtinstall to allow tools installations while mainline is broken
 pip install git+https://github.com/miurahr/aqtinstall.git@topic-tool-latest
 
 echo "Get Qt 64 bit..."
