@@ -35,10 +35,10 @@ namespace flexasio {
 	FlexASIO::PortAudioHandle::~PortAudioHandle() {
 		//Log() << "Terminating PortAudio";
 		PaError error = Pa_Terminate();
-		if (error != paNoError)
-			//Log() << "PortAudio termination failed with " << Pa_GetErrorText(error);
-		else
-			//Log() << "PortAudio terminated successfully";
+		// if (error != paNoError)
+		// 	//Log() << "PortAudio termination failed with " << Pa_GetErrorText(error);
+		// else
+		// 	//Log() << "PortAudio terminated successfully";
 	}
 
 	FlexASIO::Win32HighResolutionTimer::Win32HighResolutionTimer() {
@@ -143,7 +143,7 @@ namespace flexasio {
 				//Log() << "WASAPI device default format for device index " << deviceIndex << ": " << DescribeWaveFormat(format);
 				return format;
 			}
-			catch (const std::exception& exception) {
+			catch (...) {
 				//Log() << "Error while trying to get input WASAPI default format for device index " << deviceIndex << ": " << exception.what();
 				return std::nullopt;
 			}
@@ -340,17 +340,17 @@ namespace flexasio {
 	}()),
 		sampleRate(GetDefaultSampleRate(inputDevice, outputDevice))
 	{
-		//Log() << "sysHandle = " << sysHandle;
+		// //Log() << "sysHandle = " << sysHandle;
 
-		if (!inputDevice.has_value() && !outputDevice.has_value()) throw ASIOException(ASE_HWMalfunction, "No usable input nor output devices");
+		// if (!inputDevice.has_value() && !outputDevice.has_value()) throw ASIOException(ASE_HWMalfunction, "No usable input nor output devices");
 
-		//Log() << "Input channel count: " << GetInputChannelCount() << " mask: " << GetWaveFormatChannelMaskString(GetInputChannelMask());
-		if (inputDevice.has_value() && GetInputChannelCount() > inputDevice->info.maxInputChannels)
-			//Log() << "WARNING: input channel count is higher than the max channel count for this device. Input device initialization might fail.";
+		// //Log() << "Input channel count: " << GetInputChannelCount() << " mask: " << GetWaveFormatChannelMaskString(GetInputChannelMask());
+		// if (inputDevice.has_value() && GetInputChannelCount() > inputDevice->info.maxInputChannels)
+		// 	//Log() << "WARNING: input channel count is higher than the max channel count for this device. Input device initialization might fail.";
 
-		//Log() << "Output channel count: " << GetOutputChannelCount() << " mask: " << GetWaveFormatChannelMaskString(GetOutputChannelMask());
-		if (outputDevice.has_value() && GetOutputChannelCount() > outputDevice->info.maxOutputChannels)
-			//Log() << "WARNING: output channel count is higher than the max channel count for this device. Output device initialization might fail.";
+		// //Log() << "Output channel count: " << GetOutputChannelCount() << " mask: " << GetWaveFormatChannelMaskString(GetOutputChannelMask());
+		// if (outputDevice.has_value() && GetOutputChannelCount() > outputDevice->info.maxOutputChannels)
+		// 	//Log() << "WARNING: output channel count is higher than the max channel count for this device. Output device initialization might fail.";
 	}
 
 	int FlexASIO::GetInputChannelCount() const {
@@ -425,6 +425,7 @@ namespace flexasio {
 			std::stringstream channel_name;
 			channel_name << channel;
 			if (current_channel_speaker == SPEAKER_ALL)
+				;
 				//Log() << "Channel " << channel << " is outside channel mask " << channelMask;
 			else
 			{
@@ -451,6 +452,7 @@ namespace flexasio {
 				case SPEAKER_TOP_BACK_RIGHT: pretty_name = "TBR (Top Back Right)"; break;
 				}
 				if (!pretty_name)
+					;
 					//Log() << "Speaker " << current_channel_speaker << " is unknown";
 				else
 					channel_name << " " << pretty_name;
@@ -565,12 +567,12 @@ namespace flexasio {
 			sampleRate, framesPerBuffer, paPrimeOutputBuffersUsingStreamCallback, callback, callbackUserData);
 		if (result.stream != nullptr) {
 			const auto streamInfo = Pa_GetStreamInfo(result.stream.get());
-			if (streamInfo == nullptr) {
-				//Log() << "Unable to get stream info";
-			}
-			else {
-				//Log() << "Stream info: " << DescribeStreamInfo(*streamInfo);
-			}
+			// if (streamInfo == nullptr) {
+			// 	//Log() << "Unable to get stream info";
+			// }
+			// else {
+			// 	//Log() << "Stream info: " << DescribeStreamInfo(*streamInfo);
+			// }
 		}
 		return result;
 	}
@@ -596,7 +598,7 @@ namespace flexasio {
 				//Log() << "Input supports this sample rate";
 				available = true;
 			}
-			catch (const std::exception& exception) {
+			catch (...) {
 				//Log() << "Input does not support this sample rate: " << exception.what();
 			}
 		if (outputDevice.has_value())
@@ -606,7 +608,7 @@ namespace flexasio {
 				//Log() << "Output supports this sample rate";
 				available = true;
 			}
-			catch (const std::exception& exception) {
+			catch (...) {
 				//Log() << "Output does not support this sample rate: " << exception.what();
 			}
 
@@ -803,9 +805,9 @@ namespace flexasio {
 			}
 			result = preparedState.runningState->StreamCallback(input, output, frameCount, timeInfo, statusFlags);
 		}
-		catch (const std::exception& exception) {
-			//if (IsLoggingEnabled()) Log() << "Caught exception in stream callback: " << exception.what();
-		}
+		// catch (const std::exception& exception) {
+		// 	//if (IsLoggingEnabled()) Log() << "Caught exception in stream callback: " << exception.what();
+		// }
 		catch (...) {
 			//if (IsLoggingEnabled()) Log() << "Caught unknown exception in stream callback";
 		}
@@ -818,7 +820,7 @@ namespace flexasio {
 		try {
 			RequestReset();
 		}
-		catch (const std::exception& exception) {
+		catch (...) {
 			//Log() << "Reset request failed: " << ::dechamps_cpputil::GetNestedExceptionMessage(exception);
 		}
 	}
