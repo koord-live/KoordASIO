@@ -258,7 +258,7 @@ Function Build-App
     # Collect necessary Qt dlls for kdasioconfig
     Invoke-Native-Command -Command "$Env:QtWinDeployPath" `
         -Arguments ("--$BuildConfig", "--compiler-runtime", "--dir=$DeployPath\$BuildArch",
-        "$BuildPath\kdasioconfig\$BuildConfig\$AppName.exe")
+        "$BuildPath\kdasioconfig\$BuildConfig\kdasioconfig.exe")
 
     # Move-Item -Path "$BuildPath\$BuildConfig\$AppName.exe" -Destination "$DeployPath\$BuildArch" -Force
     Invoke-Native-Command -Command "nmake" -Arguments ("clean")
