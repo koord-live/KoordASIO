@@ -142,10 +142,11 @@ Function Install-Dependencies
     #     -Name $NsisName -Destination "NSIS"
 
     # install Innosetup on its own, it's an EXE installer
-    Invoke-WebRequest -Uri $InnoSetupUrl -OutFile $TempFileName
-    echo $TempFileName
-    Invoke-Native-Command -Command $TempFileName /VERYSILENT  # execute installer
-    Remove-Item -Path $TempFileName -Force
+    $TempISFileName = [System.IO.Path]::GetTempFileName() + ".exe"
+    Invoke-WebRequest -Uri $InnoSetupUrl -OutFile $TempISFileName
+    echo $TempISFileName
+    Invoke-Native-Command -Command $TempISFileName /VERYSILENT  # execute installer
+    Remove-Item -Path $TempISFileName -Force
 
 }
 
