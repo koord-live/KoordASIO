@@ -46,7 +46,7 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
     bufferSizes << "32" << "64" << "128" << "256" << "512" << "1024" << "2048";
     bufferSizeBox->addItems(bufferSizes);
 
-    // parse FlexASIO.toml
+    // parse .KoordASIO.toml
     std::ifstream ifs;
     ifs.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
     try {
@@ -141,7 +141,7 @@ void KdASIOConfig::setDefaults()
 void KdASIOConfig::writeTomlFile()
 {
     // REF: https://github.com/dechamps/FlexASIO/blob/master/CONFIGURATION.md
-    // Write MINIMAL config to FlexASIO.toml, like this:
+    // Write MINIMAL config to .KoordASIO.toml, like this:
     /*
         backend = "Windows WASAPI"
         bufferSizeSamples = bufferSize

@@ -1,6 +1,6 @@
 ## KoordASIOConfig
 
-Basic Qt GUI configurator for FlexASIO.toml file.
+Basic Qt GUI configurator for KoordASIO driver.
 
 Hardcodes to WASAPI backend.
 

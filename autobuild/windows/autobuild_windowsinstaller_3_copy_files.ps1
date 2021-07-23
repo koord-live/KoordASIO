@@ -2,7 +2,6 @@
 
 # autobuild_3_copy_files: copy the built files to deploy folder
 
-
 ####################
 ###  PARAMETERS  ###
 ####################
@@ -26,23 +25,20 @@ if (($koordasio_buildversionstring -eq $null) -or ($koordasio_buildversionstring
     $koordasio_buildversionstring = "NoVersion"
 }
 
-
 ###################
 ###  PROCEDURE  ###
 ###################
 
 # Rename the files
 echo "rename exe file"
-$artifact_deploy_filename = "KoordASIO_${Env:koordasio_buildversionstring}_win.exe"
+$artifact_deploy_filename = "KoordASIO_${Env:koordasio_buildversionstring}_win64.exe"
 echo "rename deploy file to $artifact_deploy_filename"
-cp "$koordasio_project_path\deploy\KoordASIO*installer-win.exe" "$koordasio_project_path\deploy\$artifact_deploy_filename"
+cp "$koordasio_project_path\Output\KoordASIO-*.exe" "$koordasio_project_path\deploy\$artifact_deploy_filename"
 
 # echo "rename appx file"
 # $winrt_artifact_deploy_filename = "koord-asio_${Env:koordasio_buildversionstring}_win.appx"
 # echo "rename appx deploy file to $winrt_artifact_deploy_filename"
 # cp "$koordasio_project_path\xdeploy\KoordASIO*" "$koordasio_project_path\deploy\$winrt_artifact_deploy_filename"
-
-
 
 Function github_output_value
 {
@@ -56,6 +52,5 @@ Function github_output_value
     echo "github_output_value() $name = $value"
     echo "::set-output name=$name::$value"
 }
-
 
 github_output_value -name "artifact_1" -value "$artifact_deploy_filename"
