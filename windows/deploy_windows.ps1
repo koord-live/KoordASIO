@@ -7,9 +7,10 @@ param(
     [string] $AsioSDKName = "ASIOSDK2.3.2",
     [string] $AsioSDKUrl = "https://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip",
     [string] $NsisName = "nsis-3.06.1",
-    [string] $NsisUrl = "https://downloads.sourceforge.net/project/nsis/NSIS%203/3.06.1/nsis-3.06.1.zip"
+    [string] $NsisUrl = "https://downloads.sourceforge.net/project/nsis/NSIS%203/3.06.1/nsis-3.06.1.zip",
     [string] $InnoSetupName = "innosetup-6.2.0",
-    [string] $InnoSetupUrl = "https://jrsoftware.org/download.php/is.exe"
+    [string] $InnoSetupUrl = "https://jrsoftware.org/download.php/is.exe",
+    [string] $InnoSetupIsccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
 )
 
 # change directory to the directory above (if needed)
@@ -137,14 +138,14 @@ Function Install-Dependencies
     Initialize-Module-Here -m "VSSetup"
     Install-Dependency -Uri $AsioSDKUrl `
         -Name $AsioSDKName -Destination "ASIOSDK2"
-    Install-Dependency -Uri $NsisUrl `
-        -Name $NsisName -Destination "NSIS"
+    # Install-Dependency -Uri $NsisUrl `
+    #     -Name $NsisName -Destination "NSIS"
 
-    # install Innosetup
-
-    InnoSetupInstaller.exe /VERYSILENT
+    # install Innosetup on its own, it's an EXE installer
     Invoke-WebRequest -Uri $InnoSetupUrl -OutFile $TempFileName
     echo $TempFileName
+    Invoke-Native-Command -Command $TempFileName /VERYSILENT  # execute installer
+    Remove-Item -Path $TempFileName -Force
 
 }
 
@@ -288,8 +289,8 @@ Function Build-App
 
     # Move kdasioconfig.exe to deploy dir
     Move-Item -Path "$BuildPath\$BuildConfig\kdasioconfig\kdasioconfig.exe" -Destination "$DeployPath\$BuildArch" -Force
-    # Move 2 x FlexASIO dlls to deploy dir 
-    Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\FlexASIO.dll" -Destination "$DeployPath\$BuildArch" -Force
+    # Move 2 x FlexASIO dlls to deploy dir, rename DLL here for separation
+    Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\FlexASIO.dll" -Destination "$DeployPath\$BuildArch\KoordASIO.dll" -Force
     Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\portaudio_x64.dll" -Destination "$DeployPath\$BuildArch" -Force
 
     # Files to move from innosetup setup:
@@ -331,10 +332,18 @@ Function Build-Installer
         }
     }
 
-    Invoke-Native-Command -Command "$WindowsPath\NSIS\makensis" `
-        -Arguments ("/v4", "/DAPP_NAME=$AppName", "/DAPP_VERSION=$AppVersion", `
-        "/DROOT_PATH=$RootPath", "/DWINDOWS_PATH=$WindowsPath", "/DDEPLOY_PATH=$DeployPath", `
-        "$WindowsPath\installer.nsi")
+    # Invoke-Native-Command -Command "$WindowsPath\NSIS\makensis" `
+    #     -Arguments ("/v4", "/DAPP_NAME=$AppName", "/DAPP_VERSION=$AppVersion", `
+    #     "/DROOT_PATH=$RootPath", "/DWINDOWS_PATH=$WindowsPath", "/DDEPLOY_PATH=$DeployPath", `
+    #     "$WindowsPath\installer.nsi")
+
+    # for 64bit build only
+    Set-Location -Path "$DeployPath\x86_64\"
+    # /Program Files (x86)/Inno Setup 6/ISCC.exe
+    Invoke-Native-Command -Command "${InnoSetupIsccPath}" `
+        -Arguments ("${WindowsPath}\kdinstaller.iss", `
+         "/FKoordASIO-${AppVersion}")
+
 }
 
 # # Build and copy NS-Process dll
