@@ -141,12 +141,17 @@ Function Install-Dependencies
     # Install-Dependency -Uri $NsisUrl `
     #     -Name $NsisName -Destination "NSIS"
 
-    # install Innosetup on its own, it's an EXE installer
-    $TempISFileName = [System.IO.Path]::GetTempFileName() + ".exe"
-    Invoke-WebRequest -Uri $InnoSetupUrl -OutFile $TempISFileName
-    echo $TempISFileName
-    Invoke-Native-Command -Command $TempISFileName /VERYSILENT  # execute installer
-    Remove-Item -Path $TempISFileName -Force
+    # assuming Powershell3, install Chocolatey
+    Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://community.chocolatey.org/install.ps1 -UseBasicParsing | iex
+    # now install Innosetup
+    choco install innosetup
+
+    # # install Innosetup on its own, it's an EXE installer
+    # $TempISFileName = [System.IO.Path]::GetTempFileName() + ".exe"
+    # Invoke-WebRequest -Uri $InnoSetupUrl -OutFile $TempISFileName
+    # echo $TempISFileName
+    # Invoke-Native-Command -Command $TempISFileName /VERYSILENT  # execute installer
+    # Remove-Item -Path $TempISFileName -Force
 
 }
 
