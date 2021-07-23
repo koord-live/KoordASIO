@@ -275,7 +275,7 @@ Function Build-App
 
     #FIXME show complete file list
     # Tree /F $RootPath
-    Get-ChildItem -Recurse $RootPath
+    # Get-ChildItem -Recurse $RootPath
 
     # Collect necessary Qt dlls for kdasioconfig
     Invoke-Native-Command -Command "$Env:QtWinDeployPath" `
@@ -298,10 +298,10 @@ Function Build-App
     # Move 2 x FlexASIO dlls to deploy dir, rename DLL here for separation
     Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\FlexASIO.dll" -Destination "$DeployPath\$BuildArch\KoordASIO.dll" -Force
     Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\portaudio_x64.dll" -Destination "$DeployPath\$BuildArch" -Force
+    # move InnoSetup script to deploy dir
+    Move-Item -Path "$WindowsPath\kdinstaller.iss" -Destination "$RootPath" -Force
 
-    # Files to move from innosetup setup:
-        # Source:"x64\install\bin\FlexASIO.dll"; DestDir: "{app}\x64"; Flags: ignoreversion regserver 64bit; Check: Is64BitInstallMode
-        # Source:"x64\install\bin\*"; DestDir: "{app}\x64"; Flags: ignoreversion 64bit; Check: Is64BitInstallMode
+    Get-ChildItem -Recurse $RootPath
 
     Invoke-Native-Command -Command "nmake" -Arguments ("clean")
     Set-Location -Path $RootPath
@@ -343,11 +343,11 @@ Function Build-Installer
     #     "/DROOT_PATH=$RootPath", "/DWINDOWS_PATH=$WindowsPath", "/DDEPLOY_PATH=$DeployPath", `
     #     "$WindowsPath\installer.nsi")
 
-    # for 64bit build only
-    Set-Location -Path "$DeployPath\x86_64\"
+    #FIXME for 64bit build only
+    Set-Location -Path "$RootPath"
     # /Program Files (x86)/Inno Setup 6/ISCC.exe
     Invoke-Native-Command -Command "${InnoSetupIsccPath}" `
-        -Arguments ("${WindowsPath}\kdinstaller.iss", `
+        -Arguments ("$RootPath\kdinstaller.iss", `
          "/FKoordASIO-${AppVersion}")
 
 }
