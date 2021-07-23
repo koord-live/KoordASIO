@@ -46,7 +46,7 @@ else()
             ${PROJECT_SOURCES}
         )
     else()
-        add_executable(kdasioconfig
+        add_executable(kdasioconfig WIN32
             ${PROJECT_SOURCES}
         )
     endif()
