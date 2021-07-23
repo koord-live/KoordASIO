@@ -8,6 +8,8 @@ param(
     [string] $AsioSDKUrl = "https://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip",
     [string] $NsisName = "nsis-3.06.1",
     [string] $NsisUrl = "https://downloads.sourceforge.net/project/nsis/NSIS%203/3.06.1/nsis-3.06.1.zip"
+    [string] $InnoSetupName = "innosetup-6.2.0",
+    [string] $InnoSetupUrl = "https://jrsoftware.org/download.php/is.exe"
 )
 
 # change directory to the directory above (if needed)
@@ -137,6 +139,13 @@ Function Install-Dependencies
         -Name $AsioSDKName -Destination "ASIOSDK2"
     Install-Dependency -Uri $NsisUrl `
         -Name $NsisName -Destination "NSIS"
+
+    # install Innosetup
+
+    InnoSetupInstaller.exe /VERYSILENT
+    Invoke-WebRequest -Uri $InnoSetupUrl -OutFile $TempFileName
+    echo $TempFileName
+
 }
 
 # Setup environment variables and build tool paths
