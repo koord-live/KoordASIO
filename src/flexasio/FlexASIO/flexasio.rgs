@@ -1,15 +1,15 @@
 HKCR
 {
-	ForceRemove flexasio.FlexASIO.1 = s 'FlexASIO'
+	ForceRemove koordasio.KoordASIO.1 = s 'KoordASIO'
 	{
 		CLSID = s '{462F2ABF-5278-436A-95B6-72CBF65482AE}'
 	}
 
 	NoRemove CLSID
 	{
-		ForceRemove {462F2ABF-5278-436A-95B6-72CBF65482AE} = s 'FlexASIO'
+		ForceRemove {462F2ABF-5278-436A-95B6-72CBF65482AE} = s 'KoordASIO'
 		{
-			ProgID = s 'flexasio.FlexASIO.1'
+			ProgID = s 'koordasio.KoordASIO.1'
 			InprocServer32 = s '%MODULE%'
 			{
 				val ThreadingModel = s 'Both'
@@ -24,10 +24,10 @@ HKLM
 	{
 		NoRemove ASIO
 		{
-			ForceRemove FlexASIO
+			ForceRemove KoordASIO
 			{
 				val CLSID = s '{462F2ABF-5278-436A-95B6-72CBF65482AE}'
-				val Description = s 'FlexASIO'
+				val Description = s 'KoordASIO'
 			}
 		}
 	}
