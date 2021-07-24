@@ -1,4 +1,3 @@
-
 # KoordASIO - an easy-to-use universal ASIO driver
 
 ## Description
@@ -8,13 +7,13 @@ audio using ASIO on Windows. It should work with most soundcards currently suppo
 
 KoordASIO is a "respin" of the FlexASIO project, made simpler to use by removing various test and debug utilities unnecessary for the general user, and providing a simple GUI configuration utility.
 
+![Screenshot (9)](https://user-images.githubusercontent.com/584572/126863076-cb3e53d9-6d70-4723-9609-b23d2e81df01.png)
+
+KoordASIO Config utility
+
 Q: What is the Latency like?
 
 A: In default Shared mode, which allows other sound apps to access the sound device simultaneously, users can expect latency in the 10-20ms range. In Exclusive mode, many users can achieve workable latencies in the 5-10ms range.
-
-![Screenshot (6)](https://user-images.githubusercontent.com/584572/126207641-54abd5dc-ec65-43be-977a-99432c04714e.png)
-
-KoordASIO Config utility
 
 KoordASIO only uses the WASAPI backend within FlexASIO, to provide the best performance and feature set.
 Exclusive Mode or Shared Mode can be enabled, and a sensible buffer-size range from 32 samples to 2048 samples.
