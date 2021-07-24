@@ -6,9 +6,6 @@ param(
     [string] $QtCompile64 = "msvc2019_64",
     [string] $AsioSDKName = "ASIOSDK2.3.2",
     [string] $AsioSDKUrl = "https://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip",
-    [string] $NsisName = "nsis-3.06.1",
-    [string] $NsisUrl = "https://downloads.sourceforge.net/project/nsis/NSIS%203/3.06.1/nsis-3.06.1.zip",
-    [string] $InnoSetupName = "innosetup-6.2.0",
     [string] $InnoSetupUrl = "https://jrsoftware.org/download.php/is.exe",
     [string] $InnoSetupIsccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
 )
@@ -138,21 +135,11 @@ Function Install-Dependencies
     Initialize-Module-Here -m "VSSetup"
     Install-Dependency -Uri $AsioSDKUrl `
         -Name $AsioSDKName -Destination "ASIOSDK2"
-    # Install-Dependency -Uri $NsisUrl `
-    #     -Name $NsisName -Destination "NSIS"
 
     # assuming Powershell3, install Chocolatey
     Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://community.chocolatey.org/install.ps1 -UseBasicParsing | iex
     # now install Innosetup
     choco install innosetup
-
-    # # install Innosetup on its own, it's an EXE installer
-    # $TempISFileName = [System.IO.Path]::GetTempFileName() + ".exe"
-    # Invoke-WebRequest -Uri $InnoSetupUrl -OutFile $TempISFileName
-    # echo $TempISFileName
-    # Invoke-Native-Command -Command $TempISFileName /VERYSILENT  # execute installer
-    # Remove-Item -Path $TempISFileName -Force
-
 }
 
 # Setup environment variables and build tool paths
@@ -247,10 +234,6 @@ Function Build-App
         [string] $BuildArch
     )
 
-    # Invoke-Native-Command -Command "$Env:QtQmakePath" `
-    #     -Arguments ("$RootPath\$AppName.pro", "CONFIG+=$BuildConfig $BuildArch", `
-    #     "-o", "$BuildPath\Makefile")
-
     # Build kdasioconfig Qt project with CMake / nmake
     Invoke-Native-Command -Command "$Env:QtCmakePath" `
         -Arguments ("-DCMAKE_PREFIX_PATH='$QtInstallPath\$QtCompile64\lib\cmake'", `
@@ -270,12 +253,7 @@ Function Build-App
             "-B", "$BuildPath\$BuildConfig\flexasio", `
             "-G", "NMake Makefiles")
     Set-Location -Path "$BuildPath\$BuildConfig\flexasio"
-    # Invoke-Native-Command -Command "nmake" -Arguments ("$BuildConfig")
     Invoke-Native-Command -Command "nmake"
-
-    #FIXME show complete file list
-    # Tree /F $RootPath
-    # Get-ChildItem -Recurse $RootPath
 
     # Collect necessary Qt dlls for kdasioconfig
     Invoke-Native-Command -Command "$Env:QtWinDeployPath" `
@@ -296,7 +274,7 @@ Function Build-App
     # Move kdasioconfig.exe to deploy dir
     Move-Item -Path "$BuildPath\$BuildConfig\kdasioconfig\kdasioconfig.exe" -Destination "$DeployPath\$BuildArch" -Force
     # Move 2 x FlexASIO dlls to deploy dir, rename DLL here for separation
-    Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\FlexASIO.dll" -Destination "$DeployPath\$BuildArch\KoordASIO.dll" -Force
+    Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\FlexASIO.dll" -Destination "$DeployPath\$BuildArch" -Force
     Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\portaudio_x64.dll" -Destination "$DeployPath\$BuildArch" -Force
     # move InnoSetup script to deploy dir
     Move-Item -Path "$WindowsPath\kdinstaller.iss" -Destination "$RootPath" -Force
@@ -352,32 +330,8 @@ Function Build-Installer
 
 }
 
-# # Build and copy NS-Process dll
-# Function Build-NSProcess
-# {
-#     param(
-#         [Parameter(Mandatory=$true)]
-#         [string] $QtInstallPath
-#     )
-#     if (!(Test-Path -path "$WindowsPath\nsProcess.dll")) {
-
-#         echo "Building nsProcess..."
-
-#         $OriginalEnv = Get-ChildItem Env:
-#         Initialize-Build-Environment -QtInstallPath $QtInstallPath -BuildArch "x86"
-    
-#         Invoke-Native-Command -Command "msbuild" `
-#             -Arguments ("$WindowsPath\nsProcess\nsProcess.sln", '/p:Configuration="Release UNICODE"', `
-#             "/p:Platform=Win32")
-   
-#         Move-Item -Path "$WindowsPath\nsProcess\Release\nsProcess.dll" -Destination "$WindowsPath\nsProcess.dll" -Force
-#         Remove-Item -Path "$WindowsPath\nsProcess\Release\" -Force -Recurse
-#         $OriginalEnv | % { Set-Item "Env:$($_.Name)" $_.Value }
-#     }
-# }
 
 Clean-Build-Environment
 Install-Dependencies
 Build-App-Variants -QtInstallPath $QtInstallPath
-# Build-NSProcess -QtInstallPath $QtInstallPath
 Build-Installer
