@@ -8,7 +8,8 @@ param(
     [string] $AsioSDKUrl = "https://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip",
     [string] $InnoSetupUrl = "https://jrsoftware.org/download.php/is.exe",
     [string] $InnoSetupIsccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
-    [string] $VsDistFile64Path = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Redist\MSVC\14.29.30037\x64\Microsoft.VC142.CRT"
+    [string] $VsDistFile64Redist = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Redist\"
+    [string] $VsDistFile64Path = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Redist\MSVC\14.29.30036\x64\Microsoft.VC142.CRT"
 )
 
 # change directory to the directory above (if needed)
@@ -261,6 +262,8 @@ Function Build-App
         -Arguments ("--$BuildConfig", "--no-compiler-runtime", "--dir=$DeployPath\$BuildArch", `
         "--no-system-d3d-compiler",  "--no-opengl-sw", `
         "$BuildPath\$BuildConfig\kdasioconfig\kdasioconfig.exe")
+
+    Tree $VsDistFile64Redist /a
 
     # Transfer VS dist DLLs for x64
     Copy-Item -Path "$VsDistFile64Path\*" -Destination "$DeployPath\$BuildArch"
