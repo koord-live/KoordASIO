@@ -7,7 +7,8 @@ param(
     [string] $AsioSDKName = "ASIOSDK2.3.2",
     [string] $AsioSDKUrl = "https://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip",
     [string] $InnoSetupUrl = "https://jrsoftware.org/download.php/is.exe",
-    [string] $InnoSetupIsccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+    [string] $InnoSetupIsccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
+    [string] $VsDistFile64Path ="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\14.29.30036\x64\Microsoft.VC142.CRT"
 )
 
 # change directory to the directory above (if needed)
@@ -257,9 +258,12 @@ Function Build-App
 
     # Collect necessary Qt dlls for kdasioconfig
     Invoke-Native-Command -Command "$Env:QtWinDeployPath" `
-        -Arguments ("--$BuildConfig", "--compiler-runtime", "--dir=$DeployPath\$BuildArch", `
+        -Arguments ("--$BuildConfig", "--no-compiler-runtime", "--dir=$DeployPath\$BuildArch", `
         "--no-system-d3d-compiler",  "--no-opengl-sw", `
         "$BuildPath\$BuildConfig\kdasioconfig\kdasioconfig.exe")
+
+    # Transfer VS dist DLLs for x64
+    Copy-Item -Path "$VsDistFile64Path\*" -Destination "$DeployPath\$BuildArch"
 
     # all build files:
         # kdasioconfig files inc qt dlls now in 
