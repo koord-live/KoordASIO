@@ -1,7 +1,5 @@
  # FlexASIO CMake superbuild.
 
-# set(VERSION 0.9.0)
-
 cmake_minimum_required(VERSION 3.11)
 project(flexasio DESCRIPTION "FlexASIO Universal ASIO Driver Superbuild")
 include(ExternalProject)
