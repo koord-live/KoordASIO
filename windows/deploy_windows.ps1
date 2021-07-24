@@ -8,7 +8,7 @@ param(
     [string] $AsioSDKUrl = "https://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip",
     [string] $InnoSetupUrl = "https://jrsoftware.org/download.php/is.exe",
     [string] $InnoSetupIsccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
-    [string] $VsDistFile64Path ="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\14.29.30036\x64\Microsoft.VC142.CRT"
+    [string] $VsDistFile64Path = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Redist\MSVC\14.29.30037\x64\Microsoft.VC142.CRT"
 )
 
 # change directory to the directory above (if needed)
