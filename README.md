@@ -13,7 +13,7 @@ KoordASIO Config utility
 
 Q: What is the Latency like?
 
-A: In default Shared mode, which allows other sound apps to access the sound device simultaneously, users can expect latency in the 10-20ms range. In Exclusive mode, many users can achieve workable latencies in the 5-10ms range.
+A: In default Shared mode, which allows other sound apps to access the sound device simultaneously, users can expect latency around 20ms. In Exclusive mode, many users can achieve workable latencies around 5ms. Results vary across different hardware types and OS installations.
 
 KoordASIO only uses the WASAPI backend within FlexASIO, to provide the best performance and feature set.
 Exclusive Mode or Shared Mode can be enabled, and a sensible buffer-size range from 32 samples to 2048 samples.
