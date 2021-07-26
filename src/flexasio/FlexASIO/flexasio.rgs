@@ -2,12 +2,12 @@ HKCR
 {
 	ForceRemove koordasio.KoordASIO.1 = s 'KoordASIO'
 	{
-		CLSID = s '{462F2ABF-5278-436A-95B6-72CBF65482AE}'
+		CLSID = s '{269CCFE0-1468-4D79-BB1A-2EA19C7B9A95}'
 	}
 
 	NoRemove CLSID
 	{
-		ForceRemove {462F2ABF-5278-436A-95B6-72CBF65482AE} = s 'KoordASIO'
+		ForceRemove {269CCFE0-1468-4D79-BB1A-2EA19C7B9A95} = s 'KoordASIO'
 		{
 			ProgID = s 'koordasio.KoordASIO.1'
 			InprocServer32 = s '%MODULE%'
@@ -26,7 +26,7 @@ HKLM
 		{
 			ForceRemove KoordASIO
 			{
-				val CLSID = s '{462F2ABF-5278-436A-95B6-72CBF65482AE}'
+				val CLSID = s '{269CCFE0-1468-4D79-BB1A-2EA19C7B9A95}'
 				val Description = s 'KoordASIO'
 			}
 		}
