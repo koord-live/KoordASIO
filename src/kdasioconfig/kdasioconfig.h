@@ -81,7 +81,8 @@ private:
     bool exclusive_mode;
     QString outputDeviceName;
     QString inputDeviceName;
-    QString fullpath = QDir::homePath() + "/.KoordASIO.toml";
+    // QString fullpath = QDir::homePath() + "/.KoordASIO.toml";
+    QString fullpath = QDir::homePath() + "/.KoordASIO-builtin.toml";
 
 private slots:
     void bufferSizeChanged(int idx);

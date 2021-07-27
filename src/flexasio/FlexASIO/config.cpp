@@ -12,7 +12,8 @@ namespace flexasio {
 
 	namespace {
 
-		constexpr auto configFileName = L".KoordASIO.toml";
+		// constexpr auto configFileName = L".KoordASIO.toml";
+		constexpr auto configFileName = L".KoordASIO-builtin.toml";
 
 		toml::Value LoadConfigToml(const std::filesystem::path& path) {
 			//Log() << "Attempting to load configuration file: " << path;
