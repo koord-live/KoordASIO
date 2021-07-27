@@ -11,6 +11,7 @@ set(CMAKE_ARGS
 
 ExternalProject_Add(
     tinytoml
+    GIT_REPOSITORY git@github.com:mayah/tinytoml.git
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/tinytoml"
     INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
     CONFIGURE_COMMAND ""
@@ -21,6 +22,7 @@ ExternalProject_Add(
 
 ExternalProject_Add(
 	portaudio
+    GIT_REPOSITORY git@github.com:PortAudio/portaudio.git
 	SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/portaudio"
 	INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
     BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
