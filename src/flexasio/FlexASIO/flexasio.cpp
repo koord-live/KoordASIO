@@ -975,7 +975,8 @@ namespace flexasio {
 	void FlexASIO::ControlPanel() {
 		// const auto url = std::string("https://github.com/dechamps/FlexASIO/blob/") + ::dechamps_CMakeUtils_gitDescription + "/CONFIGURATION.md";
 		//Log() << "Opening URL: " << url;
-		const auto result = ShellExecuteA(windowHandle, "open", "C:\\Program Files\\KoordASIO\\kdasioconfig.exe", NULL, NULL, SW_SHOWNORMAL);
+		// const auto result = ShellExecuteA(windowHandle, "open", "C:\\Program Files\\KoordASIO\\kdasioconfig.exe", NULL, NULL, SW_SHOWNORMAL);
+		const auto result = ShellExecuteA(windowHandle, "open", "C:\\Program Files\\Koord-RealTime\\kdasioconfig.exe", NULL, NULL, SW_SHOWNORMAL);
 		if (result != 0) {
 			/* deliberately empty */
 		}
