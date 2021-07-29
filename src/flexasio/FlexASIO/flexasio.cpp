@@ -25,7 +25,7 @@
 
 // For PathCchRemoveFileSpec
 #include <PathCch.h>
-#pragma comment(lib, “Pathcch.lib”)
+#pragma comment(lib, "Pathcch.lib")
 // for GetModuleFileNameW, GetModuleHandleExW
 #include <libloaderapi.h>
 
@@ -984,15 +984,15 @@ namespace flexasio {
 		HMODULE hm = NULL;
 		wchar_t szPath[MAX_PATH];
 		wchar_t *wsPath;
-		if (GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | 
+        if (GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
 				GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-				(LPCWSTR) &FlexASIO::ControlPanel, &hm) == 0)
+                (LPCWSTR) &FlexASIO::DescribeSampleType, &hm) == 0)
 		{
 			int ret = GetLastError();
 			fprintf(stderr, "GetModuleHandle failed, error = %d\n", ret);
 			// Return or however you want to handle an error.
 		}
-		if (GetModuleFileNameW(hm, szPath, sizeof(szPath)) == 0)
+        if (GetModuleFileNameW(hm, szPath, 260) == 0)
 		{
 			int ret = GetLastError();
 			fprintf(stderr, "GetModuleFileName failed, error = %d\n", ret);
@@ -1007,10 +1007,10 @@ namespace flexasio {
 		// Strip trailing filename and forward-slash (probably "\KoordASIO.dll")
 		PathCchRemoveFileSpec(wsPath, MAX_PATH);
 		// wsPath now contains dirname eg "Z:\some\PATH\to"
-		wcscpy(wsPath, L"\\kdasioconfig.exe");
+        wcscpy_s(wsPath, 260, L"\\kdasioconfig.exe");
 		// wsPath now contains full path to config exe eg "Z:\some\PATH\to\kdasioconfig.exe"
 		// Run kdasioconfig
-		const auto result = ShellExecuteA(windowHandle, "open", wsPath, NULL, NULL, SW_SHOWNORMAL);
+        const auto result = ShellExecuteW(windowHandle, NULL, wsPath, NULL, NULL, SW_SHOWNORMAL);
 		if (result != 0) {
 			/* deliberately empty */
 		}
