@@ -25,5 +25,8 @@ Source:"deploy\x86_64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs 
 ; Source:"*.txt"; DestDir:"{app}"; Flags: ignoreversion
 ; Source:"*.md"; DestDir:"{app}"; Flags: ignoreversion
 
+[Icons]
+Name: "{group}\KoordASIO"; Filename: "{app}\kdasioconfig.exe"; WorkingDir: "{app}"
+
 [Run]
-; Filename:"https://github.com/dechamps/FlexASIO/blob/@DECHAMPS_CMAKEUTILS_GIT_DESCRIPTION@/README.md"; Description:"Open README"; Flags: postinstall shellexec nowait
+Filename: "{app}\kdasioconfig.exe"; Description: "Run KoordASIO Config"; Flags: postinstall nowait skipifsilent unchecked
