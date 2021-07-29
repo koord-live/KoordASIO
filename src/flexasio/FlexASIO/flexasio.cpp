@@ -23,6 +23,12 @@
 
 //#include "log.h"
 
+// For PathCchRemoveFileSpec
+#include <PathCch.h>
+#pragma comment(lib, “Pathcch.lib”)
+// for GetModuleFileNameW, GetModuleHandleExW
+#include <libloaderapi.h>
+
 namespace flexasio {
 
 	FlexASIO::PortAudioHandle::PortAudioHandle() {
@@ -973,13 +979,42 @@ namespace flexasio {
 	}
 
 	void FlexASIO::ControlPanel() {
-		// const auto url = std::string("https://github.com/dechamps/FlexASIO/blob/") + ::dechamps_CMakeUtils_gitDescription + "/CONFIGURATION.md";
-		//Log() << "Opening URL: " << url;
-		// const auto result = ShellExecuteA(windowHandle, "open", "C:\\Program Files\\KoordASIO\\kdasioconfig.exe", NULL, NULL, SW_SHOWNORMAL);
-		const auto result = ShellExecuteA(windowHandle, "open", "C:\\Program Files\\Koord-RealTime\\kdasioconfig.exe", NULL, NULL, SW_SHOWNORMAL);
+
+		// Get path of this DLL
+		HMODULE hm = NULL;
+		wchar_t szPath[MAX_PATH];
+		wchar_t *wsPath;
+		if (GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | 
+				GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+				(LPCWSTR) &FlexASIO::ControlPanel, &hm) == 0)
+		{
+			int ret = GetLastError();
+			fprintf(stderr, "GetModuleHandle failed, error = %d\n", ret);
+			// Return or however you want to handle an error.
+		}
+		if (GetModuleFileNameW(hm, szPath, sizeof(szPath)) == 0)
+		{
+			int ret = GetLastError();
+			fprintf(stderr, "GetModuleFileName failed, error = %d\n", ret);
+			// Return or however you want to handle an error.
+		}
+		// The szPath variable should now contain the full filepath for this DLL.
+		// eg "Z:\some\PATH\to\KoordASIO.dll"
+
+		// Assume kdasioconfig.exe is in same installation dir as KoordASIO.dll
+		// Convert WCHAR to LPWSTR ... wchar_t = WCHAR, wchar_t* = LPWSTR
+		wsPath = szPath;
+		// Strip trailing filename and forward-slash (probably "\KoordASIO.dll")
+		PathCchRemoveFileSpec(wsPath, MAX_PATH);
+		// wsPath now contains dirname eg "Z:\some\PATH\to"
+		wcscpy(wsPath, L"\\kdasioconfig.exe");
+		// wsPath now contains full path to config exe eg "Z:\some\PATH\to\kdasioconfig.exe"
+		// Run kdasioconfig
+		const auto result = ShellExecuteA(windowHandle, "open", wsPath, NULL, NULL, SW_SHOWNORMAL);
 		if (result != 0) {
 			/* deliberately empty */
 		}
+		//FIXME - cleanup?
 		//Log() << "ShellExecuteA() result: " << result;
 		//Log() << "Calling Control Panel here .... ";
 	}
