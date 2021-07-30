@@ -1015,8 +1015,13 @@ namespace flexasio {
             RegCloseKey(hKey);
 //            printf("The value is :%d\n",buffer);
 
+            // append kdasioconfig to our InstallPath value
+            char destination[] = "";
+            strcat_s(destination, 1024, cfg_exec_path);
+
+            //std::clog << "Value not a string\n";
             // Run kdasioconfig
-            const auto exec_result = ShellExecute(windowHandle, NULL, cfg_exec_path, NULL, NULL, SW_SHOWNORMAL);
+            const auto exec_result = ShellExecute(windowHandle, NULL, destination, NULL, NULL, SW_SHOWNORMAL);
             if (exec_result != 0) {
                 /* deliberately empty */
             }
