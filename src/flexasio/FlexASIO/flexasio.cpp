@@ -13,21 +13,10 @@
 #include <dechamps_cpputil/endian.h>
 #include <dechamps_cpputil/exception.h>
 #include <dechamps_cpputil/string.h>
-
 #include <dechamps_ASIOUtil/asio.h>
-
-// #include <dechamps_CMakeUtils/version/version.h>
 
 #include "portaudio.h"
 #include "pa_win_wasapi.h"
-
-//#include "log.h"
-
-// For PathCchRemoveFileSpec
-#include <PathCch.h>
-#pragma comment(lib, "Pathcch.lib")
-// for GetModuleFileNameW, GetModuleHandleExW
-#include <libloaderapi.h>
 
 namespace flexasio {
 
@@ -980,43 +969,59 @@ namespace flexasio {
 
 	void FlexASIO::ControlPanel() {
 
-		// Get path of this DLL
-		HMODULE hm = NULL;
-		wchar_t szPath[MAX_PATH];
-		wchar_t *wsPath;
-        if (GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
-				GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-                (LPCWSTR) &FlexASIO::DescribeSampleType, &hm) == 0)
-		{
-			int ret = GetLastError();
-			fprintf(stderr, "GetModuleHandle failed, error = %d\n", ret);
-			// Return or however you want to handle an error.
-		}
-        if (GetModuleFileNameW(hm, szPath, 260) == 0)
-		{
-			int ret = GetLastError();
-			fprintf(stderr, "GetModuleFileName failed, error = %d\n", ret);
-			// Return or however you want to handle an error.
-		}
-		// The szPath variable should now contain the full filepath for this DLL.
-		// eg "Z:\some\PATH\to\KoordASIO.dll"
+//		// Get path of this DLL
+//		HMODULE hm = NULL;
+//		wchar_t szPath[MAX_PATH];
+//		wchar_t *wsPath;
+//        if (GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
+//				GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+//                (LPCWSTR) &FlexASIO::DescribeSampleType, &hm) == 0)
+//		{
+//			int ret = GetLastError();
+//			fprintf(stderr, "GetModuleHandle failed, error = %d\n", ret);
+//			// Return or however you want to handle an error.
+//		}
+//        if (GetModuleFileNameW(hm, szPath, 260) == 0)
+//		{
+//			int ret = GetLastError();
+//			fprintf(stderr, "GetModuleFileName failed, error = %d\n", ret);
+//			// Return or however you want to handle an error.
+//		}
+//		// The szPath variable should now contain the full filepath for this DLL.
+//		// eg "Z:\some\PATH\to\KoordASIO.dll"
 
-		// Assume kdasioconfig.exe is in same installation dir as KoordASIO.dll
-		// Convert WCHAR to LPWSTR ... wchar_t = WCHAR, wchar_t* = LPWSTR
-		wsPath = szPath;
-		// Strip trailing filename and forward-slash (probably "\KoordASIO.dll")
-		PathCchRemoveFileSpec(wsPath, MAX_PATH);
-		// wsPath now contains dirname eg "Z:\some\PATH\to"
-        wcscpy_s(wsPath, 260, L"\\kdasioconfig.exe");
-		// wsPath now contains full path to config exe eg "Z:\some\PATH\to\kdasioconfig.exe"
-		// Run kdasioconfig
-        const auto result = ShellExecuteW(windowHandle, NULL, wsPath, NULL, NULL, SW_SHOWNORMAL);
-		if (result != 0) {
-			/* deliberately empty */
-		}
-		//FIXME - cleanup?
-		//Log() << "ShellExecuteA() result: " << result;
-		//Log() << "Calling Control Panel here .... ";
+//		// Assume kdasioconfig.exe is in same installation dir as KoordASIO.dll
+//		// Convert WCHAR to LPWSTR ... wchar_t = WCHAR, wchar_t* = LPWSTR
+//		wsPath = szPath;
+//		// Strip trailing filename and forward-slash (probably "\KoordASIO.dll")
+//		PathCchRemoveFileSpec(wsPath, MAX_PATH);
+//		// wsPath now contains dirname eg "Z:\some\PATH\to"
+//        wcscpy_s(wsPath, 260, L"\\kdasioconfig.exe");
+//		// wsPath now contains full path to config exe eg "Z:\some\PATH\to\kdasioconfig.exe"
+
+        HKEY hKey;
+        DWORD buffer;
+        LONG read_result;
+        unsigned long type=REG_DWORD, size=1024;
+        read_result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Koord\\KoordASIO\\Install",0,KEY_READ,&hKey);
+        if(read_result == ERROR_SUCCESS)
+        {
+            RegQueryValueEx(hKey,"InstallPath", NULL, &type, (LPBYTE)&buffer, &size);
+            RegCloseKey(hKey);
+//            printf("The value is :%d\n",buffer);
+            char install_dir[] = "";
+            _snprintf_s(install_dir, 200, 200, "%d", static_cast<int>(buffer));
+
+            // Run kdasioconfig
+            const auto exec_result = ShellExecute(windowHandle, NULL, install_dir, NULL, NULL, SW_SHOWNORMAL);
+            if (exec_result != 0) {
+                /* deliberately empty */
+            }
+        }
+
+        //FIXME - cleanup?
+        //Log() << "ShellExecuteA() result: " << result;
+        //Log() << "Calling Control Panel here .... ";
 	}
 
 }

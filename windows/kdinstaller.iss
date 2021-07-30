@@ -26,7 +26,13 @@ Source:"deploy\x86_64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs 
 ; Source:"*.md"; DestDir:"{app}"; Flags: ignoreversion
 
 [Icons]
-Name: "{group}\KoordASIO"; Filename: "{app}\kdasioconfig.exe"; WorkingDir: "{app}"
+Name: "{group}\KoordASIO Config"; Filename: "{app}\kdasioconfig.exe"; WorkingDir: "{app}"
 
 [Run]
-Filename: "{app}\kdasioconfig.exe"; Description: "Run KoordASIO Config"; Flags: postinstall nowait skipifsilent unchecked
+Filename: "{app}\kdasioconfig.exe"; Description: "Run KoordASIO Config"; Flags: postinstall nowait skipifsilent
+
+; install reg key to locate kdasioconfig at runtime
+[Registry]
+Root: HKLM64; Subkey: "Software\Koord"; Flags: uninsdeletekeyifempty
+Root: HKLM64; Subkey: "Software\Koord\KoordASIO"; Flags: uninsdeletekey
+Root: HKLM64; Subkey: "Software\Koord\KoordASIO\Install"; ValueType: string; ValueName: "InstallPath"; ValueData: "{app}"
