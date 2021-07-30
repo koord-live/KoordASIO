@@ -1000,20 +1000,23 @@ namespace flexasio {
 //		// wsPath now contains full path to config exe eg "Z:\some\PATH\to\kdasioconfig.exe"
 
         HKEY hKey;
-        DWORD buffer;
+//        DWORD buffer;
         LONG read_result;
-        unsigned long type=REG_DWORD, size=1024;
+//        unsigned long type=REG_DWORD, size=1024;
+//        char *type;
+        DWORD dwType=REG_SZ;
+        unsigned long size=1024;
+        char cfg_exec_path[] = "";
+
         read_result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Koord\\KoordASIO\\Install",0,KEY_READ,&hKey);
         if(read_result == ERROR_SUCCESS)
         {
-            RegQueryValueEx(hKey,"InstallPath", NULL, &type, (LPBYTE)&buffer, &size);
+            RegQueryValueEx(hKey,"InstallPath", NULL, &dwType, (LPBYTE)cfg_exec_path, &size);
             RegCloseKey(hKey);
 //            printf("The value is :%d\n",buffer);
-            char install_dir[] = "";
-            _snprintf_s(install_dir, 200, 200, "%d", static_cast<int>(buffer));
 
             // Run kdasioconfig
-            const auto exec_result = ShellExecute(windowHandle, NULL, install_dir, NULL, NULL, SW_SHOWNORMAL);
+            const auto exec_result = ShellExecute(windowHandle, NULL, cfg_exec_path, NULL, NULL, SW_SHOWNORMAL);
             if (exec_result != 0) {
                 /* deliberately empty */
             }
