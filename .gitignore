@@ -5,3 +5,4 @@ out/
 build-*/
 *.pro.user
 src/CMakeLists.txt.user
+src/kdasioconfig/CMakeLists.txt.user*
