@@ -2,7 +2,6 @@
 .vs/
 CMakeSettings.json
 out/
-build-*/
-*.pro.user
-src/CMakeLists.txt.user
-src/kdasioconfig/CMakeLists.txt.user*
+src/build-kd*
+build-src-*
+*CMakeLists.txt.user*

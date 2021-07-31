@@ -56,6 +56,7 @@ namespace flexasio {
 			ASIOSampleType asio;
 			PaSampleFormat pa;
 			size_t size;
+			GUID waveSubFormat;
 		};
 
 		struct OpenStreamResult {
@@ -158,8 +159,7 @@ namespace flexasio {
 				PreparedState& preparedState;
 				const bool host_supports_timeinfo;
 				const bool hostSupportsOutputReady;
-				State InitialState() const { return hostSupportsOutputReady ? State::PRIMING : State::PRIMED; }
-				State state = InitialState();
+				State state = hostSupportsOutputReady ? State::PRIMING : State::PRIMED;
 				// The index of the "unlocked" buffer (or "half-buffer", i.e. 0 or 1) that contains data not currently being processed by the ASIO host.
 				long driverBufferIndex = state == State::PRIMING ? 1 : 0;
 				std::atomic<SamplePosition> samplePosition;
@@ -170,7 +170,7 @@ namespace flexasio {
 
 				Win32HighResolutionTimer win32HighResolutionTimer;
 				Registration registration{ preparedState.runningState, *this };
-				ActiveStream activeStream;
+				const ActiveStream activeStream;
 			};
 
 			static int StreamCallback(const void *input, void *output, unsigned long frameCount, const PaStreamCallbackTimeInfo *timeInfo, PaStreamCallbackFlags statusFlags, void *userData) throw();
@@ -204,14 +204,13 @@ namespace flexasio {
 		static const SampleType int16;
 		static const std::pair<std::string_view, SampleType> sampleTypes[];
 		static SampleType ParseSampleType(std::string_view str);
-		static std::optional<SampleType> WaveFormatToSampleType(const WAVEFORMATEXTENSIBLE& waveFormat);
-		static SampleType SelectSampleType(const Config::Stream&, PaHostApiTypeId, const std::optional<WAVEFORMATEXTENSIBLE>&);
+		static SampleType WaveFormatToSampleType(const WAVEFORMATEXTENSIBLE& waveFormat);
+		static SampleType SelectSampleType(PaHostApiTypeId hostApiTypeId, const Device& device, const Config::Stream& streamConfig);
 		static std::string DescribeSampleType(const SampleType&);
+		static DWORD SelectChannelMask(PaHostApiTypeId hostApiTypeId, const Device& device, const Config::Stream& streamConfig);
 
 		int GetInputChannelCount() const;
 		int GetOutputChannelCount() const;
-		DWORD GetInputChannelMask() const;
-		DWORD GetOutputChannelMask() const;
 
 		OpenStreamResult OpenStream(bool inputEnabled, bool outputEnabled, double sampleRate, unsigned long framesPerBuffer, PaStreamCallback callback, void* callbackUserData);
 
@@ -225,10 +224,10 @@ namespace flexasio {
 		const HostApi hostApi;
 		const std::optional<Device> inputDevice;
 		const std::optional<Device> outputDevice;
-		const std::optional<WAVEFORMATEXTENSIBLE> inputFormat;
-		const std::optional<WAVEFORMATEXTENSIBLE> outputFormat;
 		const std::optional<SampleType> inputSampleType;
 		const std::optional<SampleType> outputSampleType;
+		const DWORD inputChannelMask;
+		const DWORD outputChannelMask;
 
 		ASIOSampleRate sampleRate = 0;
 		bool sampleRateWasAccessed = false;

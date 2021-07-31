@@ -1,5 +1,8 @@
 # KoordASIO Developer Information
 
+See `LICENSE.txt` for licensing information. In particular, do note that
+specific license terms apply to the ASIO trademark and ASIO SDK.
+
 ## Building
 
 KoordASIO is designed to be built using CMake within the Microsoft Visual C++
