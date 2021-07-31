@@ -39,50 +39,37 @@
          <x>0</x>
          <y>0</y>
          <width>426</width>
-         <height>443</height>
+         <height>448</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="19" column="0">
-         <widget class="QLabel" name="label_4">
+        <item row="22" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt; font-style:italic;&quot;&gt;Source code: &lt;/span&gt;&lt;a href=&quot;https://github.com/koord-live/KoordASIO&quot;&gt;&lt;span style=&quot; font-size:9pt; font-style:italic; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/koord-live/KoordASIO&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="openExternalLinks">
-           <bool>true</bool>
+           <string>ASIO BUFFER SIZE (samples)</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
-         <widget class="Line" name="line_5">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="0">
-         <widget class="QLabel" name="label_6">
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_5">
           <property name="font">
            <font>
             <italic>true</italic>
            </font>
           </property>
           <property name="text">
-           <string>-&gt; Select the relevant device and click the &quot;Configure&quot; button</string>
+           <string>-&gt; Select the relevant device, click &quot;Properties&quot; -&gt; Advanced tab</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="deviceLabel">
-          <property name="text">
-           <string>Output Device</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QComboBox" name="inputDeviceBox"/>
-        </item>
-        <item row="15" column="0">
+        <item row="21" column="0">
          <widget class="Line" name="line_4">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -109,32 +96,32 @@
          </widget>
         </item>
         <item row="8" column="0">
-         <widget class="QComboBox" name="outputDeviceBox"/>
+         <widget class="QComboBox" name="outputDeviceBox">
+          <property name="font">
+           <font>
+            <family>Arial Black</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+         </widget>
         </item>
-        <item row="14" column="0">
-         <widget class="QRadioButton" name="exclusiveButton">
-          <property name="enabled">
+        <item row="26" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt; font-style:italic;&quot;&gt;Source code: &lt;/span&gt;&lt;a href=&quot;https://github.com/koord-live/KoordASIO&quot;&gt;&lt;span style=&quot; font-size:9pt; font-style:italic; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/koord-live/KoordASIO&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="openExternalLinks">
            <bool>true</bool>
           </property>
-          <property name="text">
-           <string>Exclusive Mode (fastest, locks other apps out)</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
          </widget>
         </item>
-        <item row="16" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Buffer Size (samples) - lower is better</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Input Device</string>
+        <item row="2" column="0">
+         <widget class="QComboBox" name="inputDeviceBox">
+          <property name="font">
+           <font>
+            <family>Arial Black</family>
+            <pointsize>9</pointsize>
+           </font>
           </property>
          </widget>
         </item>
@@ -145,22 +132,60 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_5">
+        <item row="16" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>Mix ASIO with regular audio</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string>Lowest-latency, bit-perfect, direct </string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <pointsize>9</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Input Device</string>
+          </property>
+         </widget>
+        </item>
+        <item row="25" column="0">
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="label_6">
           <property name="font">
            <font>
             <italic>true</italic>
            </font>
           </property>
           <property name="text">
-           <string>-&gt; Select the relevant device, click &quot;Properties&quot; -&gt; Advanced tab</string>
-          </property>
-         </widget>
-        </item>
-        <item row="18" column="0">
-         <widget class="Line" name="line">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <string>-&gt; Select the relevant device and click the &quot;Configure&quot; button</string>
           </property>
          </widget>
         </item>
@@ -171,8 +196,123 @@
           </property>
          </widget>
         </item>
-        <item row="17" column="0">
-         <widget class="QComboBox" name="bufferSizeBox"/>
+        <item row="23" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QLCDNumber" name="bufferSizeDisplay"/>
+          </item>
+          <item>
+           <widget class="QSlider" name="bufferSizeSlider">
+            <property name="toolTip">
+             <string extracomment="A lower number is better"/>
+            </property>
+            <property name="whatsThis">
+             <string extracomment="Buffer size in samples. Lower is better!"/>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="maximum">
+             <number>6</number>
+            </property>
+            <property name="singleStep">
+             <number>1</number>
+            </property>
+            <property name="pageStep">
+             <number>1</number>
+            </property>
+            <property name="value">
+             <number>1</number>
+            </property>
+            <property name="tracking">
+             <bool>true</bool>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="tickPosition">
+             <enum>QSlider::TicksBothSides</enum>
+            </property>
+            <property name="tickInterval">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="15" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QRadioButton" name="radioButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string>SHARED</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="exclusiveButton">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>EXCLUSIVE</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="6" column="0">
+         <widget class="Line" name="line_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="deviceLabel">
+          <property name="font">
+           <font>
+            <pointsize>9</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Output Device</string>
+          </property>
+         </widget>
         </item>
         <item row="3" column="0">
          <widget class="QPushButton" name="inputAudioSettButton">

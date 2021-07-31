@@ -24,9 +24,11 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
     connect(exclusiveButton, &QRadioButton::toggled, this, &KdASIOConfig::exclusiveModeChanged);
     connect(inputDeviceBox, QOverload<int>::of(&QComboBox::activated), this, &KdASIOConfig::inputDeviceChanged);
     connect(outputDeviceBox, QOverload<int>::of(&QComboBox::activated), this, &KdASIOConfig::outputDeviceChanged);
-    connect(bufferSizeBox, QOverload<int>::of(&QComboBox::activated), this, &KdASIOConfig::bufferSizeChanged);
+//    connect(bufferSizeBox, QOverload<int>::of(&QComboBox::activated), this, &KdASIOConfig::bufferSizeChanged);
     connect(inputAudioSettButton, &QPushButton::pressed, this, &KdASIOConfig::inputAudioSettClicked);
     connect(outputAudioSettButton, &QPushButton::pressed, this, &KdASIOConfig::outputAudioSettClicked);
+    connect(bufferSizeSlider, &QSlider::valueChanged, this, &KdASIOConfig::bufferSizeChanged);
+    connect(bufferSizeSlider, &QSlider::valueChanged, this, &KdASIOConfig::bufferSizeDisplayChange);
 
     // populate input device choices
     inputDeviceBox->clear();
@@ -44,10 +46,10 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
         if (deviceInfo.realm() == "wasapi")
             outputDeviceBox->addItem(deviceInfo.deviceName(), QVariant::fromValue(deviceInfo));
 
-    // Add standard bufferSize choices
-    QStringList bufferSizes;
-    bufferSizes << "32" << "64" << "128" << "256" << "512" << "1024" << "2048";
-    bufferSizeBox->addItems(bufferSizes);
+//    // Add standard bufferSize choices
+//    QStringList bufferSizes;
+//    bufferSizes << "32" << "64" << "128" << "256" << "512" << "1024" << "2048";
+//    bufferSizeBox->addItems(bufferSizes);
 
     // parse .KoordASIO.toml
     std::ifstream ifs;
@@ -83,8 +85,12 @@ void KdASIOConfig::setValuesFromToml(std::ifstream *ifs, toml::ParseResult *pr)
         } else {
             bufferSize = 64;
         }
-        bufferSizeBox->setCurrentText(QString::number(bufferSize));
-        bufferSizeChanged(bufferSizeBox->currentIndex());
+        // update UI
+        bufferSizeSlider->setValue(bufferSize);
+        bufferSizeDisplay->display(bufferSize);
+        // update conf
+//        bufferSizeChanged(bufferSizeBox->currentIndex());
+        bufferSizeChanged(bufferSize);
     }
     // get input stream stuff
     const toml::Value* input_dev = v.find("input.device");
@@ -131,8 +137,10 @@ void KdASIOConfig::setDefaults()
     inputDeviceName = "Default Input Device";
     outputDeviceName = "Default Output Device";
     // set stuff - up to 4 file updates in quick succession
-    bufferSizeBox->setCurrentText(QString::number(bufferSize));
-    bufferSizeChanged(bufferSizeBox->currentIndex());
+//    bufferSizeBox->setCurrentText(QString::number(bufferSize));
+    bufferSizeSlider->setValue(bufferSizes.indexOf(bufferSize));
+    bufferSizeDisplay->display(bufferSize);
+    bufferSizeChanged(bufferSize);
     inputDeviceBox->setCurrentText(inputDeviceName);
     inputDeviceChanged(inputDeviceBox->currentIndex());
     outputDeviceBox->setCurrentText(outputDeviceName);
@@ -175,16 +183,29 @@ void KdASIOConfig::writeTomlFile()
     out << "device = \"" << outputDeviceName << "\"\n";
     out << "suggestedLatencySeconds = 0.0" << "\n";
     out << "wasapiExclusiveMode = " << (exclusive_mode ? "true" : "false") << "\n";
+
+    qDebug("Just wrote toml file...");
+
 }
 
-void KdASIOConfig::bufferSizeChanged(int idx)
+void KdASIOConfig::bufferSizeChanged(int bfsize)
 {
     // select from 32 , 64, 128, 256, 512, 1024, 2048
     // This a) gives a nice easy UI rather than choosing your own integer
     // AND b) makes it easier to do a live-refresh of the toml file,
     // THUS avoiding lots of spurious intermediate updates on buffer changes
-    bufferSize = bufferSizeBox->currentText().toInt();
+
+//    int bufferSizeIdx = bufferSizeBox->currentText().toInt();
+//    int bufferSizeIdx = bufferSizeSlider->value();
+//    bufferSize = bufferSizes[idx];
+    bufferSize = bfsize;
     writeTomlFile();
+}
+
+void KdASIOConfig::bufferSizeDisplayChange(int idx)
+{
+    bufferSize = bufferSizes[idx];
+    bufferSizeDisplay->display(bufferSize);
 }
 
 void KdASIOConfig::exclusiveModeChanged()
