@@ -969,45 +969,11 @@ namespace flexasio {
 
 	void FlexASIO::ControlPanel() {
 
-//		// Get path of this DLL
-//		HMODULE hm = NULL;
-//		wchar_t szPath[MAX_PATH];
-//		wchar_t *wsPath;
-//        if (GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
-//				GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-//                (LPCWSTR) &FlexASIO::DescribeSampleType, &hm) == 0)
-//		{
-//			int ret = GetLastError();
-//			fprintf(stderr, "GetModuleHandle failed, error = %d\n", ret);
-//			// Return or however you want to handle an error.
-//		}
-//        if (GetModuleFileNameW(hm, szPath, 260) == 0)
-//		{
-//			int ret = GetLastError();
-//			fprintf(stderr, "GetModuleFileName failed, error = %d\n", ret);
-//			// Return or however you want to handle an error.
-//		}
-//		// The szPath variable should now contain the full filepath for this DLL.
-//		// eg "Z:\some\PATH\to\KoordASIO.dll"
-
-//		// Assume kdasioconfig.exe is in same installation dir as KoordASIO.dll
-//		// Convert WCHAR to LPWSTR ... wchar_t = WCHAR, wchar_t* = LPWSTR
-//		wsPath = szPath;
-//		// Strip trailing filename and forward-slash (probably "\KoordASIO.dll")
-//		PathCchRemoveFileSpec(wsPath, MAX_PATH);
-//		// wsPath now contains dirname eg "Z:\some\PATH\to"
-//        wcscpy_s(wsPath, 260, L"\\kdasioconfig.exe");
-//		// wsPath now contains full path to config exe eg "Z:\some\PATH\to\kdasioconfig.exe"
-
         HKEY hKey;
-//        DWORD buffer;
         LONG read_result;
-//        unsigned long type=REG_DWORD, size=1024;
-//        char *type;
         DWORD dwType=REG_SZ;
         unsigned long size=1024;
-        char cfg_exec_path[] = "";
-
+        char* cfg_exec_path = new char[size];
         read_result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Koord\\KoordASIO\\Install",0,KEY_READ,&hKey);
         if(read_result == ERROR_SUCCESS)
         {
