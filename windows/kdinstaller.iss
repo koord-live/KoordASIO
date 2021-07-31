@@ -3,8 +3,8 @@
 [Setup]
 AppID=KoordASIO
 AppName=KoordASIO
-AppVerName=KoordASIO_1.7a-k01
-AppVersion=1.7a-k01
+AppVerName=KoordASIO_1.7a-k02
+AppVersion=1.7a-k02
 AppPublisher=Koord.Live
 AppPublisherURL=https://github.com/koord-live/KoordASIO
 AppSupportURL=https://github.com/koord-live/KoordASIO/issues
