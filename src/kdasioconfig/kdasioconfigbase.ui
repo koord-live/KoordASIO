@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>429</width>
-    <height>394</height>
+    <width>450</width>
+    <height>492</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,69 +38,80 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>409</width>
-         <height>352</height>
+         <width>426</width>
+         <height>443</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="8" column="0">
-         <widget class="Line" name="line_2">
+        <item row="19" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt; font-style:italic;&quot;&gt;Source code: &lt;/span&gt;&lt;a href=&quot;https://github.com/koord-live/KoordASIO&quot;&gt;&lt;span style=&quot; font-size:9pt; font-style:italic; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/koord-live/KoordASIO&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="openExternalLinks">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="Line" name="line_5">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>-&gt; Select the relevant device and click the &quot;Configure&quot; button</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="deviceLabel">
+          <property name="text">
+           <string>Output Device</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QComboBox" name="inputDeviceBox"/>
         </item>
-        <item row="5" column="0">
-         <widget class="QComboBox" name="outputDeviceBox"/>
-        </item>
-        <item row="13" column="0">
-         <widget class="QComboBox" name="bufferSizeBox"/>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Input Device</string>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Buffer Size (samples) - lower is better</string>
-          </property>
-         </widget>
-        </item>
-        <item row="16" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Source code: &lt;/span&gt;&lt;a href=&quot;https://github.com/koord-live/KoordASIO&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/koord-live/KoordASIO&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="openExternalLinks">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="Line" name="line_3">
+        <item row="15" column="0">
+         <widget class="Line" name="line_4">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
          </widget>
         </item>
-        <item row="15" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;For updates and help visit &lt;/span&gt;&lt;a href=&quot;https://koord.live&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;https://koord.live&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <item row="9" column="0">
+         <widget class="QPushButton" name="outputAudioSettButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
-          <property name="openExternalLinks">
-           <bool>true</bool>
+          <property name="maximumSize">
+           <size>
+            <width>250</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Configure Windows audio OUTPUTS</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="0">
+        <item row="8" column="0">
+         <widget class="QComboBox" name="outputDeviceBox"/>
+        </item>
+        <item row="14" column="0">
          <widget class="QRadioButton" name="exclusiveButton">
           <property name="enabled">
            <bool>true</bool>
@@ -113,24 +124,78 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="deviceLabel">
+        <item row="16" column="0">
+         <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Output Device</string>
+           <string>Buffer Size (samples) - lower is better</string>
           </property>
          </widget>
         </item>
-        <item row="11" column="0">
-         <widget class="Line" name="line_4">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Input Device</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="0">
+         <widget class="Line" name="line_2">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
          </widget>
         </item>
-        <item row="14" column="0">
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>-&gt; Select the relevant device, click &quot;Properties&quot; -&gt; Advanced tab</string>
+          </property>
+         </widget>
+        </item>
+        <item row="18" column="0">
          <widget class="Line" name="line">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="Line" name="line_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="17" column="0">
+         <widget class="QComboBox" name="bufferSizeBox"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QPushButton" name="inputAudioSettButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>10</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>250</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Configure Windows audio INPUTS</string>
           </property>
          </widget>
         </item>

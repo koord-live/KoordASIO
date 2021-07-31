@@ -7,6 +7,7 @@
 #include "kdasioconfig.h"
 #include "toml.h"
 #include <QDebug>
+#include <QProcess>
 
 KdASIOConfigBase::KdASIOConfigBase(QWidget *parent)
     : QMainWindow(parent)
@@ -24,6 +25,8 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
     connect(inputDeviceBox, QOverload<int>::of(&QComboBox::activated), this, &KdASIOConfig::inputDeviceChanged);
     connect(outputDeviceBox, QOverload<int>::of(&QComboBox::activated), this, &KdASIOConfig::outputDeviceChanged);
     connect(bufferSizeBox, QOverload<int>::of(&QComboBox::activated), this, &KdASIOConfig::bufferSizeChanged);
+    connect(inputAudioSettButton, &QPushButton::pressed, this, &KdASIOConfig::inputAudioSettClicked);
+    connect(outputAudioSettButton, &QPushButton::pressed, this, &KdASIOConfig::outputAudioSettClicked);
 
     // populate input device choices
     inputDeviceBox->clear();
@@ -209,4 +212,22 @@ void KdASIOConfig::outputDeviceChanged(int idx)
     m_outputDeviceInfo = outputDeviceBox->itemData(idx).value<QAudioDeviceInfo>();
     outputDeviceName = m_outputDeviceInfo.deviceName();
     writeTomlFile();
+}
+
+void KdASIOConfig::inputAudioSettClicked()
+{
+    // open Windows audio input settings control panel
+//    QProcess::execute(inputAudioSettPath);
+//    QObject *parent;
+    QProcess *myProcess = new QProcess(this);
+    myProcess->startDetached(inputAudioSettPath);
+}
+
+void KdASIOConfig::outputAudioSettClicked()
+{
+    // open Windows audio input settings control panel
+//    QProcess::execute(outputAudioSettPath);
+//    QObject *parent;
+    QProcess *myProcess = new QProcess(this);
+    myProcess->startDetached(outputAudioSettPath);
 }

@@ -81,8 +81,9 @@ private:
     bool exclusive_mode;
     QString outputDeviceName;
     QString inputDeviceName;
-    // QString fullpath = QDir::homePath() + "/.KoordASIO.toml";
     QString fullpath = QDir::homePath() + "/.KoordASIO-builtin.toml";
+    QString inputAudioSettPath = "control mmsys.cpl,,1";
+    QString outputAudioSettPath = "control mmsys.cpl";
 
 private slots:
     void bufferSizeChanged(int idx);
@@ -92,6 +93,8 @@ private slots:
     void outputDeviceChanged(int idx);
     void setDefaults();
     void setValuesFromToml(std::ifstream *ifs, toml::ParseResult *pr);
+    void inputAudioSettClicked();
+    void outputAudioSettClicked();
 };
 
 #endif
