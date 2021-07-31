@@ -2,3 +2,6 @@
 .vs/
 CMakeSettings.json
 out/
+src/build-kd*
+build-src-*
+*CMakeLists.txt.user*
