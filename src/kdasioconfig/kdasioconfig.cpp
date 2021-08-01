@@ -81,10 +81,10 @@ void KdASIOConfig::setValuesFromToml(std::ifstream *ifs, toml::ParseResult *pr)
             bufferSize = 64;
         }
         // update UI
-        bufferSizeSlider->setValue(bufferSize);
+        bufferSizeSlider->setValue(bufferSizes.indexOf(bufferSize));
         bufferSizeDisplay->display(bufferSize);
         // update conf
-        bufferSizeChanged(bufferSize);
+        bufferSizeChanged(bufferSizes.indexOf(bufferSize));
     }
     // get input stream stuff
     const toml::Value* input_dev = v.find("input.device");
@@ -133,7 +133,7 @@ void KdASIOConfig::setDefaults()
     // set stuff - up to 4 file updates in quick succession
     bufferSizeSlider->setValue(bufferSizes.indexOf(bufferSize));
     bufferSizeDisplay->display(bufferSize);
-    bufferSizeChanged(bufferSize);
+    bufferSizeChanged(bufferSizes.indexOf(bufferSize));
     inputDeviceBox->setCurrentText(inputDeviceName);
     inputDeviceChanged(inputDeviceBox->currentIndex());
     outputDeviceBox->setCurrentText(outputDeviceName);
@@ -182,13 +182,14 @@ void KdASIOConfig::writeTomlFile()
 
 }
 
-void KdASIOConfig::bufferSizeChanged(int bfsize)
+void KdASIOConfig::bufferSizeChanged(int idx)
 {
     // select from 32 , 64, 128, 256, 512, 1024, 2048
     // This a) gives a nice easy UI rather than choosing your own integer
     // AND b) makes it easier to do a live-refresh of the toml file,
     // THUS avoiding lots of spurious intermediate updates on buffer changes
-    bufferSize = bfsize;
+    bufferSize = bufferSizes[idx];
+    bufferSizeSlider->setValue(idx);
     writeTomlFile();
 }
 
