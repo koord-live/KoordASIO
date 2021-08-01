@@ -21,10 +21,10 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
     : KdASIOConfigBase(parent)
 {
     // set up signals
-    connect(exclusiveButton, &QRadioButton::toggled, this, &KdASIOConfig::exclusiveModeChanged);
+    connect(sharedPushButton, &QPushButton::clicked, this, &KdASIOConfig::sharedModeSet);
+    connect(exclusivePushButton, &QPushButton::clicked, this, &KdASIOConfig::exclusiveModeSet);
     connect(inputDeviceBox, QOverload<int>::of(&QComboBox::activated), this, &KdASIOConfig::inputDeviceChanged);
     connect(outputDeviceBox, QOverload<int>::of(&QComboBox::activated), this, &KdASIOConfig::outputDeviceChanged);
-//    connect(bufferSizeBox, QOverload<int>::of(&QComboBox::activated), this, &KdASIOConfig::bufferSizeChanged);
     connect(inputAudioSettButton, &QPushButton::pressed, this, &KdASIOConfig::inputAudioSettClicked);
     connect(outputAudioSettButton, &QPushButton::pressed, this, &KdASIOConfig::outputAudioSettClicked);
     connect(bufferSizeSlider, &QSlider::valueChanged, this, &KdASIOConfig::bufferSizeChanged);
@@ -45,11 +45,6 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
     for (auto &deviceInfo: QAudioDeviceInfo::availableDevices(output_mode))
         if (deviceInfo.realm() == "wasapi")
             outputDeviceBox->addItem(deviceInfo.deviceName(), QVariant::fromValue(deviceInfo));
-
-//    // Add standard bufferSize choices
-//    QStringList bufferSizes;
-//    bufferSizes << "32" << "64" << "128" << "256" << "512" << "1024" << "2048";
-//    bufferSizeBox->addItems(bufferSizes);
 
     // parse .KoordASIO.toml
     std::ifstream ifs;
@@ -89,7 +84,6 @@ void KdASIOConfig::setValuesFromToml(std::ifstream *ifs, toml::ParseResult *pr)
         bufferSizeSlider->setValue(bufferSize);
         bufferSizeDisplay->display(bufferSize);
         // update conf
-//        bufferSizeChanged(bufferSizeBox->currentIndex());
         bufferSizeChanged(bufferSize);
     }
     // get input stream stuff
@@ -124,8 +118,8 @@ void KdASIOConfig::setValuesFromToml(std::ifstream *ifs, toml::ParseResult *pr)
     } else {
         exclusive_mode = false;
     }
-    exclusiveButton->setChecked(exclusive_mode);
-    exclusiveModeChanged();
+    setOperationMode();
+
 }
 
 void KdASIOConfig::setDefaults()
@@ -137,7 +131,6 @@ void KdASIOConfig::setDefaults()
     inputDeviceName = "Default Input Device";
     outputDeviceName = "Default Output Device";
     // set stuff - up to 4 file updates in quick succession
-//    bufferSizeBox->setCurrentText(QString::number(bufferSize));
     bufferSizeSlider->setValue(bufferSizes.indexOf(bufferSize));
     bufferSizeDisplay->display(bufferSize);
     bufferSizeChanged(bufferSize);
@@ -145,7 +138,7 @@ void KdASIOConfig::setDefaults()
     inputDeviceChanged(inputDeviceBox->currentIndex());
     outputDeviceBox->setCurrentText(outputDeviceName);
     outputDeviceChanged(outputDeviceBox->currentIndex());
-    exclusiveModeChanged();
+    setOperationMode();
 }
 
 
@@ -171,6 +164,8 @@ void KdASIOConfig::writeTomlFile()
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
     QTextStream out(&file);
+    // need to explicitly set UTF-8 for non-ASCII character support
+    out.setCodec("UTF-8");
     out << "backend = \"Windows WASAPI\"" << "\n";
     out << "bufferSizeSamples = " << bufferSize << "\n";
     out << "\n";
@@ -183,8 +178,7 @@ void KdASIOConfig::writeTomlFile()
     out << "device = \"" << outputDeviceName << "\"\n";
     out << "suggestedLatencySeconds = 0.0" << "\n";
     out << "wasapiExclusiveMode = " << (exclusive_mode ? "true" : "false") << "\n";
-
-    qDebug("Just wrote toml file...");
+//    qDebug("Just wrote toml file...");
 
 }
 
@@ -194,10 +188,6 @@ void KdASIOConfig::bufferSizeChanged(int bfsize)
     // This a) gives a nice easy UI rather than choosing your own integer
     // AND b) makes it easier to do a live-refresh of the toml file,
     // THUS avoiding lots of spurious intermediate updates on buffer changes
-
-//    int bufferSizeIdx = bufferSizeBox->currentText().toInt();
-//    int bufferSizeIdx = bufferSizeSlider->value();
-//    bufferSize = bufferSizes[idx];
     bufferSize = bfsize;
     writeTomlFile();
 }
@@ -208,10 +198,27 @@ void KdASIOConfig::bufferSizeDisplayChange(int idx)
     bufferSizeDisplay->display(bufferSize);
 }
 
-void KdASIOConfig::exclusiveModeChanged()
+void KdASIOConfig::setOperationMode()
 {
-    // select from true / false
-    exclusive_mode = exclusiveButton->isChecked();
+    if (exclusive_mode) {
+        exclusiveModeSet();
+    }
+    else {
+        sharedModeSet();
+    }
+}
+
+void KdASIOConfig::sharedModeSet()
+{
+    sharedPushButton->setChecked(true);
+    exclusive_mode = false;
+    writeTomlFile();
+}
+
+void KdASIOConfig::exclusiveModeSet()
+{
+    exclusivePushButton->setChecked(true);
+    exclusive_mode = true;
     writeTomlFile();
 }
 
@@ -238,17 +245,13 @@ void KdASIOConfig::outputDeviceChanged(int idx)
 void KdASIOConfig::inputAudioSettClicked()
 {
     // open Windows audio input settings control panel
-//    QProcess::execute(inputAudioSettPath);
-//    QObject *parent;
     QProcess *myProcess = new QProcess(this);
     myProcess->startDetached(inputAudioSettPath);
 }
 
 void KdASIOConfig::outputAudioSettClicked()
 {
-    // open Windows audio input settings control panel
-//    QProcess::execute(outputAudioSettPath);
-//    QObject *parent;
+    // open Windows audio output settings control panel
     QProcess *myProcess = new QProcess(this);
     myProcess->startDetached(outputAudioSettPath);
 }

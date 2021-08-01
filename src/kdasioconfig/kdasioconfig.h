@@ -81,7 +81,7 @@ private:
     bool exclusive_mode;
     QString outputDeviceName;
     QString inputDeviceName;
-    QString fullpath = QDir::homePath() + "/.KoordASIO-builtin.toml";
+    QString fullpath = QDir::homePath() + "/.KoordASIO.toml";
     QString inputAudioSettPath = "control mmsys.cpl,,1";
     QString outputAudioSettPath = "control mmsys.cpl";
     QList<int> bufferSizes = { 32, 64, 128, 256, 512, 1024, 2048 };
@@ -89,7 +89,10 @@ private:
 private slots:
     void bufferSizeChanged(int idx);
     void bufferSizeDisplayChange(int idx);
-    void exclusiveModeChanged();
+//    void exclusiveModeChanged();
+    void setOperationMode();
+    void sharedModeSet();
+    void exclusiveModeSet();
     void writeTomlFile();
     void inputDeviceChanged(int idx);
     void outputDeviceChanged(int idx);
