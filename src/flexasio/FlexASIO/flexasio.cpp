@@ -979,7 +979,32 @@ namespace flexasio {
 	}
 
 	void FlexASIO::ControlPanel() {
-		// arse
+
+        HKEY hKey;
+        LONG read_result;
+        DWORD dwType=REG_SZ;
+        unsigned long size=1024;
+        char* cfg_exec_path = new char[size];
+        read_result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Koord\\KoordASIO\\Install",0,KEY_READ,&hKey);
+        if(read_result == ERROR_SUCCESS)
+        {
+            RegQueryValueEx(hKey,"InstallPath", NULL, &dwType, (LPBYTE)cfg_exec_path, &size);
+            RegCloseKey(hKey);
+            // printf("The value is :%d\n",cfg_exec_path);
+
+            // append kdasioconfig to our InstallPath value
+            strcat_s(cfg_exec_path, 1024, "\\kdasioconfig.exe");
+
+            // Run kdasioconfig
+            const auto exec_result = ShellExecute(windowHandle, NULL, cfg_exec_path, NULL, NULL, SW_SHOWNORMAL);
+            if (exec_result != 0) {
+                /* deliberately empty */
+            }
+        }
+
+        //FIXME - cleanup?
+        //Log() << "ShellExecuteA() result: " << result;
+        //Log() << "Calling Control Panel here .... ";
 	}
 
 }
