@@ -7,7 +7,7 @@ audio using ASIO on Windows. It should work with most soundcards currently suppo
 
 KoordASIO is a "respin" of the FlexASIO project, made simpler to use by removing various test and debug utilities unnecessary for the general user, and providing a simple GUI configuration utility.
 
-![Screenshot (9)](https://user-images.githubusercontent.com/584572/126863076-cb3e53d9-6d70-4723-9609-b23d2e81df01.png)
+![Screenshot (44)](https://user-images.githubusercontent.com/584572/127874424-c4fba0c8-0ee0-4764-9fda-6843f46df8d5.png)
 
 KoordASIO Config utility
 
@@ -37,8 +37,6 @@ For detailed info on implementation, debug binaries and test tools, please see t
 ![ASIO logo](ASIO.jpg)
 
 ---
-
-![ASIO logo](ASIO.jpg)
 
 [ASIO]: http://en.wikipedia.org/wiki/Audio_Stream_Input/Output
 [GitHub]: https://github.com/koord-live/KoordASIO/
