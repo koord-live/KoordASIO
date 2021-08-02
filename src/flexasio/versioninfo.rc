@@ -1,7 +1,5 @@
 #include <winver.h>  // Required, otherwise VERSIONINFO doesn't work
 
-// #include <dechamps_CMakeUtils/version_stamp.h>
-
 VS_VERSION_INFO VERSIONINFO
 {
 	BLOCK "StringFileInfo"
@@ -11,7 +9,7 @@ VS_VERSION_INFO VERSIONINFO
 			VALUE "FileDescription", PROJECT_DESCRIPTION " (" BUILD_CONFIGURATION " " BUILD_PLATFORM ")"
 			VALUE "LegalCopyright", "MIT License, Copyright (c) 2018 Etienne Dechamps <etienne@edechamps.fr>"
 			VALUE "ProductName", "FlexASIO https://github.com/dechamps/FlexASIO"
-			VALUE "ProductVersion", "0.0.1" " built on " "some day in 2021"
+			VALUE "ProductVersion", "1.0-beta" " built on " "some_build_day"
 		}
 	}
 	BLOCK "VarFileInfo"
