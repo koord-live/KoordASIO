@@ -250,14 +250,13 @@ namespace flexasio {
 		}
 		if (hostApiTypeId == paWASAPI && streamConfig.wasapiExclusiveMode) {
 			try {
-				//Log() << "WASAPI Exclusive mode detected, selecting sample type from WASAPI device default format";
+				Log() << "WASAPI Exclusive mode detected, selecting sample type from WASAPI device default format";
 				const auto deviceFormat = GetWasapiDeviceDefaultFormat(device.index);
-				//Log() << "WASAPI device default format: " << DescribeWaveFormat(deviceFormat);
+				Log() << "WASAPI device default format: " << DescribeWaveFormat(deviceFormat);
 				return WaveFormatToSampleType(deviceFormat);
 			}
 			catch (const std::exception& exception) {
-				//Log() << "Unable to select sample type from WASAPI device default format: " << exception.what();
-				throw std::runtime_error(std::string( exception.what() ));
+				Log() << "Unable to select sample type from WASAPI device default format: " << exception.what();
 			}
 		}
 		//Log() << "Selecting default sample type";
@@ -266,11 +265,11 @@ namespace flexasio {
 
 	DWORD FlexASIO::SelectChannelMask(const PaHostApiTypeId hostApiTypeId, const Device& device, const Config::Stream& streamConfig) {
 		if (streamConfig.channels.has_value()) {
-			// Log() << "Not using a channel mask because channel count is set in configuration";
+			Log() << "Not using a channel mask because channel count is set in configuration";
 			return 0;
 		}
 		if (hostApiTypeId != paWASAPI) {
-			// Log() << "Not using a channel mask because not using WASAPI";
+			Log() << "Not using a channel mask because not using WASAPI";
 			return 0;
 		}
 		try {
@@ -278,14 +277,13 @@ namespace flexasio {
 			// itself is derived from the mix format, so we have to use the same for the channel mask
 			// to be consistent. Sadly, this holds even if we eventually decide to open the device in
 			// exclusive mode.
-			// Log() << "Selecting channel mask from WASAPI device mix format";
+			Log() << "Selecting channel mask from WASAPI device mix format";
 			const auto deviceFormat = GetWasapiDeviceMixFormat(device.index);
-			// Log() << "WASAPI device mix format: " << DescribeWaveFormat(deviceFormat);
+			Log() << "WASAPI device mix format: " << DescribeWaveFormat(deviceFormat);
 			return deviceFormat.dwChannelMask;
 		}
 		catch (const std::exception& exception) {
-			// Log() << "Unable to select channel mask from WASAPI device mix format: " << exception.what();
-			throw std::runtime_error(std::string( exception.what() ));
+			Log() << "Unable to select channel mask from WASAPI device mix format: " << exception.what();
 			return 0;
 		}
 	}
@@ -322,9 +320,9 @@ namespace flexasio {
 		inputSampleType([&]() -> std::optional<SampleType> {
 		if (!inputDevice.has_value()) return std::nullopt;
 		try {
-			// Log() << "Selecting input sample type";
+			Log() << "Selecting input sample type";
 			const auto sampleType = SelectSampleType(hostApi.info.type, *inputDevice, config.input);
-			// Log() << "Selected input sample type: " << DescribeSampleType(sampleType);
+			Log() << "Selected input sample type: " << DescribeSampleType(sampleType);
 			return sampleType;
 		}
 		catch (const std::exception& exception) {
@@ -334,9 +332,9 @@ namespace flexasio {
 		outputSampleType([&]() -> std::optional<SampleType> {
 		if (!outputDevice.has_value()) return std::nullopt;
 		try {
-			// Log() << "Selecting output sample type";
+			Log() << "Selecting output sample type";
 			const auto sampleType = SelectSampleType(hostApi.info.type, *outputDevice, config.output);
-			// Log() << "Selected output sample type: " << DescribeSampleType(sampleType);
+			Log() << "Selected output sample type: " << DescribeSampleType(sampleType);
 			return sampleType;
 		}
 		catch (const std::exception& exception) {
@@ -346,9 +344,9 @@ namespace flexasio {
 		inputChannelMask([&]() -> DWORD {
 		if (!inputDevice.has_value()) return 0;
 		try {
-			// Log() << "Selecting input channel mask";
+			Log() << "Selecting input channel mask";
 			const auto channelMask = SelectChannelMask(hostApi.info.type, *inputDevice, config.input);
-			// Log() << "Selected input channel mask: " << GetWaveFormatChannelMaskString(channelMask);
+			Log() << "Selected input channel mask: " << GetWaveFormatChannelMaskString(channelMask);
 			return channelMask;
 		}
 		catch (const std::exception& exception) {
@@ -359,9 +357,9 @@ namespace flexasio {
 		outputChannelMask([&]() -> DWORD {
 		if (!outputDevice.has_value()) return 0;
 		try {
-			// Log() << "Selecting output channel mask";
+			Log() << "Selecting output channel mask";
 			const auto channelMask = SelectChannelMask(hostApi.info.type, *outputDevice, config.output);
-			// Log() << "Selected output channel mask: " << GetWaveFormatChannelMaskString(channelMask);
+			Log() << "Selected output channel mask: " << GetWaveFormatChannelMaskString(channelMask);
 			return channelMask;
 		}
 		catch (const std::exception& exception) {
@@ -379,11 +377,13 @@ namespace flexasio {
 		// if (inputDevice.has_value() && GetInputChannelCount() > inputDevice->info.maxInputChannels)
 		// 	Log() << "WARNING: input channel count is higher than the max channel count for this device. Input device initialization might fail.";
 
-		// Log() << "Output channel count: " << GetOutputChannelCount();
-		// if (outputDevice.has_value() && GetOutputChannelCount() > outputDevice->info.maxOutputChannels)
-		// 	Log() << "WARNING: output channel count is higher than the max channel count for this device. Output device initialization might fail.";
+		Log() << "Input channel count: " << GetInputChannelCount();
+		if (inputDevice.has_value() && GetInputChannelCount() > inputDevice->info.maxInputChannels)
+			Log() << "WARNING: input channel count is higher than the max channel count for this device. Input device initialization might fail.";
 
-		/* deliberately empty */
+		Log() << "Output channel count: " << GetOutputChannelCount();
+		if (outputDevice.has_value() && GetOutputChannelCount() > outputDevice->info.maxOutputChannels)
+			Log() << "WARNING: output channel count is higher than the max channel count for this device. Output device initialization might fail.";
 	}
 
 	int FlexASIO::GetInputChannelCount() const {
@@ -549,7 +549,7 @@ namespace flexasio {
 				if (config.input.wasapiAutoConvert) {
 					input_wasapi_stream_info.flags |= paWinWasapiAutoConvert;
 				}
-				// Log() << (config.input.wasapiExplicitSampleFormat ? "Enabling" : "Disabling") << " explicit sample format for input WASAPI stream";
+				Log() << (config.input.wasapiExplicitSampleFormat ? "Enabling" : "Disabling") << " explicit sample format for input WASAPI stream";
 				if (config.input.wasapiExplicitSampleFormat) {
 					input_wasapi_stream_info.flags |= paWinWasapiExplicitSampleFormat;
 				}
@@ -581,7 +581,7 @@ namespace flexasio {
 				if (config.output.wasapiAutoConvert) {
 					output_wasapi_stream_info.flags |= paWinWasapiAutoConvert;
 				}
-				// Log() << (config.output.wasapiExplicitSampleFormat ? "Enabling" : "Disabling") << " explicit sample format for output WASAPI stream";
+				Log() << (config.output.wasapiExplicitSampleFormat ? "Enabling" : "Disabling") << " explicit sample format for output WASAPI stream";
 				if (config.output.wasapiExplicitSampleFormat) {
 					output_wasapi_stream_info.flags |= paWinWasapiExplicitSampleFormat;
 				}

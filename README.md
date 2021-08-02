@@ -36,6 +36,10 @@ For detailed info on implementation, debug binaries and test tools, please see t
 
 ![ASIO logo](ASIO.jpg)
 
+---
+
+![ASIO logo](ASIO.jpg)
+
 [ASIO]: http://en.wikipedia.org/wiki/Audio_Stream_Input/Output
 [GitHub]: https://github.com/koord-live/KoordASIO/
 [GitHub issue tracker]: https://github.com/koord-live/KoordASIO/issues

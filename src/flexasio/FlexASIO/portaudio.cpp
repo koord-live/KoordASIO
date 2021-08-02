@@ -2,9 +2,6 @@
 
 #include <stdexcept>
 
-//#include "log.h"
-#include "../FlexASIOUtil/portaudio.h"
-
 namespace flexasio {
 
 	void StreamDeleter::operator()(PaStream* stream) throw() {
@@ -31,17 +28,17 @@ namespace flexasio {
 	}
 
 	void StreamStopper::operator()(PaStream* stream) throw() {
-		// Log() << "Stopping PortAudio stream " << stream;
+		Log() << "Stopping PortAudio stream " << stream;
 		const auto error = Pa_StopStream(stream);
-		// if (error != paNoError)
-			//Log() << "Unable to stop PortAudio stream: " << Pa_GetErrorText(error);
+		if (error != paNoError)
+			Log() << "Unable to stop PortAudio stream: " << Pa_GetErrorText(error);
 	}
 
 	ActiveStream StartStream(PaStream* const stream) {
-		// Log() << "Starting PortAudio stream " << stream;
+		Log() << "Starting PortAudio stream " << stream;
 		const auto error = Pa_StartStream(stream);
 		if (error != paNoError) throw std::runtime_error(std::string("unable to start PortAudio stream: ") + Pa_GetErrorText(error));
-		// Log() << "PortAudio stream started";
+		Log() << "PortAudio stream started";
 		return ActiveStream(stream);
 	}
 
