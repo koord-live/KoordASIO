@@ -4,7 +4,7 @@
 #include "flexasio.rc.h"
 #include "flexasio_h.h"
 
-//#include "log.h"
+#include "log.h"
 
 #include <dechamps_cpputil/exception.h>
 #include <dechamps_ASIOUtil/asiosdk/iasiodrv.h>
@@ -128,8 +128,7 @@ namespace flexasio {
 			}
 			ASIOError future(long selector, void *) throw() final {
 				return Enter("future()", [&] {
-					//Log() << "Requested future selector: " << ::dechamps_ASIOUtil::GetASIOFutureSelectorString(selector);
-					if (selector) { /* deliberately empty */ } // prevent compiler warning
+					Log() << "Requested future selector: " << ::dechamps_ASIOUtil::GetASIOFutureSelectorString(selector);
 					throw ASIOException(ASE_InvalidParameter, "future() is not supported");
 				});
 			}
@@ -150,8 +149,7 @@ namespace flexasio {
 		OBJECT_ENTRY_AUTO(__uuidof(::CFlexASIO), CFlexASIO);
 
 		template <typename Functor> ASIOError CFlexASIO::Enter(std::string_view context, Functor functor) {
-			//if (IsLoggingEnabled()) Log() << "--- ENTERING CONTEXT: " << context;
-			if (context.empty() ) { /* deliberately empty */ } // prevent compiler warning
+			if (IsLoggingEnabled()) Log() << "--- ENTERING CONTEXT: " << context;
 			ASIOError result;
 			try {
 				functor();
@@ -170,10 +168,10 @@ namespace flexasio {
 				result = ASE_HWMalfunction;
 			}
 			if (result == ASE_OK) {
-				//if (IsLoggingEnabled()) Log() << "--- EXITING CONTEXT: " << context << " [OK]";
+				if (IsLoggingEnabled()) Log() << "--- EXITING CONTEXT: " << context << " [OK]";
 			}
 			else {
-				//if (IsLoggingEnabled()) Log() << "--- EXITING CONTEXT: " << context << " (" << ::dechamps_ASIOUtil::GetASIOErrorString(result) << " " << lastError << ")";
+				if (IsLoggingEnabled()) Log() << "--- EXITING CONTEXT: " << context << " (" << ::dechamps_ASIOUtil::GetASIOErrorString(result) << " " << lastError << ")";
 			}
 			return result;
 		}
@@ -209,7 +207,7 @@ namespace flexasio {
 		ASIOError CFlexASIO::setClockSource(long reference) throw()
 		{
 			return Enter("setClockSource()", [&] {
-				//Log() << "reference = " << reference;
+				Log() << "reference = " << reference;
 				if (reference != 0) throw ASIOException(ASE_InvalidParameter, "setClockSource() parameter out of bounds");
 			});
 		}

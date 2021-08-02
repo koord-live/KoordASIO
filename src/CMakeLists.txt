@@ -21,15 +21,15 @@ ExternalProject_Add(
 )
 
 ExternalProject_Add(
-	portaudio
+    portaudio
     GIT_REPOSITORY https://github.com/PortAudio/portaudio.git
-	SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/portaudio"
-	INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
+    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/portaudio"
+    INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
     BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
-	CMAKE_ARGS ${CMAKE_ARGS}
+    CMAKE_ARGS ${CMAKE_ARGS}
 		-DPA_ENABLE_DEBUG_OUTPUT=ON
 		"-DCMAKE_PROJECT_portaudio_INCLUDE=${CMAKE_CURRENT_LIST_DIR}/portaudio.cmake"
-	EXCLUDE_FROM_ALL
+    EXCLUDE_FROM_ALL
 )
 
 ExternalProject_Add(
@@ -38,18 +38,27 @@ ExternalProject_Add(
     BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
     INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
     CMAKE_ARGS ${CMAKE_ARGS}
-	EXCLUDE_FROM_ALL
+    EXCLUDE_FROM_ALL
+)
+
+ExternalProject_Add(
+    dechamps_cpplog
+    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/dechamps_cpplog"
+    BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
+    INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
+    CMAKE_ARGS ${CMAKE_ARGS}
+    EXCLUDE_FROM_ALL
 )
 
 ExternalProject_Add(
     dechamps_ASIOUtil
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/dechamps_ASIOUtil"
-	USES_TERMINAL_CONFIGURE TRUE
+    USES_TERMINAL_CONFIGURE TRUE
     BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
     INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
     CMAKE_ARGS ${CMAKE_ARGS}
-	EXCLUDE_FROM_ALL
-	DEPENDS dechamps_cpputil
+    EXCLUDE_FROM_ALL
+    DEPENDS dechamps_cpputil
 )
 
 ExternalProject_Add(
@@ -58,12 +67,11 @@ ExternalProject_Add(
     BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
     INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
     CMAKE_ARGS ${CMAKE_ARGS}
-    DEPENDS tinytoml portaudio dechamps_cpputil dechamps_ASIOUtil
+    DEPENDS tinytoml portaudio dechamps_cpputil dechamps_cpplog dechamps_ASIOUtil
 )
 
 install(DIRECTORY "${INTERNAL_INSTALL_PREFIX}/" DESTINATION "${CMAKE_INSTALL_PREFIX}")
 # Remove PDB creation/installation
-# install(SCRIPT dechamps_CMakeUtils/InstallPdbFiles.cmake)
 
 # Work around https://developercommunity.visualstudio.com/content/problem/618088/cmake-msvc-toolset-version-is-incorrect-in-visual.html
 # Note that for InstallRequiredSystemLibraries to work you might also need to work around https://developercommunity.visualstudio.com/content/problem/618084/cmake-installrequiredsystemlibraries-broken-in-lat.html

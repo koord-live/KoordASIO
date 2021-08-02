@@ -12,9 +12,9 @@ endif()
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMakeModules")
 find_package(tinytoml MODULE REQUIRED)
 find_package(portaudio MODULE REQUIRED)
+find_package(dechamps_cpplog CONFIG REQUIRED)
 find_package(dechamps_cpputil CONFIG REQUIRED)
 find_package(dechamps_ASIOUtil CONFIG REQUIRED)
-# find_package(ASIOTest CONFIG REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 add_compile_options(
@@ -35,9 +35,7 @@ add_definitions(
 	-DBUILD_PLATFORM="${FLEXASIO_PLATFORM}"
 )
 
-# add_subdirectory(../dechamps_CMakeUtils/version version EXCLUDE_FROM_ALL)
-
 add_subdirectory(FlexASIOUtil EXCLUDE_FROM_ALL)
 add_subdirectory(FlexASIO)
-# add_subdirectory(FlexASIOTest)
-# add_subdirectory(PortAudioDevices)
+
+

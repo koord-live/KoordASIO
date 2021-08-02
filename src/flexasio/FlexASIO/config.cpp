@@ -5,28 +5,25 @@
 #include <dechamps_cpputil/exception.h>
 #include <toml/toml.h>
 
-//#include "log.h"
+#include "log.h"
 #include "../FlexASIOUtil/shell.h"
 
 namespace flexasio {
 
 	namespace {
 
-		// constexpr auto configFileName = L".KoordASIO.toml";
-		constexpr auto configFileName = L".KoordASIO-builtin.toml";
+		constexpr auto configFileName = L"FlexASIO.toml";
 
 		toml::Value LoadConfigToml(const std::filesystem::path& path) {
-			//Log() << "Attempting to load configuration file: " << path;
+			Log() << "Attempting to load configuration file: " << path;
 
 			std::ifstream stream;
 			stream.exceptions(stream.badbit | stream.failbit);
 			try {
 				stream.open(path);
 			}
-			// catch (const std::exception& exception) {
-			catch (...) {
-				//Log() << "Unable to open configuration file: " << exception.what();
-				// exception.what();
+			catch (const std::exception& exception) {
+				Log() << "Unable to open configuration file: " << exception.what();
 				return toml::Table();
 			}
 			stream.exceptions(stream.badbit);
@@ -42,7 +39,7 @@ namespace flexasio {
 				}
 			}();
 
-			//Log() << "Configuration file successfully parsed as valid TOML: " << parseResult.value;
+			Log() << "Configuration file successfully parsed as valid TOML: " << parseResult.value;
 
 			return parseResult.value;
 		}
@@ -142,7 +139,7 @@ namespace flexasio {
 		return UniqueHandle(handle);
 		}()),
 		directory([&] {
-		//Log() << "Opening config directory for watching";
+		Log() << "Opening config directory for watching";
 		const auto handle = ::CreateFileW(
 			configLoader.configDirectory.wstring().c_str(),
 			FILE_LIST_DIRECTORY,
@@ -155,23 +152,23 @@ namespace flexasio {
 			throw std::system_error(::GetLastError(), std::system_category(), "Unable to open config directory for watching");
 		return UniqueHandle(handle);
 		}()) {
-		//Log() << "Starting configuration file watcher";
+		Log() << "Starting configuration file watcher";
 		StartWatching();
 		OnConfigFileEvent();
 		thread = std::thread([this] { RunThread(); });
 	}
 
 	ConfigLoader::Watcher::~Watcher() noexcept(false) {
-		//Log() << "Signaling config watcher thread to stop";
+		Log() << "Signaling config watcher thread to stop";
 		if (!SetEvent(stopEvent.get()))
 			throw std::system_error(::GetLastError(), std::system_category(), "Unable to set stop event");
-		//Log() << "Waiting for config watcher thread to finish";
+		Log() << "Waiting for config watcher thread to finish";
 		thread.join();
-		//Log() << "Joined config watcher thread";
+		Log() << "Joined config watcher thread";
 	}
 
 	void ConfigLoader::Watcher::RunThread() {
-		//Log() << "Config watcher thread running";
+		Log() << "Config watcher thread running";
 
 		try {
 			for (;;) {
@@ -182,15 +179,14 @@ namespace flexasio {
 				else throw std::system_error(::GetLastError(), std::system_category(), "Unable to wait for events");
 			}			
 		}
-		// catch (const std::exception& exception) {
-		// 	//Log() << "Config watcher thread encountered error: " << ::dechamps_cpputil::GetNestedExceptionMessage(exception);
-		// 	exception.what();
-		// }
+		catch (const std::exception& exception) {
+			Log() << "Config watcher thread encountered error: " << ::dechamps_cpputil::GetNestedExceptionMessage(exception);
+		}
 		catch (...) {
-			//Log() << "Config watcher thread encountered unknown exception";
+			Log() << "Config watcher thread encountered unknown exception";
 		}
 
-		//Log() << "Config watcher thread stopping";
+		Log() << "Config watcher thread stopping";
 	}
 
 	void ConfigLoader::Watcher::OnEvent() {
@@ -199,7 +195,7 @@ namespace flexasio {
 
 		bool configFileEvent = false;
 		if (!FillNotifyInformationBuffer()) {
-			//Log() << "Config directory event buffer overflow";
+			Log() << "Config directory event buffer overflow";
 			// We don't know if something happened to the logfile, so assume it did.
 			configFileEvent = true;
 		}
@@ -220,15 +216,15 @@ namespace flexasio {
 		// Another reason to debounce is that it might make it less likely we'll run into file locking issues.
 		// We do this by sleeping for a while, and getting rid of all events that occurred in the mean time.
 
-		//Log() << "Debouncing config file events";
+		Log() << "Debouncing config file events";
 		StartWatching();
-		//Log() << "Sleeping";
+		Log() << "Sleeping";
 		::Sleep(250);
-		//Log() << "Cancelling directory event watch";
+		Log() << "Cancelling directory event watch";
 		// We could use CancelIoEx(), but for some reason that doesn't work (it fails with ERROR_NOT_FOUND).
 		if (!::CancelIo(directory.get()))
 			throw std::system_error(::GetLastError(), std::system_category(), "Unable to cancel debounce");
-		//Log() << "Draining directory event buffer";
+		Log() << "Draining directory event buffer";
 		FillNotifyInformationBuffer();
 	}
 
@@ -250,9 +246,9 @@ namespace flexasio {
 			memcpy(fileName.data(), fileNotifyInformationPtr + fileNotifyInformationHeaderSize, fileNotifyInformationHeader.FileNameLength);
 			if (fileName == configFileName) {
 				// Here we can safely log.
-				//Log() << "Configuration file directory change received: NextEntryOffset = " << fileNotifyInformationHeader.NextEntryOffset
-					// << " Action = " << fileNotifyInformationHeader.Action
-					// << " FileNameLength = " << fileNotifyInformationHeader.FileNameLength;
+				Log() << "Configuration file directory change received: NextEntryOffset = " << fileNotifyInformationHeader.NextEntryOffset
+					<< " Action = " << fileNotifyInformationHeader.Action
+					<< " FileNameLength = " << fileNotifyInformationHeader.FileNameLength;
 
 				if (fileNotifyInformationHeader.Action == FILE_ACTION_ADDED ||
 					fileNotifyInformationHeader.Action == FILE_ACTION_REMOVED ||
@@ -294,19 +290,18 @@ namespace flexasio {
 		initialConfig(LoadConfig(configDirectory / configFileName)) {}
 
 	void ConfigLoader::Watcher::OnConfigFileEvent() {
-		//Log() << "Handling config file event";
+		Log() << "Handling config file event";
 
 		Config newConfig;
 		try {
 			newConfig = LoadConfig(configLoader.configDirectory / configFileName);
 		}
-		// catch (const std::exception& exception) {
-		catch (...) {
-		 	//Log() << "Unable to load config, ignoring event: " << ::dechamps_cpputil::GetNestedExceptionMessage(exception);
+		catch (const std::exception& exception) {
+			Log() << "Unable to load config, ignoring event: " << ::dechamps_cpputil::GetNestedExceptionMessage(exception);
 			return;
 		}
 		if (newConfig == configLoader.Initial()) {
-			//Log() << "New config is identical to initial config, not taking any action";
+			Log() << "New config is identical to initial config, not taking any action";
 			return;
 		}
 
