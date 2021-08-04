@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>KoordASIO Config</string>
+   <string>KoordASIO-builtin Config</string>
   </property>
   <property name="windowIcon">
    <iconset>
