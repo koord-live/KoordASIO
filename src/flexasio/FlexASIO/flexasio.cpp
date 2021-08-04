@@ -985,7 +985,7 @@ namespace flexasio {
         DWORD dwType=REG_SZ;
         unsigned long size=1024;
         char* cfg_exec_path = new char[size];
-        read_result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Koord\\KoordASIO\\Install",0,KEY_READ,&hKey);
+        read_result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Koord\\KoordASIOi\\Install",0,KEY_READ,&hKey);
         if(read_result == ERROR_SUCCESS)
         {
             RegQueryValueEx(hKey,"InstallPath", NULL, &dwType, (LPBYTE)cfg_exec_path, &size);
