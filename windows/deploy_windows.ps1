@@ -4,12 +4,13 @@ param(
     [string] $QtInstallPath = "C:\Qt\5.15.2",
     [string] $QtCompile32 = "msvc2019",
     [string] $QtCompile64 = "msvc2019_64",
-    [string] $AsioSDKName = "ASIOSDK2.3.2",
-    [string] $AsioSDKUrl = "https://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip",
+    # [string] $AsioSDKName = "ASIOSDK2.3.3",
+    [string] $AsioSDKName = "asiosdk_2.3.3_2019-06-14",
+    [string] $AsioSDKUrl = "https://download.steinberg.net/sdk_downloads/asiosdk_2.3.3_2019-06-14.zip",
     [string] $InnoSetupUrl = "https://jrsoftware.org/download.php/is.exe",
     [string] $InnoSetupIsccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
     [string] $VsDistFile64Redist = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Redist\",
-    [string] $VsDistFile64Path = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Redist\MSVC\14.29.30036\x64\Microsoft.VC142.CRT"
+    [string] $VsDistFile64Path = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Redist\MSVC\14.29.30133\x64\Microsoft.VC142.CRT"
 )
 
 # change directory to the directory above (if needed)
@@ -263,7 +264,7 @@ Function Build-App
         "--no-system-d3d-compiler",  "--no-opengl-sw", `
         "$BuildPath\$BuildConfig\kdasioconfig\kdasioconfig.exe")
 
-    Tree "$VsDistFile64Redist" /a
+    # Get-ChildItem -Recurse "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Redist\MSVC\"
 
     # Transfer VS dist DLLs for x64
     Copy-Item -Path "$VsDistFile64Path\*" -Destination "$DeployPath\$BuildArch"
