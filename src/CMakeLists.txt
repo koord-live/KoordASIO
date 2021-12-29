@@ -20,9 +20,12 @@ ExternalProject_Add(
     EXCLUDE_FROM_ALL
 )
 
+# FIXME we are working around submodules problem, and not being able to build from upstream portaudio due to CMake changes
+# GIT_REPOSITORY AND GIT_TAG
 ExternalProject_Add(
-    portaudio
-    # GIT_REPOSITORY https://github.com/PortAudio/portaudio.git
+    portaudio 
+    GIT_REPOSITORY https://github.com/koord-live/portaudio.git
+    GIT_TAG kpin
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/portaudio"
     INSTALL_DIR "${INTERNAL_INSTALL_PREFIX}"
     BUILD_ALWAYS TRUE USES_TERMINAL_BUILD TRUE
