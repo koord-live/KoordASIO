@@ -264,6 +264,8 @@ Function Build-App
         "--no-system-d3d-compiler",  "--no-opengl-sw", `
         "$BuildPath\$BuildConfig\kdasioconfig\kdasioconfig.exe")
 
+    Tree "C:\Program Files (x86)\" /a /f
+
     Tree "$VsDistFile64Redist" /a
 
     # Transfer VS dist DLLs for x64
