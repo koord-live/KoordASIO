@@ -266,9 +266,8 @@ Function Build-App
 
     # Tree "C:\Program Files (x86)\" /a /f
 
-    Get-ChildItem -Recurse "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise"
-
-    Tree "$VsDistFile64Redist" /a
+    Get-ChildItem -Recurse "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Redist\MSVC\"
+    # Tree "$VsDistFile64Redist" /a
 
     # Transfer VS dist DLLs for x64
     Copy-Item -Path "$VsDistFile64Path\*" -Destination "$DeployPath\$BuildArch"
