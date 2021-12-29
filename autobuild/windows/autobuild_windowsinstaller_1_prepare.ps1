@@ -9,9 +9,9 @@
 
 echo "Install Qt..."
 # Install Qt
-#pip install aqtinstall
+pip install aqtinstall
 #FIXME Install branch of aqtinstall to allow tools installations while mainline is broken
-pip install git+https://github.com/miurahr/aqtinstall.git@topic-tool-latest
+# pip install git+https://github.com/miurahr/aqtinstall.git@topic-tool-latest
 
 echo "Get Qt 64 bit..."
 # intermediate solution if the main server is down: append e.g. " -b https://mirrors.ocf.berkeley.edu/qt/" to the "aqt"-line below
