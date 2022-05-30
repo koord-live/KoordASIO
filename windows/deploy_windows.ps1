@@ -1,7 +1,7 @@
 param(
     # Replace default path with system Qt installation folder if necessary
     [string] $QtPath = "C:\Qt",
-    [string] $QtInstallPath = "C:\Qt\5.15.2",
+    [string] $QtInstallPath = "C:\Qt\6.3.0",
     [string] $QtCompile32 = "msvc2019",
     [string] $QtCompile64 = "msvc2019_64",
     # [string] $AsioSDKName = "ASIOSDK2.3.3",
@@ -201,14 +201,14 @@ Function Initialize-Build-Environment
     {
         Throw "The Qt binaries for Microsoft Visual C++ 2017 or above could not be located at $QtMsvcSpecPath. " + `
             "Please install Qt with support for MSVC 2017 or above before running this script," + `
-            "then call this script with the Qt install location, for example C:\Qt\5.15.2"
+            "then call this script with the Qt install location, for example C:\Qt\6.3.0"
     }
 
     if (-Not (Test-Path -Path $Env:QtCmakePath))
     {
         Throw "The Qt binaries for CMake for Microsoft Visual C++ 2017 or above could not be located at $QtPath. " + `
             "Please install Qt with support for MSVC 2017 or above before running this script," + `
-            "then call this script with the Qt install location, for example C:\Qt\5.15.2"
+            "then call this script with the Qt install location, for example C:\Qt\6.3.0"
     }
 
     # Import environment variables set by vcvarsXX.bat into current scope

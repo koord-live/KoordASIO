@@ -15,7 +15,7 @@ pip install aqtinstall
 
 echo "Get Qt 64 bit..."
 # intermediate solution if the main server is down: append e.g. " -b https://mirrors.ocf.berkeley.edu/qt/" to the "aqt"-line below
-aqt install --outputdir C:\Qt 5.15.2 windows desktop win64_msvc2019_64
+aqt install --outputdir C:\Qt 6.3.0 windows desktop win64_msvc2019_64
 # install tools - vcredist, cmake
 aqt install-tool windows desktop --outputdir C:\Qt tools_vcredist qt.tools.vcredist_msvc2019_x64
 aqt install-tool windows desktop --outputdir C:\Qt tools_cmake qt.tools.cmake.win64
