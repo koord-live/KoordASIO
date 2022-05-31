@@ -51,7 +51,7 @@
 #ifndef KDASIOCONFIG_H
 #define KDASIOCONFIG_H
 
-#include <QAudioDeviceInfo>
+#include <QAudioDevice>
 #include <QMainWindow>
 #include <QObject>
 #include <QDir>
@@ -74,8 +74,8 @@ public:
     explicit KdASIOConfig(QWidget *parent = nullptr);
 
 private:
-    QAudioDeviceInfo m_inputDeviceInfo;
-    QAudioDeviceInfo m_outputDeviceInfo;
+    QAudioDevice m_inputDeviceInfo;
+    QAudioDevice m_outputDeviceInfo;
     QAudioFormat m_settings;
     int bufferSize;
     bool exclusive_mode;

@@ -33,7 +33,7 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
     // populate input device choices
     inputDeviceBox->clear();
     const QAudio::Mode input_mode = QAudio::AudioInput;
-    for (auto &deviceInfo: QAudioDeviceInfo::availableDevices(input_mode)) {
+    for (auto &deviceInfo: QAudioDevice::availableDevices(input_mode)) {
         // add realm check due to https://bugreports.qt.io/browse/QTBUG-75781
         if (deviceInfo.realm() == "wasapi")
             inputDeviceBox->addItem(deviceInfo.deviceName(), QVariant::fromValue(deviceInfo));
@@ -42,7 +42,7 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
     // populate output device choices
     outputDeviceBox->clear();
     const QAudio::Mode output_mode = QAudio::AudioOutput;
-    for (auto &deviceInfo: QAudioDeviceInfo::availableDevices(output_mode))
+    for (auto &deviceInfo: QAudioDevice::availableDevices(output_mode))
         if (deviceInfo.realm() == "wasapi")
             outputDeviceBox->addItem(deviceInfo.deviceName(), QVariant::fromValue(deviceInfo));
 
@@ -228,7 +228,7 @@ void KdASIOConfig::inputDeviceChanged(int idx)
     if (inputDeviceBox->count() == 0)
         return;
     // device has changed
-    m_inputDeviceInfo = inputDeviceBox->itemData(idx).value<QAudioDeviceInfo>();
+    m_inputDeviceInfo = inputDeviceBox->itemData(idx).value<QAudioDevice>();
     inputDeviceName = m_inputDeviceInfo.deviceName();
     writeTomlFile();
 }
@@ -238,7 +238,7 @@ void KdASIOConfig::outputDeviceChanged(int idx)
     if (outputDeviceBox->count() == 0)
         return;
     // device has changed
-    m_outputDeviceInfo = outputDeviceBox->itemData(idx).value<QAudioDeviceInfo>();
+    m_outputDeviceInfo = outputDeviceBox->itemData(idx).value<QAudioDevice>();
     outputDeviceName = m_outputDeviceInfo.deviceName();
     writeTomlFile();
 }
