@@ -78,6 +78,9 @@ public:
 private:
     QAudioDevice m_inputDeviceInfo;
     QAudioDevice m_outputDeviceInfo;
+    QAudioDevice::Mode input_mode = QAudioDevice::Input;
+    QAudioDevice::Mode output_mode = QAudioDevice::Output;
+    QMediaDevices *m_devices = nullptr;
     QAudioFormat m_settings;
     int bufferSize;
     bool exclusive_mode;

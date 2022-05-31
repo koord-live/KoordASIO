@@ -32,17 +32,17 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
 
     // populate input device choices
     inputDeviceBox->clear();
-    const auto deviceInfos = QMediaDevices::availableDevices(QAudioDevice::Input);
-    for (const QAudioDevice &deviceInfo : deviceInfos) {
+    const auto input_devices = m_devices->audioInputs();
+    for (auto &deviceInfo: input_devices)
         inputDeviceBox->addItem(deviceInfo.description(), QVariant::fromValue(deviceInfo));
-    }
+
 
     // populate output device choices
     outputDeviceBox->clear();
-    const auto deviceInfos = QMediaDevices::availableDevices(QAudioDevice::Output);
-    for (const QAudioDevice &deviceInfo : deviceInfos) {
+    const auto output_devices = m_devices->audioOutputs();
+    for (auto &deviceInfo: output_devices)
         outputDeviceBox->addItem(deviceInfo.description(), QVariant::fromValue(deviceInfo));
-    }
+
 
     // parse .KoordASIO.toml
     std::ifstream ifs;
