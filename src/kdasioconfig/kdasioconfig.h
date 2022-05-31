@@ -52,6 +52,8 @@
 #define KDASIOCONFIG_H
 
 #include <QAudioDevice>
+#include <QMediaDevices>
+#include <QStringConverter> 
 #include <QMainWindow>
 #include <QObject>
 #include <QDir>

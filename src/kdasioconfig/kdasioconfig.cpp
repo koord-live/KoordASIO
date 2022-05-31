@@ -32,19 +32,19 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
 
     // populate input device choices
     inputDeviceBox->clear();
-    const QAudio::Mode input_mode = QAudio::AudioInput;
-    for (auto &deviceInfo: QAudioDevice::availableDevices(input_mode)) {
-        // add realm check due to https://bugreports.qt.io/browse/QTBUG-75781
-        if (deviceInfo.realm() == "wasapi")
-            inputDeviceBox->addItem(deviceInfo.deviceName(), QVariant::fromValue(deviceInfo));
+    const QAudioDevice::Mode input_mode = QAudioDevice::AudioInput;
+    for (auto &deviceInfo: QMediaDevices::availableDevices(input_mode)) {
+        // // add realm check due to https://bugreports.qt.io/browse/QTBUG-75781
+        // if (deviceInfo.realm() == "wasapi")
+        inputDeviceBox->addItem(deviceInfo.description(), QVariant::fromValue(deviceInfo));
     }
 
     // populate output device choices
     outputDeviceBox->clear();
-    const QAudio::Mode output_mode = QAudio::AudioOutput;
-    for (auto &deviceInfo: QAudioDevice::availableDevices(output_mode))
-        if (deviceInfo.realm() == "wasapi")
-            outputDeviceBox->addItem(deviceInfo.deviceName(), QVariant::fromValue(deviceInfo));
+    const QAudioDevice::Mode output_mode = QAudioDevice::AudioOutput;
+    for (auto &deviceInfo: QMediaDevices::availableDevices(output_mode))
+        // if (deviceInfo.realm() == "wasapi")
+        outputDeviceBox->addItem(deviceInfo.description(), QVariant::fromValue(deviceInfo));
 
     // parse .KoordASIO.toml
     std::ifstream ifs;
@@ -165,7 +165,8 @@ void KdASIOConfig::writeTomlFile()
         return;
     QTextStream out(&file);
     // need to explicitly set UTF-8 for non-ASCII character support
-    out.setCodec("UTF-8");
+    out.setEncoding(QStringConverter::Utf8);
+    // out.setCodec("UTF-8");
     out << "backend = \"Windows WASAPI\"" << "\n";
     out << "bufferSizeSamples = " << bufferSize << "\n";
     out << "\n";
@@ -229,7 +230,7 @@ void KdASIOConfig::inputDeviceChanged(int idx)
         return;
     // device has changed
     m_inputDeviceInfo = inputDeviceBox->itemData(idx).value<QAudioDevice>();
-    inputDeviceName = m_inputDeviceInfo.deviceName();
+    inputDeviceName = m_inputDeviceInfo.description();
     writeTomlFile();
 }
 
@@ -239,7 +240,7 @@ void KdASIOConfig::outputDeviceChanged(int idx)
         return;
     // device has changed
     m_outputDeviceInfo = outputDeviceBox->itemData(idx).value<QAudioDevice>();
-    outputDeviceName = m_outputDeviceInfo.deviceName();
+    outputDeviceName = m_outputDeviceInfo.description();
     writeTomlFile();
 }
 
