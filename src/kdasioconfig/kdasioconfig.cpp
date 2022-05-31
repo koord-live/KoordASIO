@@ -32,19 +32,17 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
 
     // populate input device choices
     inputDeviceBox->clear();
-    const QAudioDevice::Mode input_mode = QAudioDevice::AudioInput;
-    for (auto &deviceInfo: QMediaDevices::availableDevices(input_mode)) {
-        // // add realm check due to https://bugreports.qt.io/browse/QTBUG-75781
-        // if (deviceInfo.realm() == "wasapi")
+    const auto deviceInfos = QMediaDevices::availableDevices(QAudioDevice::Input);
+    for (const QAudioDevice &deviceInfo : deviceInfos) {
         inputDeviceBox->addItem(deviceInfo.description(), QVariant::fromValue(deviceInfo));
     }
 
     // populate output device choices
     outputDeviceBox->clear();
-    const QAudioDevice::Mode output_mode = QAudioDevice::AudioOutput;
-    for (auto &deviceInfo: QMediaDevices::availableDevices(output_mode))
-        // if (deviceInfo.realm() == "wasapi")
+    const auto deviceInfos = QMediaDevices::availableDevices(QAudioDevice::Output);
+    for (const QAudioDevice &deviceInfo : deviceInfos) {
         outputDeviceBox->addItem(deviceInfo.description(), QVariant::fromValue(deviceInfo));
+    }
 
     // parse .KoordASIO.toml
     std::ifstream ifs;
