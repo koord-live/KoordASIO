@@ -129,7 +129,7 @@ Function Install-Dependency
     Remove-Item -Path $TempFileName -Force
 }
 
-# Install VSSetup (Visual Studio detection), ASIO SDK and NSIS Installer
+# Install VSSetup (Visual Studio detection), ASIO SDK and Innosetup
 Function Install-Dependencies
 {
     if (-not (Get-PackageProvider -Name nuget).Name -eq "nuget") {
@@ -323,11 +323,6 @@ Function Build-Installer
             break
         }
     }
-
-    # Invoke-Native-Command -Command "$WindowsPath\NSIS\makensis" `
-    #     -Arguments ("/v4", "/DAPP_NAME=$AppName", "/DAPP_VERSION=$AppVersion", `
-    #     "/DROOT_PATH=$RootPath", "/DWINDOWS_PATH=$WindowsPath", "/DDEPLOY_PATH=$DeployPath", `
-    #     "$WindowsPath\installer.nsi")
 
     #FIXME for 64bit build only
     Set-Location -Path "$RootPath"
