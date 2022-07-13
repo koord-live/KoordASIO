@@ -21,7 +21,7 @@ namespace flexasio {
 					catch (...) {
 						return nullptr;
 					}
-					path.append("FlexASIO.log");
+					path.append("KoordASIO-builtin.log");
 
 					if (!std::filesystem::exists(path)) return nullptr;
 
