@@ -1,12 +1,9 @@
 <RCC>
     <qresource prefix="/img">
         <file>images/BG_01.png</file>
-        <file>images/INPUT_DEVICE.png</file>
         <file>images/CONFIG_BTN.png</file>
         <file>images/Info_BTN.png</file>
         <file>images/EXCLUSIVE_OFF_BTN.png</file>
-        <file>images/EXCLUSIVE_ON_BTN.png</file>
-        <file>images/SHARED_OFF_BTN.png</file>
         <file>images/SHARED_ON_BTN.png</file>
         <file>images/DropDownArrow.png</file>
         <file>images/github.png</file>
