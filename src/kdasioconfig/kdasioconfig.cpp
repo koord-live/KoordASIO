@@ -211,6 +211,9 @@ void KdASIOConfig::setOperationMode()
 void KdASIOConfig::sharedModeSet()
 {
     sharedPushButton->setChecked(true);
+    sharedPushButton->setFlat(true);
+    qDebug() << "sharedButt: " << sharedPushButton->isFlat();
+    qDebug() << "exclusiveButt: " << exclusivePushButton->isFlat();
     exclusive_mode = false;
     writeTomlFile();
 }
@@ -218,6 +221,9 @@ void KdASIOConfig::sharedModeSet()
 void KdASIOConfig::exclusiveModeSet()
 {
     exclusivePushButton->setChecked(true);
+    exclusivePushButton->setFlat(true);
+    qDebug() << "sharedButt: " << sharedPushButton->isFlat();
+    qDebug() << "exclusiveButt: " << exclusivePushButton->isFlat();
     exclusive_mode = true;
     writeTomlFile();
 }
