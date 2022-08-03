@@ -210,20 +210,18 @@ void KdASIOConfig::setOperationMode()
 
 void KdASIOConfig::sharedModeSet()
 {
-    sharedPushButton->setChecked(true);
-    sharedPushButton->setFlat(true);
-    qDebug() << "sharedButt: " << sharedPushButton->isFlat();
-    qDebug() << "exclusiveButt: " << exclusivePushButton->isFlat();
+//    sharedPushButton->setChecked(true);
+    qDebug() << "sharedButt: " << sharedPushButton->isChecked();
+    qDebug() << "exclusiveButt: " << exclusivePushButton->isChecked();
     exclusive_mode = false;
     writeTomlFile();
 }
 
 void KdASIOConfig::exclusiveModeSet()
 {
-    exclusivePushButton->setChecked(true);
-    exclusivePushButton->setFlat(true);
-    qDebug() << "sharedButt: " << sharedPushButton->isFlat();
-    qDebug() << "exclusiveButt: " << exclusivePushButton->isFlat();
+//    exclusivePushButton->setChecked(true);
+    qDebug() << "sharedButt: " << sharedPushButton->isChecked();
+    qDebug() << "exclusiveButt: " << exclusivePushButton->isChecked();
     exclusive_mode = true;
     writeTomlFile();
 }
