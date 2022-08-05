@@ -87,8 +87,8 @@ private:
     QString outputDeviceName;
     QString inputDeviceName;
     QString fullpath = QDir::homePath() + "/.KoordASIO-builtin.toml";
-    QString inputAudioSettPath = "control mmsys.cpl,,1";
-    QString outputAudioSettPath = "control mmsys.cpl";
+    QString inputAudioSettPath = "mmsys.cpl,,1";
+    QString outputAudioSettPath = "mmsys.cpl";
     QList<int> bufferSizes = { 32, 64, 128, 256, 512, 1024, 2048 };
 
 private slots:
@@ -105,6 +105,12 @@ private slots:
     void setValuesFromToml(std::ifstream *ifs, toml::ParseResult *pr);
     void inputAudioSettClicked();
     void outputAudioSettClicked();
+    void inputInfoClicked();
+    void outputInfoClicked();
+    void renderInfoClicked();
+    void bufferInfoClicked();
+    void koordLiveClicked();
+    void githubClicked();
 };
 
 #endif

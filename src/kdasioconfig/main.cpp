@@ -55,7 +55,7 @@
 int main(int argv, char **args)
 {
     QApplication app(argv, args);
-    app.setApplicationName("Audio Device Test");
+    app.setApplicationName("KoordASIO Setup");
 
     KdASIOConfig audio;
     audio.show();

@@ -133,6 +133,12 @@
          </item>
          <item>
           <widget class="QLabel" name="label_9">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>20</height>
+            </size>
+           </property>
            <property name="font">
             <font>
              <family>Rubik</family>
@@ -143,7 +149,13 @@
             <string notr="true">color: gray;</string>
            </property>
            <property name="text">
-            <string>open-source, universal ASIO</string>
+            <string>open-source universal ASIO driver</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -247,7 +259,7 @@
              </property>
              <property name="icon">
               <iconset resource="koordipics.qrc">
-               <normaloff>:/img/images/CONFIG BTN ON.png</normaloff>:/img/images/CONFIG BTN ON.png</iconset>
+               <normaloff>:/img/images/CONFIG BTN OFF.png</normaloff>:/img/images/CONFIG BTN OFF.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -261,7 +273,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_2">
+            <widget class="QPushButton" name="inputInfoButton">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -279,6 +291,15 @@
                <stylestrategy>PreferDefault</stylestrategy>
               </font>
              </property>
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="statusTip">
+              <string/>
+             </property>
+             <property name="whatsThis">
+              <string/>
+             </property>
              <property name="autoFillBackground">
               <bool>false</bool>
              </property>
@@ -287,13 +308,16 @@
              </property>
              <property name="icon">
               <iconset resource="koordipics.qrc">
-               <normaloff>:/img/images/INFO BTN ON.png</normaloff>:/img/images/INFO BTN ON.png</iconset>
+               <normaloff>:/img/images/INFO BTN OFF.png</normaloff>:/img/images/INFO BTN OFF.png</iconset>
              </property>
              <property name="iconSize">
               <size>
                <width>25</width>
                <height>25</height>
               </size>
+             </property>
+             <property name="checkable">
+              <bool>false</bool>
              </property>
              <property name="autoDefault">
               <bool>false</bool>
@@ -672,7 +696,7 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
              </property>
              <property name="icon">
               <iconset resource="koordipics.qrc">
-               <normaloff>:/img/images/CONFIG BTN ON.png</normaloff>:/img/images/CONFIG BTN ON.png</iconset>
+               <normaloff>:/img/images/CONFIG BTN OFF.png</normaloff>:/img/images/CONFIG BTN OFF.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -686,7 +710,7 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_3">
+            <widget class="QPushButton" name="outputInfoButton">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -707,13 +731,17 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
              </property>
              <property name="icon">
               <iconset resource="koordipics.qrc">
-               <normaloff>:/img/images/INFO BTN ON.png</normaloff>:/img/images/INFO BTN ON.png</iconset>
+               <normaloff>:/img/images/INFO BTN OFF.png</normaloff>
+               <normalon>:/img/images/INFO BTN ON.png</normalon>:/img/images/INFO BTN OFF.png</iconset>
              </property>
              <property name="iconSize">
               <size>
                <width>25</width>
                <height>25</height>
               </size>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
              <property name="autoDefault">
               <bool>false</bool>
@@ -871,7 +899,7 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_4">
+            <widget class="QPushButton" name="renderInfoButton">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -886,7 +914,7 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
              </property>
              <property name="icon">
               <iconset resource="koordipics.qrc">
-               <normaloff>:/img/images/INFO BTN ON.png</normaloff>:/img/images/INFO BTN ON.png</iconset>
+               <normaloff>:/img/images/INFO BTN OFF.png</normaloff>:/img/images/INFO BTN OFF.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -959,8 +987,8 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
 	padding-right: -4px;
 	padding-bottom: -2px;
 	border-radius: 5px;
-    border: 2px solid black;
-    background-color: black;
+    border: 2px solid #1d1f21;
+    background-color: #1d1f21;
 }</string>
              </property>
              <property name="text">
@@ -1025,8 +1053,8 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
 	padding-right: -4px;
 	padding-bottom: -2px;
 	border-radius: 5px;
-    border: 2px solid black;
-    background-color: black;
+    border: 2px solid #1d1f21;
+    background-color: #1d1f21;
 }</string>
              </property>
              <property name="text">
@@ -1149,7 +1177,7 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_5">
+            <widget class="QPushButton" name="bufferInfoButton">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -1164,7 +1192,7 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
              </property>
              <property name="icon">
               <iconset resource="koordipics.qrc">
-               <normaloff>:/img/images/INFO BTN ON.png</normaloff>:/img/images/INFO BTN ON.png</iconset>
+               <normaloff>:/img/images/INFO BTN OFF.png</normaloff>:/img/images/INFO BTN OFF.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -1221,8 +1249,8 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
              </property>
              <property name="styleSheet">
               <string notr="true">QLCDNumber{
-  background-color: black;
-  border: 2px solid black;
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #17191A, stop:1 #1E2122);
+  border: 2px solid #1d1f21;
   border-width: 2px;
   border-radius: 5px;
   color: orange;
@@ -1239,6 +1267,13 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
              </property>
              <property name="segmentStyle">
               <enum>QLCDNumber::Flat</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="latencyLabel">
+             <property name="text">
+              <string>TextLabel</string>
              </property>
             </widget>
            </item>
@@ -1270,8 +1305,9 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
              </property>
              <property name="styleSheet">
               <string notr="true">QSlider::groove:horizontal {
-    height: 12px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B1B1B1, stop:1 #c4c4c4);
+    height: 18px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #BF740D, stop:1 #FF9B12);
+	border-radius: 5px;
 }
 
 
@@ -1279,16 +1315,18 @@ QSlider::handle:horizontal {
 	image: url(:/img/images/Fader BTN.png);
     width: 30px;
     margin: -20px 20px; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+	margin-left: -3px;
+	margin-right: -3px;
     border-radius: 3px;
 }
 
-QSlider::add-page:horizontal {
+/*QSlider::add-page:horizontal {
     background: #1d1f21;
 }
 
 QSlider::sub-page:horizontal {
     background: #ff9c12;
-}</string>
+}*/</string>
              </property>
              <property name="maximum">
               <number>6</number>
@@ -1392,24 +1430,31 @@ QSlider::sub-page:horizontal {
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="label_4">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
+          <widget class="QPushButton" name="koordLiveButton">
            <property name="minimumSize">
             <size>
-             <width>108</width>
-             <height>27</height>
+             <width>101</width>
+             <height>15</height>
             </size>
            </property>
-           <property name="styleSheet">
-            <string notr="true">image: url(:/img/images/Koord Logo.png);</string>
+           <property name="autoFillBackground">
+            <bool>false</bool>
            </property>
            <property name="text">
             <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="koordipics.qrc">
+             <normaloff>:/img/images/Koord Logo.png</normaloff>:/img/images/Koord Logo.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>166</width>
+             <height>29</height>
+            </size>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -1427,24 +1472,22 @@ QSlider::sub-page:horizontal {
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="label_3">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>24</width>
-             <height>24</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">image: url(:/img/images/mark-github-24.png);</string>
-           </property>
+          <widget class="QPushButton" name="githubButton">
            <property name="text">
             <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="koordipics.qrc">
+             <normaloff>:/img/images/mark-github-24.png</normaloff>:/img/images/mark-github-24.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
            </property>
           </widget>
          </item>

@@ -8,6 +8,10 @@
 #include "toml.h"
 #include <QDebug>
 #include <QProcess>
+#include <QDialog>
+#include <QTextBrowser>
+#include <QColor>
+#include <QDesktopServices>
 
 KdASIOConfigBase::KdASIOConfigBase(QWidget *parent)
     : QMainWindow(parent)
@@ -29,8 +33,19 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
     connect(outputAudioSettButton, &QPushButton::pressed, this, &KdASIOConfig::outputAudioSettClicked);
     connect(bufferSizeSlider, &QSlider::valueChanged, this, &KdASIOConfig::bufferSizeChanged);
     connect(bufferSizeSlider, &QSlider::valueChanged, this, &KdASIOConfig::bufferSizeDisplayChange);
+    // info buttons
+    connect(inputInfoButton, &QPushButton::pressed, this, &KdASIOConfig::inputInfoClicked);
+    connect(outputInfoButton, &QPushButton::pressed, this, &KdASIOConfig::outputInfoClicked);
+    connect(renderInfoButton, &QPushButton::pressed, this, &KdASIOConfig::renderInfoClicked);
+    connect(bufferInfoButton, &QPushButton::pressed, this, &KdASIOConfig::bufferInfoClicked);
+    // connect footer buttons
+    connect(koordLiveButton, &QPushButton::pressed, this, &KdASIOConfig::koordLiveClicked);
+    connect(githubButton, &QPushButton::pressed, this, &KdASIOConfig::githubClicked);
 
 //    bufferSizeDisplay->setStyleSheet("background-color: black");
+
+    koordLiveButton->setCursor(Qt::PointingHandCursor);
+    githubButton->setCursor(Qt::PointingHandCursor);
 
     // populate input device choices
     inputDeviceBox->clear();
@@ -191,6 +206,7 @@ void KdASIOConfig::bufferSizeChanged(int idx)
     // THUS avoiding lots of spurious intermediate updates on buffer changes
     bufferSize = bufferSizes[idx];
     bufferSizeSlider->setValue(idx);
+    latencyLabel->setText(QString::number(double(bufferSize) / 48, 'f', 2));
     writeTomlFile();
 }
 
@@ -252,12 +268,102 @@ void KdASIOConfig::inputAudioSettClicked()
 {
     // open Windows audio input settings control panel
     QProcess *myProcess = new QProcess(this);
-    myProcess->startDetached(inputAudioSettPath);
+    myProcess->startDetached("control", QStringList() << inputAudioSettPath);
 }
 
 void KdASIOConfig::outputAudioSettClicked()
 {
     // open Windows audio output settings control panel
     QProcess *myProcess = new QProcess(this);
-    myProcess->startDetached(outputAudioSettPath);
+    myProcess->startDetached("control", QStringList() << outputAudioSettPath);
+}
+
+
+void KdASIOConfig::inputInfoClicked()
+{
+    QDialog *qd = new QDialog(this);
+    QLabel *qlab = new QLabel();
+    QString inputInfoText = "<b>" +
+                               tr ( "AUDIO INPUT DEVICE - Tips" ) +
+                               "</b> " +
+                               "<br>" + "<br>" +
+                               "Choose your Audio Input Device here, eg your microphone. " +
+                               "<br>" + "<br>" +
+                               "Click the tool button to go to Windows audio control panel and configure.";
+    qlab->setText(inputInfoText);
+    QVBoxLayout *layout = new QVBoxLayout();
+    layout->addWidget(qlab);
+    qd->setLayout(layout);
+    qd->setPalette(QPalette("#1d1f21"));
+    qd->show();
+}
+
+void KdASIOConfig::outputInfoClicked()
+{
+    QDialog *qd = new QDialog(this);
+    QLabel *qlab = new QLabel();
+    QString outputInfoText = "<b>" +
+                               tr ( "AUDIO OUTPUT DEVICE - Tips" ) +
+                               "</b> " +
+                               "<br>" + "<br>" +
+                               "Choose your Audio Output Device here, eg your headphones. " +
+                               "<br>" + "<br>" +
+                               "Click the tool button to go to Windows audio control panel and configure.";
+    qlab->setText(outputInfoText);
+    QVBoxLayout *layout = new QVBoxLayout();
+    layout->addWidget(qlab);
+    qd->setLayout(layout);
+    qd->setPalette(QPalette("#1d1f21"));
+    qd->show();
+}
+
+void KdASIOConfig::renderInfoClicked()
+{
+    QDialog *qd = new QDialog(this);
+    QLabel *qlab = new QLabel();
+    QString renderInfoText = "<b>" +
+                               tr ( "RENDERING MODE - Tips" ) +
+                               "</b> " +
+                               "<br>" + "<br>" +
+                               "Choose between Shared and Exclusive modes, provided by the WASAPI Windows audio system." +
+                               "<br>" + "<br>" +
+                               "Shared Mode: mix ASIO with regular Windows audio." +
+                               "<br>" + "<br>" +
+                               "Exclusive Mode: lowest latency, locks out access from other audio applications."
+                                ;
+    qlab->setText(renderInfoText);
+    QVBoxLayout *layout = new QVBoxLayout();
+    layout->addWidget(qlab);
+    qd->setLayout(layout);
+    qd->setPalette(QPalette("#1d1f21"));
+    qd->show();
+}
+
+void KdASIOConfig::bufferInfoClicked()
+{
+    QDialog *qd = new QDialog(this);
+    QLabel *qlab = new QLabel();
+    QString inputInfoText = "<b>" +
+                               tr ( "BUFFER SIZE - Tips" ) +
+                               "</b> " +
+                               "<br>" + "<br>" +
+                               "Select the size of the ASIO Buffer, by the number of samples. " +
+                               "<br>" + "<br>" +
+                               "A lower size may cause glitches in your sound, while higher size causes higher latency.";
+    qlab->setText(inputInfoText);
+    QVBoxLayout *layout = new QVBoxLayout();
+    layout->addWidget(qlab);
+    qd->setLayout(layout);
+    qd->setPalette(QPalette("#1d1f21"));
+    qd->show();
+}
+
+void KdASIOConfig::koordLiveClicked()
+{
+    QDesktopServices::openUrl(QUrl("https://koord.live", QUrl::TolerantMode));
+}
+
+void KdASIOConfig::githubClicked()
+{
+    QDesktopServices::openUrl(QUrl("https://github.com/koord-live/KoordASIO/releases", QUrl::TolerantMode));
 }

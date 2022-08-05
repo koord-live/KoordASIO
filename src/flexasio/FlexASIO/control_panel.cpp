@@ -66,43 +66,43 @@ namespace flexasio {
 
 		UniqueHKEY OpenFlexAsioGuiInstallRegistryKey() {
 			HKEY registryKey;
-			const auto regOpenKeyError = ::RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"Software\\Fabrikat\\FlexASIOGUI\\Install", {}, KEY_QUERY_VALUE | KEY_WOW64_64KEY, &registryKey);
-			if (regOpenKeyError != ERROR_SUCCESS) throw std::runtime_error("Unable to open FlexASIOGUI registry key: " + GetWindowsErrorString(regOpenKeyError));
+			const auto regOpenKeyError = ::RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"Software\\KoordASIO\\Install", {}, KEY_QUERY_VALUE | KEY_WOW64_64KEY, &registryKey);
+			if (regOpenKeyError != ERROR_SUCCESS) throw std::runtime_error("Unable to open KoordASIOSetup registry key: " + GetWindowsErrorString(regOpenKeyError));
 			return UniqueHKEY(registryKey);
 		}
 
 		std::wstring GetFlexAsioGuiInstallDirectory() {
-			Log() << "Attempting to open FlexASIOGUI install registry key";
+			Log() << "Attempting to open KoordASIOSetup install registry key";
 			const auto installRegistryKey = OpenFlexAsioGuiInstallRegistryKey();
 
-			Log() << "Attempting to query FlexASIOGUI install path registry value";
+			Log() << "Attempting to query KoordASIOSetup install path registry value";
 			return GetStringRegistryValue(installRegistryKey.get(), L"InstallPath");
 		}
 
 		void OpenFlexAsioGui(HWND windowHandle) {
 			const auto installDirectory = GetFlexAsioGuiInstallDirectory();
-			Log() << "FlexASIOGUI install directory: " << ConvertToUTF8(installDirectory);
+			Log() << "KoordASIOSetup install directory: " << ConvertToUTF8(installDirectory);
 
-			Execute(windowHandle, installDirectory + L"\\FlexASIOGUI.exe");
+			Execute(windowHandle, installDirectory + L"\\KoordASIOSetup.exe");
 		}
 		
 		void OpenConfigurationDocs(HWND windowHandle) {
-			Execute(windowHandle, std::wstring(L"https://github.com/dechamps/FlexASIO/blob/") + ConvertFromUTF8(::dechamps_CMakeUtils_gitDescription) + L"/CONFIGURATION.md");
+			Execute(windowHandle, std::wstring(L"https://github.com/koord-live/KoordASIO/blob/") + ConvertFromUTF8(::dechamps_CMakeUtils_gitDescription) + L"/CONFIGURATION.md");
 		}
 
 	}
 
 	void OpenControlPanel(HWND windowHandle) {
-		Log() << "Attempting to open FlexASIO GUI";
+		Log() << "Attempting to open KoordASIOSetup";
 		try {
 			OpenFlexAsioGui(windowHandle);
 			return;
 		}
 		catch (const std::exception& exception) {
-			Log() << "Unable to open FlexASIO GUI: " << ::dechamps_cpputil::GetNestedExceptionMessage(exception);
+			Log() << "Unable to open KoordASIOSetup: " << ::dechamps_cpputil::GetNestedExceptionMessage(exception);
 		}
 		catch (...) {
-			Log() << "Unable to open FlexASIO GUI due to unknown exception";
+			Log() << "Unable to open KoordASIOSetup due to unknown exception";
 		}
 
 		Log() << "Attempting to open configuration docs";
