@@ -1,17 +1,19 @@
 <RCC>
     <qresource prefix="/img">
         <file>images/BG_01.png</file>
-        <file>images/CONFIG_BTN.png</file>
-        <file>images/Info_BTN.png</file>
-        <file>images/EXCLUSIVE_OFF_BTN.png</file>
-        <file>images/SHARED_ON_BTN.png</file>
-        <file>images/DropDownArrow.png</file>
-        <file>images/github.png</file>
-        <file>images/EXCLUSIVE_ON_BTN.png</file>
-        <file>images/KoordASIO_Logo.png</file>
-        <file>images/SHARED_OFF_BTN.png</file>
-        <file>images/asiologo.png</file>
-        <file>images/Koord_Logo.png</file>
-        <file>images/Fader_BTN.png</file>
+        <file>images/CONFIG BTN OFF.png</file>
+        <file>images/CONFIG BTN ON.png</file>
+        <file>images/EXCLUSIVE OFF BTN.png</file>
+        <file>images/EXCLUSIVE ON BTN.png</file>
+        <file>images/Fader BTN.png</file>
+        <file>images/Frame.png</file>
+        <file>images/INFO BTN OFF.png</file>
+        <file>images/INFO BTN ON.png</file>
+        <file>images/Koord Logo.png</file>
+        <file>images/KoordASIO Logo.png</file>
+        <file>images/mark-github-24.png</file>
+        <file>images/SHARED OFF BTN.png</file>
+        <file>images/SHARED ON BTN.png</file>
+        <file>images/RoundedArrow4x.png</file>
     </qresource>
 </RCC>

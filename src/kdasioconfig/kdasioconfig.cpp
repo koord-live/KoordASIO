@@ -30,6 +30,8 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
     connect(bufferSizeSlider, &QSlider::valueChanged, this, &KdASIOConfig::bufferSizeChanged);
     connect(bufferSizeSlider, &QSlider::valueChanged, this, &KdASIOConfig::bufferSizeDisplayChange);
 
+//    bufferSizeDisplay->setStyleSheet("background-color: black");
+
     // populate input device choices
     inputDeviceBox->clear();
     const auto input_devices = m_devices->audioInputs();
@@ -210,7 +212,7 @@ void KdASIOConfig::setOperationMode()
 
 void KdASIOConfig::sharedModeSet()
 {
-//    sharedPushButton->setChecked(true);
+    sharedPushButton->setChecked(true);
     qDebug() << "sharedButt: " << sharedPushButton->isChecked();
     qDebug() << "exclusiveButt: " << exclusivePushButton->isChecked();
     exclusive_mode = false;
@@ -219,7 +221,7 @@ void KdASIOConfig::sharedModeSet()
 
 void KdASIOConfig::exclusiveModeSet()
 {
-//    exclusivePushButton->setChecked(true);
+    exclusivePushButton->setChecked(true);
     qDebug() << "sharedButt: " << sharedPushButton->isChecked();
     qDebug() << "exclusiveButt: " << exclusivePushButton->isChecked();
     exclusive_mode = true;
