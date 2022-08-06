@@ -18,7 +18,7 @@ echo "Get Qt 64 bit..."
 aqt install --outputdir C:\Qt 6.3.0 windows desktop win64_msvc2019_64
 # install tools - vcredist, cmake
 aqt install-tool windows desktop --outputdir C:\Qt tools_vcredist qt.tools.vcredist_msvc2019_x64
-aqt install-tool windows desktop --outputdir C:\Qt tools_cmake qt.tools.cmake.win64
+aqt install-tool windows desktop --outputdir C:\Qt tools_cmake qt.tools.cmake
 
 
 # echo "Get Qt 32 bit..."
