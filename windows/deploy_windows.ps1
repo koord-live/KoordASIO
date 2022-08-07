@@ -7,10 +7,9 @@ param(
     # [string] $AsioSDKName = "ASIOSDK2.3.3",
     [string] $AsioSDKName = "asiosdk_2.3.3_2019-06-14",
     [string] $AsioSDKUrl = "https://download.steinberg.net/sdk_downloads/asiosdk_2.3.3_2019-06-14.zip",
-    [string] $InnoSetupUrl = "https://jrsoftware.org/download.php/is.exe",
-    [string] $InnoSetupIsccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
-    [string] $VsDistFile64Redist = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Redist\",
-    [string] $VsDistFile64Path = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Redist\MSVC\14.29.30133\x64\Microsoft.VC142.CRT"
+    # [string] $InnoSetupUrl = "https://jrsoftware.org/download.php/is.exe",
+    # [string] $InnoSetupIsccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
+    [string] $VsDistFile64Path = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.32.31326\x64\Microsoft.VC143.CRT"
 )
 
 # change directory to the directory above (if needed)
@@ -139,10 +138,10 @@ Function Install-Dependencies
     Install-Dependency -Uri $AsioSDKUrl `
         -Name $AsioSDKName -Destination "ASIOSDK2"
 
-    # assuming Powershell3, install Chocolatey
-    Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://community.chocolatey.org/install.ps1 -UseBasicParsing | iex
-    # now install Innosetup
-    choco install innosetup
+    # # assuming Powershell3, install Chocolatey
+    # Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://community.chocolatey.org/install.ps1 -UseBasicParsing | iex
+    # # now install Innosetup
+    # choco install innosetup
 }
 
 # Setup environment variables and build tool paths
@@ -342,7 +341,7 @@ Function Build-Installer
     #FIXME for 64bit build only
     Set-Location -Path "$RootPath"
     # /Program Files (x86)/Inno Setup 6/ISCC.exe
-    Invoke-Native-Command -Command "${InnoSetupIsccPath}" `
+    Invoke-Native-Command -Command "ISCC.exe" `
         -Arguments ("$RootPath\kdinstaller.iss", `
          "/FKoordASIO-${AppVersion}")
 
