@@ -273,6 +273,7 @@ Function Build-App
         -Arguments ("--build", "$BuildPath\$BuildConfig\flexasio")
 
     # Collect! necessary Qt dlls for kdasioconfig
+    Set-Location -Path "$BuildPath\$BuildConfig\flexasio"
     Invoke-Native-Command -Command "$Env:QtWinDeployPath" `
         -Arguments ("--$BuildConfig", "--no-compiler-runtime", "--dir=$DeployPath\$BuildArch", `
         "--no-system-d3d-compiler",  "--no-opengl-sw", `
