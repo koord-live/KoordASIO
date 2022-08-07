@@ -297,7 +297,7 @@ Function Build-App
     Move-Item -Path "$BuildPath\$BuildConfig\kdasioconfig\KoordASIOSetup.exe" -Destination "$DeployPath\$BuildArch" -Force
     # Move 2 x FlexASIO dlls to deploy dir, rename DLL here for separation
     Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\KoordASIO.dll" -Destination "$DeployPath\$BuildArch" -Force
-    Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\portaudio_x64.dll" -Destination "$DeployPath\$BuildArch" -Force
+    Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\portaudio.dll" -Destination "$DeployPath\$BuildArch" -Force
     # move InnoSetup script to deploy dir
     Move-Item -Path "$WindowsPath\kdinstaller.iss" -Destination "$RootPath" -Force
 
