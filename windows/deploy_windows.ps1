@@ -301,9 +301,9 @@ Function Build-App
     # move InnoSetup script to deploy dir
     Move-Item -Path "$WindowsPath\kdinstaller.iss" -Destination "$RootPath" -Force
 
-    Get-ChildItem -Recurse $RootPath
+    # Get-ChildItem -Recurse $RootPath
 
-    Invoke-Native-Command -Command "nmake" -Arguments ("clean")
+    # Invoke-Native-Command -Command "nmake" -Arguments ("clean")
     Set-Location -Path $RootPath
 
 }
