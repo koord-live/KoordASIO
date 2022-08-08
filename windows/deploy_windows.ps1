@@ -276,7 +276,7 @@ Function Build-App
     Invoke-Native-Command -Command "$Env:QtWinDeployPath" `
         -Arguments ("--$BuildConfig", "--no-compiler-runtime", "--dir=$DeployPath\$BuildArch", `
         "--no-system-d3d-compiler",  "--no-opengl-sw", `
-        "$BuildPath\$BuildConfig\kdasioconfig\KoordASIOSetup.exe")
+        "$BuildPath\$BuildConfig\kdasioconfig\KoordASIOControl.exe")
 
     # Get-ChildItem -Recurse "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Redist\MSVC\"
 
@@ -286,18 +286,23 @@ Function Build-App
     # all build files:
         # kdasioconfig files inc qt dlls now in 
             # D:/a/KoordASIO/KoordASIO/deploy/x86_64/
-                # - KoordASIOSetup.exe
+                # - KoordASIOControl.exe
                 # all qt dlls etc ...
         # flexasio files in:
             # D:\a\KoordASIO\KoordASIO\build\flexasio\install\bin
-                # - FlexASIO.dll
-                # - portaudio_x64.dll 
+                # - FlexASIO.dll - renamed to KoordASIO.dll
+                # - portaudio.dll 
+                # ....
 
-    # Move KoordASIOSetup.exe to deploy dir
-    Move-Item -Path "$BuildPath\$BuildConfig\kdasioconfig\KoordASIOSetup.exe" -Destination "$DeployPath\$BuildArch" -Force
+    # Move KoordASIOControl.exe to deploy dir
+    Move-Item -Path "$BuildPath\$BuildConfig\kdasioconfig\KoordASIOControl.exe" -Destination "$DeployPath\$BuildArch" -Force
     # Move 2 x FlexASIO dlls to deploy dir, rename DLL here for separation
     Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\KoordASIO.dll" -Destination "$DeployPath\$BuildArch" -Force
     Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\portaudio.dll" -Destination "$DeployPath\$BuildArch" -Force
+    Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\ASIOTest.dll" -Destination "$DeployPath\$BuildArch" -Force
+    Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\sndfile.dll" -Destination "$DeployPath\$BuildArch" -Force
+    Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\FlexASIOTest.exe" -Destination "$DeployPath\$BuildArch" -Force
+    Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\PortAudioDevices.exe" -Destination "$DeployPath\$BuildArch" -Force
     # move InnoSetup script to deploy dir
     Move-Item -Path "$WindowsPath\kdinstaller.iss" -Destination "$RootPath" -Force
 

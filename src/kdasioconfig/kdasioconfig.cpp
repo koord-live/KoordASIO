@@ -206,7 +206,8 @@ void KdASIOConfig::bufferSizeChanged(int idx)
     // THUS avoiding lots of spurious intermediate updates on buffer changes
     bufferSize = bufferSizes[idx];
     bufferSizeSlider->setValue(idx);
-    latencyLabel->setText(QString::number(double(bufferSize) / 48, 'f', 2));
+    // Don't do any latency calculation for now, it is misleading as doesn't account for much of the whole audio chain
+//    latencyLabel->setText(QString::number(double(bufferSize) / 48, 'f', 2));
     writeTomlFile();
 }
 

@@ -67,23 +67,23 @@ namespace flexasio {
 		UniqueHKEY OpenFlexAsioGuiInstallRegistryKey() {
 			HKEY registryKey;
 			const auto regOpenKeyError = ::RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"Software\\KoordASIO\\Install", {}, KEY_QUERY_VALUE | KEY_WOW64_64KEY, &registryKey);
-			if (regOpenKeyError != ERROR_SUCCESS) throw std::runtime_error("Unable to open KoordASIOSetup registry key: " + GetWindowsErrorString(regOpenKeyError));
+			if (regOpenKeyError != ERROR_SUCCESS) throw std::runtime_error("Unable to open KoordASIOControl registry key: " + GetWindowsErrorString(regOpenKeyError));
 			return UniqueHKEY(registryKey);
 		}
 
 		std::wstring GetFlexAsioGuiInstallDirectory() {
-			Log() << "Attempting to open KoordASIOSetup install registry key";
+			Log() << "Attempting to open KoordASIOControl install registry key";
 			const auto installRegistryKey = OpenFlexAsioGuiInstallRegistryKey();
 
-			Log() << "Attempting to query KoordASIOSetup install path registry value";
+			Log() << "Attempting to query KoordASIOControl install path registry value";
 			return GetStringRegistryValue(installRegistryKey.get(), L"InstallPath");
 		}
 
 		void OpenFlexAsioGui(HWND windowHandle) {
 			const auto installDirectory = GetFlexAsioGuiInstallDirectory();
-			Log() << "KoordASIOSetup install directory: " << ConvertToUTF8(installDirectory);
+			Log() << "KoordASIOControl install directory: " << ConvertToUTF8(installDirectory);
 
-			Execute(windowHandle, installDirectory + L"\\KoordASIOSetup.exe");
+			Execute(windowHandle, installDirectory + L"\\KoordASIOControl.exe");
 		}
 		
 		void OpenConfigurationDocs(HWND windowHandle) {
@@ -93,16 +93,16 @@ namespace flexasio {
 	}
 
 	void OpenControlPanel(HWND windowHandle) {
-		Log() << "Attempting to open KoordASIOSetup";
+		Log() << "Attempting to open KoordASIOControl";
 		try {
 			OpenFlexAsioGui(windowHandle);
 			return;
 		}
 		catch (const std::exception& exception) {
-			Log() << "Unable to open KoordASIOSetup: " << ::dechamps_cpputil::GetNestedExceptionMessage(exception);
+			Log() << "Unable to open KoordASIOControl: " << ::dechamps_cpputil::GetNestedExceptionMessage(exception);
 		}
 		catch (...) {
-			Log() << "Unable to open KoordASIOSetup due to unknown exception";
+			Log() << "Unable to open KoordASIOControl due to unknown exception";
 		}
 
 		Log() << "Attempting to open configuration docs";

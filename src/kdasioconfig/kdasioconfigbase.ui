@@ -19,6 +19,12 @@
     <height>580</height>
    </size>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>450</width>
+    <height>580</height>
+   </size>
+  </property>
   <property name="font">
    <font>
     <stylestrategy>PreferAntialias</stylestrategy>
@@ -1267,13 +1273,6 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
              </property>
              <property name="segmentStyle">
               <enum>QLCDNumber::Flat</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="latencyLabel">
-             <property name="text">
-              <string>TextLabel</string>
              </property>
             </widget>
            </item>
