@@ -66,7 +66,7 @@ namespace flexasio {
 
 		UniqueHKEY OpenFlexAsioGuiInstallRegistryKey() {
 			HKEY registryKey;
-			const auto regOpenKeyError = ::RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"Software\\KoordASIO\\Install", {}, KEY_QUERY_VALUE | KEY_WOW64_64KEY, &registryKey);
+			const auto regOpenKeyError = ::RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"Software\\Koord\\KoordASIO\\Install", {}, KEY_QUERY_VALUE | KEY_WOW64_64KEY, &registryKey);
 			if (regOpenKeyError != ERROR_SUCCESS) throw std::runtime_error("Unable to open KoordASIOControl registry key: " + GetWindowsErrorString(regOpenKeyError));
 			return UniqueHKEY(registryKey);
 		}
