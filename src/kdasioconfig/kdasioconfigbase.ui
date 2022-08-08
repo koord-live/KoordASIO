@@ -31,7 +31,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>KoordASIO Setup</string>
+   <string>KoordASIO Control</string>
   </property>
   <property name="windowIcon">
    <iconset>
