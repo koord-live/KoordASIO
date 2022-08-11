@@ -15,5 +15,6 @@
         <file>images/SHARED OFF BTN.png</file>
         <file>images/SHARED ON BTN.png</file>
         <file>images/RoundedArrow4x.png</file>
+        <file>mainicon.ico</file>
     </qresource>
 </RCC>

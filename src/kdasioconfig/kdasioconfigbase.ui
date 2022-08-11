@@ -34,8 +34,8 @@
    <string>KoordASIO Control</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>../../koord-realtime/android/res/drawable-hdpi/icon.png</normaloff>../../koord-realtime/android/res/drawable-hdpi/icon.png</iconset>
+   <iconset resource="koordipics.qrc">
+    <normaloff>:/img/mainicon.ico</normaloff>:/img/mainicon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="autoFillBackground">
@@ -103,7 +103,7 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QLabel" name="label">
+          <widget class="QLabel" name="logoLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -138,7 +138,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="label_9">
+          <widget class="QLabel" name="subtitleLabel">
            <property name="maximumSize">
             <size>
              <width>16777215</width>
@@ -150,6 +150,9 @@
              <family>Rubik</family>
              <pointsize>8</pointsize>
             </font>
+           </property>
+           <property name="toolTip">
+            <string/>
            </property>
            <property name="styleSheet">
             <string notr="true">color: gray;</string>
@@ -200,7 +203,7 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_5">
+            <widget class="QLabel" name="inputDeviceLabel">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -257,6 +260,9 @@
                <height>0</height>
               </size>
              </property>
+             <property name="toolTip">
+              <string>Open sound Recording devices control panel</string>
+             </property>
              <property name="autoFillBackground">
               <bool>false</bool>
              </property>
@@ -269,8 +275,8 @@
              </property>
              <property name="iconSize">
               <size>
-               <width>25</width>
-               <height>25</height>
+               <width>28</width>
+               <height>28</height>
               </size>
              </property>
              <property name="flat">
@@ -279,7 +285,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="inputInfoButton">
+            <widget class="QLabel" name="inputInfoLabel">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -288,48 +294,24 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>0</width>
-               <height>0</height>
+               <width>25</width>
+               <height>25</height>
               </size>
              </property>
-             <property name="font">
-              <font>
-               <stylestrategy>PreferDefault</stylestrategy>
-              </font>
-             </property>
-             <property name="toolTip">
-              <string/>
-             </property>
-             <property name="statusTip">
-              <string/>
-             </property>
-             <property name="whatsThis">
-              <string/>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="koordipics.qrc">
-               <normaloff>:/img/images/INFO BTN OFF.png</normaloff>:/img/images/INFO BTN OFF.png</iconset>
-             </property>
-             <property name="iconSize">
+             <property name="maximumSize">
               <size>
                <width>25</width>
                <height>25</height>
               </size>
              </property>
-             <property name="checkable">
-              <bool>false</bool>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;AUDIO INPUT DEVICE - Tips&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Choose your Audio Input Device here, eg your microphone.&lt;/p&gt;&lt;p&gt;For best results, you should select a choice from the same hardware device as the Output device.&lt;/p&gt;&lt;p&gt;If you don't see your device listed here, you may need to configure it in Windows.&lt;/p&gt;&lt;p&gt;Click the tool button to pop up the Windows audio control panel for Recording devices, where you can manage your audio inputs. (You may need to close and re-open KoordASIO Control to refresh the device list.)&lt;/p&gt;&lt;p&gt;Hint: to set the sample rate, select the Device, click Properties, and select the &amp;quot;Advanced&amp;quot; tab. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
-             <property name="autoDefault">
-              <bool>false</bool>
+             <property name="styleSheet">
+              <string notr="true">image: url(:/img/images/INFO BTN OFF.png);</string>
              </property>
-             <property name="flat">
-              <bool>true</bool>
+             <property name="text">
+              <string/>
              </property>
             </widget>
            </item>
@@ -647,7 +629,7 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
             <number>0</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_6">
+            <widget class="QLabel" name="outputDeviceLabel">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -697,6 +679,9 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
                <height>0</height>
               </size>
              </property>
+             <property name="toolTip">
+              <string>Open sound Playback devices control panel</string>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -706,8 +691,8 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
              </property>
              <property name="iconSize">
               <size>
-               <width>25</width>
-               <height>25</height>
+               <width>28</width>
+               <height>28</height>
               </size>
              </property>
              <property name="flat">
@@ -716,7 +701,7 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="outputInfoButton">
+            <widget class="QLabel" name="outputInfoLabel">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -725,38 +710,18 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
              </property>
              <property name="minimumSize">
               <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="koordipics.qrc">
-               <normaloff>:/img/images/INFO BTN OFF.png</normaloff>
-               <normalon>:/img/images/INFO BTN ON.png</normalon>:/img/images/INFO BTN OFF.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
                <width>25</width>
                <height>25</height>
               </size>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;AUDIO OUTPUT DEVICE - Tips&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Choose your Audio Output Device here, eg your headphones.&lt;/p&gt;&lt;p&gt;For best results, you should select a choice from the same hardware device as the Input device.&lt;/p&gt;&lt;p&gt;If you don't see your device listed here, you may need to configure it in Windows.&lt;/p&gt;&lt;p&gt;Click the tool button to pop up the Windows audio control panel for Playback devices, where you can manage your audio outputs. (You may need to close and re-open KoordASIO Control to refresh the device list.)&lt;/p&gt;&lt;p&gt;Hint: to set the sample rate, select the Device, click Properties, and select the &amp;quot;Advanced&amp;quot; tab. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
-             <property name="autoDefault">
-              <bool>false</bool>
+             <property name="styleSheet">
+              <string notr="true">image: url(:/img/images/INFO BTN OFF.png);</string>
              </property>
-             <property name="default">
-              <bool>false</bool>
-             </property>
-             <property name="flat">
-              <bool>true</bool>
+             <property name="text">
+              <string/>
              </property>
             </widget>
            </item>
@@ -861,7 +826,7 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
           <number>15</number>
          </property>
          <property name="bottomMargin">
-          <number>7</number>
+          <number>0</number>
          </property>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_10">
@@ -872,7 +837,13 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
             <number>0</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_7">
+            <widget class="QLabel" name="renderLabel">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="font">
               <font>
                <family>Rubik</family>
@@ -905,34 +876,27 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="renderInfoButton">
+            <widget class="QLabel" name="renderInfoLabel">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="koordipics.qrc">
-               <normaloff>:/img/images/INFO BTN OFF.png</normaloff>:/img/images/INFO BTN OFF.png</iconset>
-             </property>
-             <property name="iconSize">
+             <property name="minimumSize">
               <size>
                <width>25</width>
                <height>25</height>
               </size>
              </property>
-             <property name="autoDefault">
-              <bool>false</bool>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:700;&quot;&gt;AUDIO RENDERING MODE - Tips&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Choose between Shared and Exclusive modes, provided by the WASAPI Windows audio system. &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Shared Mode: &lt;/span&gt;lets you use the same audio device simultaneously for both ASIO and non-ASIO audio applications, so you can mix ASIO with &amp;quot;regular&amp;quot; Windows audio. This results in higher latency: you can expect between 10-20ms on a generic audio chipset.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Exclusive Mode: &lt;/span&gt;provides the lowest latency (less than 10ms), and bit-perfect operation. This mode locks out access to the audio device from other (non-ASIO) audio applications. &lt;/p&gt;&lt;p&gt;Note: depending on your audio hardware, using Exclusive mode &lt;span style=&quot; font-style:italic;&quot;&gt;may&lt;/span&gt; result in glitches in the sound, which can be reduced by setting the Buffer Size to 512 samples or higher. If glitches still occur, please contact us via the Koord.Live link at the bottom of the window and give us a description of the issue.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
-             <property name="flat">
-              <bool>true</bool>
+             <property name="styleSheet">
+              <string notr="true">image: url(:/img/images/INFO BTN OFF.png);</string>
+             </property>
+             <property name="text">
+              <string/>
              </property>
             </widget>
            </item>
@@ -947,13 +911,13 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
             <number>0</number>
            </property>
            <property name="topMargin">
-            <number>7</number>
+            <number>0</number>
            </property>
            <property name="rightMargin">
             <number>0</number>
            </property>
            <property name="bottomMargin">
-            <number>7</number>
+            <number>0</number>
            </property>
            <item>
             <spacer name="horizontalSpacer_12">
@@ -1143,15 +1107,24 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
           <number>15</number>
          </property>
          <property name="bottomMargin">
-          <number>3</number>
+          <number>0</number>
          </property>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_14">
            <property name="spacing">
             <number>7</number>
            </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
            <item>
             <widget class="QLabel" name="label_8">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="font">
               <font>
                <family>Rubik</family>
@@ -1183,34 +1156,48 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="bufferInfoButton">
+            <widget class="QLabel" name="bufferInfoLabel">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="koordipics.qrc">
-               <normaloff>:/img/images/INFO BTN OFF.png</normaloff>:/img/images/INFO BTN OFF.png</iconset>
-             </property>
-             <property name="iconSize">
+             <property name="minimumSize">
               <size>
                <width>25</width>
                <height>25</height>
               </size>
              </property>
-             <property name="autoDefault">
+             <property name="maximumSize">
+              <size>
+               <width>25</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;BUFFER SIZE - Tips&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select the size of the ASIO Buffer, by the number of samples.&lt;/p&gt;&lt;p&gt;A lower buffer size gives lower latency but may cause glitches in your sound.&lt;/p&gt;&lt;p&gt;Make the buffer size larger if you experience glitches.&lt;/p&gt;&lt;p&gt;Note: DAW software such as Ableton Live may report inaccurate latency statistics - this is a known current issue.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="toolTipDuration">
+              <number>0</number>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">image: url(:/img/images/INFO BTN OFF.png); </string>
+             </property>
+             <property name="lineWidth">
+              <number>0</number>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="scaledContents">
               <bool>false</bool>
              </property>
-             <property name="flat">
-              <bool>true</bool>
+             <property name="margin">
+              <number>0</number>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::NoTextInteraction</set>
              </property>
             </widget>
            </item>
@@ -1225,13 +1212,13 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
             <number>8</number>
            </property>
            <property name="topMargin">
-            <number>7</number>
+            <number>0</number>
            </property>
            <property name="rightMargin">
             <number>8</number>
            </property>
            <property name="bottomMargin">
-            <number>7</number>
+            <number>0</number>
            </property>
            <item>
             <widget class="QLCDNumber" name="bufferSizeDisplay">
@@ -1379,22 +1366,22 @@ QSlider::sub-page:horizontal {
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_15">
          <property name="spacing">
-          <number>7</number>
+          <number>0</number>
          </property>
          <property name="leftMargin">
-          <number>15</number>
+          <number>5</number>
          </property>
          <property name="topMargin">
           <number>0</number>
          </property>
          <property name="rightMargin">
-          <number>15</number>
+          <number>0</number>
          </property>
          <property name="bottomMargin">
           <number>0</number>
          </property>
          <item>
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="asioLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -1406,6 +1393,9 @@ QSlider::sub-page:horizontal {
              <width>56</width>
              <height>16</height>
             </size>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ASIO is a trademark of &lt;span style=&quot; font-weight:700;&quot;&gt;Steinberg Media Technologies GmbH&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="styleSheet">
             <string notr="true">image: url(:/img/images/Frame.png);</string>
@@ -1435,6 +1425,9 @@ QSlider::sub-page:horizontal {
              <width>101</width>
              <height>15</height>
             </size>
+           </property>
+           <property name="toolTip">
+            <string>Open the Koord website</string>
            </property>
            <property name="autoFillBackground">
             <bool>false</bool>
@@ -1471,7 +1464,49 @@ QSlider::sub-page:horizontal {
           </spacer>
          </item>
          <item>
+          <widget class="QPushButton" name="versionButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>8</pointsize>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>Check for updates</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: gray;</string>
+           </property>
+           <property name="text">
+            <string>v1.9.5</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="githubButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>Source Code - Github</string>
+           </property>
            <property name="text">
             <string/>
            </property>

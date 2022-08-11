@@ -24,6 +24,11 @@ KdASIOConfigBase::~KdASIOConfigBase() {}
 KdASIOConfig::KdASIOConfig(QWidget *parent)
     : KdASIOConfigBase(parent)
 {
+    this->setAttribute(Qt::WA_AlwaysShowToolTips,true);
+
+    // init mmcpl proc
+    mmcplProc = nullptr;
+
     // set up signals
     connect(sharedPushButton, &QPushButton::clicked, this, &KdASIOConfig::sharedModeSet);
     connect(exclusivePushButton, &QPushButton::clicked, this, &KdASIOConfig::exclusiveModeSet);
@@ -33,26 +38,20 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
     connect(outputAudioSettButton, &QPushButton::pressed, this, &KdASIOConfig::outputAudioSettClicked);
     connect(bufferSizeSlider, &QSlider::valueChanged, this, &KdASIOConfig::bufferSizeChanged);
     connect(bufferSizeSlider, &QSlider::valueChanged, this, &KdASIOConfig::bufferSizeDisplayChange);
-    // info buttons
-    connect(inputInfoButton, &QPushButton::pressed, this, &KdASIOConfig::inputInfoClicked);
-    connect(outputInfoButton, &QPushButton::pressed, this, &KdASIOConfig::outputInfoClicked);
-    connect(renderInfoButton, &QPushButton::pressed, this, &KdASIOConfig::renderInfoClicked);
-    connect(bufferInfoButton, &QPushButton::pressed, this, &KdASIOConfig::bufferInfoClicked);
     // connect footer buttons
     connect(koordLiveButton, &QPushButton::pressed, this, &KdASIOConfig::koordLiveClicked);
     connect(githubButton, &QPushButton::pressed, this, &KdASIOConfig::githubClicked);
-
-//    bufferSizeDisplay->setStyleSheet("background-color: black");
-
+    connect(versionButton, &QPushButton::pressed, this, &KdASIOConfig::versionButtonClicked);
+    // for URLs
     koordLiveButton->setCursor(Qt::PointingHandCursor);
     githubButton->setCursor(Qt::PointingHandCursor);
+    versionButton->setCursor(Qt::PointingHandCursor);
 
     // populate input device choices
     inputDeviceBox->clear();
     const auto input_devices = m_devices->audioInputs();
     for (auto &deviceInfo: input_devices)
         inputDeviceBox->addItem(deviceInfo.description(), QVariant::fromValue(deviceInfo));
-
 
     // populate output device choices
     outputDeviceBox->clear();
@@ -182,6 +181,7 @@ void KdASIOConfig::writeTomlFile()
     // need to explicitly set UTF-8 for non-ASCII character support
     out.setEncoding(QStringConverter::Utf8);
     // out.setCodec("UTF-8");
+    //FIXME should really write to intermediate buffer, THEN to file - to make single write on file
     out << "backend = \"Windows WASAPI\"" << "\n";
     out << "bufferSizeSamples = " << bufferSize << "\n";
     out << "\n";
@@ -230,8 +230,8 @@ void KdASIOConfig::setOperationMode()
 void KdASIOConfig::sharedModeSet()
 {
     sharedPushButton->setChecked(true);
-    qDebug() << "sharedButt: " << sharedPushButton->isChecked();
-    qDebug() << "exclusiveButt: " << exclusivePushButton->isChecked();
+//    qDebug() << "sharedButt: " << sharedPushButton->isChecked();
+//    qDebug() << "exclusiveButt: " << exclusivePushButton->isChecked();
     exclusive_mode = false;
     writeTomlFile();
 }
@@ -239,8 +239,8 @@ void KdASIOConfig::sharedModeSet()
 void KdASIOConfig::exclusiveModeSet()
 {
     exclusivePushButton->setChecked(true);
-    qDebug() << "sharedButt: " << sharedPushButton->isChecked();
-    qDebug() << "exclusiveButt: " << exclusivePushButton->isChecked();
+//    qDebug() << "sharedButt: " << sharedPushButton->isChecked();
+//    qDebug() << "exclusiveButt: " << exclusivePushButton->isChecked();
     exclusive_mode = true;
     writeTomlFile();
 }
@@ -268,103 +268,56 @@ void KdASIOConfig::outputDeviceChanged(int idx)
 void KdASIOConfig::inputAudioSettClicked()
 {
     // open Windows audio input settings control panel
-    QProcess *myProcess = new QProcess(this);
-    myProcess->startDetached("control", QStringList() << inputAudioSettPath);
+    //FIXME - this process control does NOT work as Windows forks+kills the started process immediately? or something
+    if (mmcplProc != nullptr) {
+        mmcplProc->kill();
+    }
+    mmcplProc = new QProcess(this);
+    mmcplProc->start("control", QStringList() << inputAudioSettPath);
 }
 
 void KdASIOConfig::outputAudioSettClicked()
 {
     // open Windows audio output settings control panel
-    QProcess *myProcess = new QProcess(this);
-    myProcess->startDetached("control", QStringList() << outputAudioSettPath);
+    //FIXME - this process control does NOT work as Windows forks+kills the started process immediately? or something
+    if (mmcplProc != nullptr) {
+        mmcplProc->kill();
+    }
+    mmcplProc = new QProcess(this);
+    mmcplProc->start("control", QStringList() << outputAudioSettPath);
 }
 
 
-void KdASIOConfig::inputInfoClicked()
-{
-    QDialog *qd = new QDialog(this);
-    QLabel *qlab = new QLabel();
-    QString inputInfoText = "<b>" +
-                               tr ( "AUDIO INPUT DEVICE - Tips" ) +
-                               "</b> " +
-                               "<br>" + "<br>" +
-                               "Choose your Audio Input Device here, eg your microphone. " +
-                               "<br>" + "<br>" +
-                               "Click the tool button to go to Windows audio control panel and configure.";
-    qlab->setText(inputInfoText);
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(qlab);
-    qd->setLayout(layout);
-    qd->setPalette(QPalette("#1d1f21"));
-    qd->show();
-}
-
-void KdASIOConfig::outputInfoClicked()
-{
-    QDialog *qd = new QDialog(this);
-    QLabel *qlab = new QLabel();
-    QString outputInfoText = "<b>" +
-                               tr ( "AUDIO OUTPUT DEVICE - Tips" ) +
-                               "</b> " +
-                               "<br>" + "<br>" +
-                               "Choose your Audio Output Device here, eg your headphones. " +
-                               "<br>" + "<br>" +
-                               "Click the tool button to go to Windows audio control panel and configure.";
-    qlab->setText(outputInfoText);
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(qlab);
-    qd->setLayout(layout);
-    qd->setPalette(QPalette("#1d1f21"));
-    qd->show();
-}
-
-void KdASIOConfig::renderInfoClicked()
-{
-    QDialog *qd = new QDialog(this);
-    QLabel *qlab = new QLabel();
-    QString renderInfoText = "<b>" +
-                               tr ( "RENDERING MODE - Tips" ) +
-                               "</b> " +
-                               "<br>" + "<br>" +
-                               "Choose between Shared and Exclusive modes, provided by the WASAPI Windows audio system." +
-                               "<br>" + "<br>" +
-                               "Shared Mode: mix ASIO with regular Windows audio." +
-                               "<br>" + "<br>" +
-                               "Exclusive Mode: lowest latency, locks out access from other audio applications."
-                                ;
-    qlab->setText(renderInfoText);
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(qlab);
-    qd->setLayout(layout);
-    qd->setPalette(QPalette("#1d1f21"));
-    qd->show();
-}
-
-void KdASIOConfig::bufferInfoClicked()
-{
-    QDialog *qd = new QDialog(this);
-    QLabel *qlab = new QLabel();
-    QString inputInfoText = "<b>" +
-                               tr ( "BUFFER SIZE - Tips" ) +
-                               "</b> " +
-                               "<br>" + "<br>" +
-                               "Select the size of the ASIO Buffer, by the number of samples. " +
-                               "<br>" + "<br>" +
-                               "A lower size may cause glitches in your sound, while higher size causes higher latency.";
-    qlab->setText(inputInfoText);
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(qlab);
-    qd->setLayout(layout);
-    qd->setPalette(QPalette("#1d1f21"));
-    qd->show();
-}
+//void KdASIOConfig::bufferInfoClicked()
+//{
+//    QDialog *qd = new QDialog(this);
+//    QLabel *qlab = new QLabel();
+//    QString inputInfoText = "<b>" +
+//                               tr ( "BUFFER SIZE - Tips" ) +
+//                               "</b> " +
+//                               "<br>" + "<br>" +
+//                               "Select the size of the ASIO Buffer, by the number of samples. " +
+//                               "<br>" + "<br>" +
+//                               "A lower size may cause glitches in your sound, while higher size causes higher latency.";
+//    qlab->setText(inputInfoText);
+//    QVBoxLayout *layout = new QVBoxLayout();
+//    layout->addWidget(qlab);
+//    qd->setLayout(layout);
+//    qd->setPalette(QPalette("#1d1f21"));
+//    qd->show();
+//}
 
 void KdASIOConfig::koordLiveClicked()
 {
     QDesktopServices::openUrl(QUrl("https://koord.live", QUrl::TolerantMode));
 }
 
-void KdASIOConfig::githubClicked()
+void KdASIOConfig::versionButtonClicked()
 {
     QDesktopServices::openUrl(QUrl("https://github.com/koord-live/KoordASIO/releases", QUrl::TolerantMode));
+}
+
+void KdASIOConfig::githubClicked()
+{
+    QDesktopServices::openUrl(QUrl("https://github.com/koord-live/KoordASIO", QUrl::TolerantMode));
 }

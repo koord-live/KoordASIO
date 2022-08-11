@@ -57,6 +57,7 @@
 #include <QMainWindow>
 #include <QObject>
 #include <QDir>
+#include <QProcess>
 #include "toml.h"
 
 #include "ui_kdasioconfigbase.h"
@@ -91,6 +92,7 @@ private:
     QString inputAudioSettPath = "mmsys.cpl,,1";
     QString outputAudioSettPath = "mmsys.cpl";
     QList<int> bufferSizes = { 32, 64, 128, 256, 512, 1024, 2048 };
+    QProcess *mmcplProc;
 
 private slots:
     void bufferSizeChanged(int idx);
@@ -106,12 +108,9 @@ private slots:
     void setValuesFromToml(std::ifstream *ifs, toml::ParseResult *pr);
     void inputAudioSettClicked();
     void outputAudioSettClicked();
-    void inputInfoClicked();
-    void outputInfoClicked();
-    void renderInfoClicked();
-    void bufferInfoClicked();
     void koordLiveClicked();
     void githubClicked();
+    void versionButtonClicked();
 };
 
 #endif
