@@ -1,7 +1,5 @@
 # KoordASIO, a user-friendly universal ASIO driver
 
-*ASIO is a trademark and software of Steinberg Media Technologies GmbH*
-
 **If you are looking for an installer, see the 
 [GitHub releases page][releases].**
 
@@ -34,7 +32,7 @@ driver list of any ASIO Host Application (e.g. Ableton, Cubase, Reaper).
 
 The default settings are as follows:
 
- - WASAPI Shared Mode [backend][BACKENDS]
+ - WASAPI [Shared Mode][BACKENDS]
  - Uses the Windows default recording and playback audio devices
  - 32-bit float sample type
  - 32-sample buffer size
@@ -46,4 +44,13 @@ Exclusive mode, and to change the Buffer Size in steps between 32 and 2048 sampl
 
 ## Troubleshooting
 Hopefully KoordASIO should work seamlessly out-of-the-box for you. If you do notice
-problems, please create an Issue at 
+problems, please create an Issue at [the Issues page][issues] or send an email to 
+music@koord.live.
+
+---
+
+*ASIO is a trademark and software of Steinberg Media Technologies GmbH*
+
+[releases]: https://github.com/koord-live/KoordASIO/releases
+[issues]: https://github.com/koord-live/KoordASIO/issues
+[BACKENDS]: BACKENDS.md
