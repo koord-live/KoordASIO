@@ -2,17 +2,19 @@
 
 *ASIO is a trademark and software of Steinberg Media Technologies GmbH*
 
-**If you are looking for an installer, see the
+**If you are looking for an installer, see the 
 [GitHub releases page][releases].**
 
 ## Description
 
-KoordASIO is a *universal [ASIO][] driver*, meaning that it is not tied to
+KoordASIO is a universal ASIO driver, meaning that it is not tied to
 specific audio hardware. 
 You can use it with any audio hardware that doesn't come with its own drivers,
 or where you need features that aren't available with your bundled ASIO drivers.
 
-KoordASIO is clone of the powerful FlexASIO project, with the addition of an 
+![KoordASIOScreenshot1](https://user-images.githubusercontent.com/584572/184340647-045088d1-6ba6-452d-b3ed-058e5d073449.png)
+
+KoordASIO is a clone of the powerful FlexASIO project, but with the addition of an 
 intuitive Control GUI that gives the user an easy way to use all the power of 
 FlexASIO without any technical knowledge. FlexASIO itself has a wide array of 
 options, but KoordASIO focuses on simplicity and low-latency configuration, 
