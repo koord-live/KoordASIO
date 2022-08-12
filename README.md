@@ -10,7 +10,7 @@ specific audio hardware.
 You can use it with any audio hardware that doesn't come with its own drivers,
 or where you need features that aren't available with your bundled ASIO drivers.
 
-![KoordASIOScreenshot1](https://user-images.githubusercontent.com/584572/184340647-045088d1-6ba6-452d-b3ed-058e5d073449.png)
+![KoordASIOScreenshot1a](https://user-images.githubusercontent.com/584572/184341896-1544a755-ebed-466f-b61e-e1d82c4530af.png)
 
 KoordASIO is a clone of the powerful FlexASIO project, but with the addition of an 
 intuitive Control GUI that gives the user an easy way to use all the power of 
