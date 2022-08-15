@@ -17,8 +17,8 @@ intuitive Control GUI that gives the user an easy way to use all the power of
 FlexASIO without any technical knowledge. FlexASIO itself has a wide array of 
 options, but KoordASIO focuses on simplicity and low-latency configuration, 
 giving the user the choice of WASAPI Shared Mode (to mix ASIO audio with other 
-audio application audio) and WASAPI Exclusive Mode (locks out non-ASIO audio, 
-and ensures lowest-latency, bit-perfect operation). 
+application audio) and WASAPI Exclusive Mode (locks out non-ASIO audio, ensuring 
+lowest-latency, bit-perfect operation). 
 
 ## Requirements
 
