@@ -55,7 +55,7 @@
 int main(int argv, char **args)
 {
     QApplication app(argv, args);
-    app.setApplicationName("KoordASIO Control");
+    app.setApplicationName("KoordASIO (Built-in) Control");
 
     KdASIOConfig audio;
     audio.show();

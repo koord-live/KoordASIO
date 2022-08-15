@@ -87,8 +87,7 @@ private:
     bool exclusive_mode;
     QString outputDeviceName;
     QString inputDeviceName;
-    // QString fullpath = QDir::homePath() + "/.KoordASIO-builtin.toml";
-    QString fullpath = QDir::homePath() + "/.KoordASIO.toml";
+    QString fullpath = QDir::homePath() + "/.KoordASIO_builtin.toml";
     QString inputAudioSettPath = "mmsys.cpl,,1";
     QString outputAudioSettPath = "mmsys.cpl";
     QList<int> bufferSizes = { 32, 64, 128, 256, 512, 1024, 2048 };

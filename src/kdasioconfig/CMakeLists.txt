@@ -38,7 +38,7 @@ target_link_libraries(kdasioconfig PRIVATE Qt6::Widgets)
 target_link_libraries(kdasioconfig PRIVATE Qt6::Multimedia)
 
 set_target_properties(kdasioconfig PROPERTIES
-    OUTPUT_NAME "KoordASIOControl"
+    OUTPUT_NAME "KoordASIOControl_builtin"
     WIN32_EXECUTABLE TRUE
 )
 

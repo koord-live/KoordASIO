@@ -276,7 +276,7 @@ Function Build-App
     Invoke-Native-Command -Command "$Env:QtWinDeployPath" `
         -Arguments ("--$BuildConfig", "--no-compiler-runtime", "--dir=$DeployPath\$BuildArch", `
         "--no-system-d3d-compiler",  "--no-opengl-sw", `
-        "$BuildPath\$BuildConfig\kdasioconfig\KoordASIOControl.exe")
+        "$BuildPath\$BuildConfig\kdasioconfig\KoordASIOControl_builtin.exe")
 
     # Get-ChildItem -Recurse "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Redist\MSVC\"
 
@@ -286,7 +286,7 @@ Function Build-App
     # all build files:
         # kdasioconfig files inc qt dlls now in 
             # D:/a/KoordASIO/KoordASIO/deploy/x86_64/
-                # - KoordASIOControl.exe
+                # - KoordASIOControl_builtin.exe
                 # all qt dlls etc ...
         # flexasio files in:
             # D:\a\KoordASIO\KoordASIO\build\flexasio\install\bin
@@ -294,8 +294,8 @@ Function Build-App
                 # - portaudio.dll 
                 # ....
 
-    # Move KoordASIOControl.exe to deploy dir
-    Move-Item -Path "$BuildPath\$BuildConfig\kdasioconfig\KoordASIOControl.exe" -Destination "$DeployPath\$BuildArch" -Force
+    # Move KoordASIOControl_builtin.exe to deploy dir
+    Move-Item -Path "$BuildPath\$BuildConfig\kdasioconfig\KoordASIOControl_builtin.exe" -Destination "$DeployPath\$BuildArch" -Force
     # Move 2 x FlexASIO dlls to deploy dir, rename DLL here for separation
     Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\KoordASIO.dll" -Destination "$DeployPath\$BuildArch" -Force
     Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\portaudio.dll" -Destination "$DeployPath\$BuildArch" -Force

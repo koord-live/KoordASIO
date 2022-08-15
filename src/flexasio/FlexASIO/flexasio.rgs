@@ -1,15 +1,15 @@
 HKCR
 {
-	ForceRemove koordasio.KoordASIO.1 = s 'KoordASIO'
+	ForceRemove koordasio.KoordASIO_builtin.1 = s 'KoordASIO'
 	{
-		CLSID = s '{EE8F66BC-9646-4487-ACB9-0F1C7D68D1FA}'
+		CLSID = s '{481A01F8-8C63-4573-9163-BB06B0601E60}'
 	}
 
 	NoRemove CLSID
 	{
-		ForceRemove {EE8F66BC-9646-4487-ACB9-0F1C7D68D1FA} = s 'KoordASIO'
+		ForceRemove {481A01F8-8C63-4573-9163-BB06B0601E60} = s 'KoordASIO'
 		{
-			ProgID = s 'koordasio.KoordASIO.1'
+			ProgID = s 'koordasio.KoordASIO_builtin.1'
 			InprocServer32 = s '%MODULE%'
 			{
 				val ThreadingModel = s 'Both'
@@ -26,7 +26,7 @@ HKLM
 		{
 			ForceRemove KoordASIO
 			{
-				val CLSID = s '{EE8F66BC-9646-4487-ACB9-0F1C7D68D1FA}'
+				val CLSID = s '{481A01F8-8C63-4573-9163-BB06B0601E60}'
 				val Description = s 'KoordASIO'
 			}
 		}

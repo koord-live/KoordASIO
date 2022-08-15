@@ -22,16 +22,16 @@ WizardSmallImageFile=windows\koordasio-small.bmp
 
 [Files]
 Source:"deploy\x86_64\KoordASIO.dll"; DestDir: "{app}"; Flags: ignoreversion regserver 64bit; Check: Is64BitInstallMode
-; install everything else in deploy dir, including portaudio.dll, KoordASIOControl.exe and all Qt dll deps
+; install everything else in deploy dir, including portaudio.dll, KoordASIOControl_builtin.exe and all Qt dll deps
 Source:"deploy\x86_64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs 64bit; Check: Is64BitInstallMode
 
 [Icons]
-Name: "{group}\KoordASIO Control"; Filename: "{app}\KoordASIOControl.exe"; WorkingDir: "{app}"
+Name: "{group}\KoordASIO (Built-in) Control"; Filename: "{app}\KoordASIOControl_builtin.exe"; WorkingDir: "{app}"
 
 [Run]
-Filename: "{app}\KoordASIOControl.exe"; Description: "Run KoordASIO Control"; Flags: postinstall nowait skipifsilent
+Filename: "{app}\KoordASIOControl_builtin.exe"; Description: "Run KoordASIO (Built-in) Control"; Flags: postinstall nowait skipifsilent
 
-; install reg key to locate KoordASIOControl at runtime
+; install reg key to locate KoordASIOControl_builtin at runtime
 [Registry]
 Root: HKLM64; Subkey: "Software\Koord"; Flags: uninsdeletekeyifempty
 Root: HKLM64; Subkey: "Software\Koord\KoordASIO"; Flags: uninsdeletekey
