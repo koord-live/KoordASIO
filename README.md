@@ -28,7 +28,9 @@ and ensures lowest-latency, bit-perfect operation).
 ## Usage
 
 After running the [installer][releases], KoordASIO should appear in the ASIO
-driver list of any ASIO Host Application (e.g. Ableton, Cubase, Reaper).
+driver list of any ASIO Host Application (e.g. Ableton, Cubase, Reaper). The Control
+GUI (KoordASIOControl.exe) can be launched at any time by clicking on the "ASIO Setup"
+button in your host software, or as usual via the Windows launcher.
 
 The default settings are as follows:
 
