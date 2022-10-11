@@ -237,6 +237,7 @@ Function Build-App
     )
 
     # Build kdasioconfig Qt project with CMake / nmake
+    # # Build FlexASIO dlls with CMake / nmake
     Invoke-Native-Command -Command "$Env:QtCmakePath" `
         -Arguments ("-DCMAKE_PREFIX_PATH='$QtInstallPath\$QtCompile64\lib\cmake'", `
             "-DCMAKE_BUILD_TYPE=Release", `
@@ -247,17 +248,6 @@ Function Build-App
     # Invoke-Native-Command -Command "nmake" -Arguments ("$BuildConfig")
     Invoke-Native-Command -Command "nmake"
     
-    # # Build FlexASIO dlls with CMake / nmake
-    # Invoke-Native-Command -Command "$Env:QtCmakePath" `
-    #     -Arguments ("-DCMAKE_PREFIX_PATH='$QtInstallPath\$QtCompile64\lib\cmake:$RootPath\src\dechamps_cpputil:$RootPath\src\dechamps_ASIOUtil'", `
-    #         "-DCMAKE_BUILD_TYPE=Release", `
-    #         "-S", "$RootPath\src", `
-    #         "-B", "$BuildPath\$BuildConfig\flexasio", `
-    #         "-G", "Ninja")
-    # Set-Location -Path "$BuildPath\$BuildConfig\flexasio"
-    # Invoke-Native-Command -Command "nmake"
-
-    # Set-Location -Path "$BuildPath\$BuildConfig\flexasio"
     Set-Location -Path "$RootPath"
 
     # Ninja! 
