@@ -1489,7 +1489,7 @@ QSlider::sub-page:horizontal {
             <string notr="true">color: gray;</string>
            </property>
            <property name="text">
-            <string>v1.9.6</string>
+            <string>v2.0.0</string>
            </property>
            <property name="flat">
             <bool>true</bool>
