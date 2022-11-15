@@ -27,4 +27,5 @@ if (("$koordasio_project_path" -eq $null) -or ("$koordasio_project_path" -eq "")
 
 echo "Build installer..."
 # Build the installer
-powershell "$koordasio_project_path\windows\deploy_windows.ps1" "C:\Qt\6.3.0"
+$ExtraArgs += ("-APP_BUILD_VERSION", $Env:koordasio_buildversionstring)
+powershell "$koordasio_project_path\windows\deploy_windows.ps1" @ExtraArgs

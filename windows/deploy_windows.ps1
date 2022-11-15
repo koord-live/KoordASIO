@@ -1,7 +1,8 @@
 param(
+    [string] $APP_BUILD_VERSION = "1.0.0",
     # Replace default path with system Qt installation folder if necessary
     [string] $QtPath = "C:\Qt",
-    [string] $QtInstallPath = "C:\Qt\6.3.0",
+    [string] $QtInstallPath = "C:\Qt\6.3.2",
     [string] $QtCompile32 = "msvc2019",
     [string] $QtCompile64 = "msvc2019_64",
     # [string] $AsioSDKName = "ASIOSDK2.3.3",
@@ -324,26 +325,29 @@ function Build-App-Variants
 # Build Windows installer
 Function Build-Installer
 {
-    foreach ($_ in Get-Content -Path "$RootPath\kdASIOVersion.txt")
-    {
-        if ($_ -Match "^VERSION *= *(.*)$")
-        {
-            $AppVersion = $Matches[1]
-            break
-        }
-    }
-
     #FIXME for 64bit build only
     Set-Location -Path "$RootPath"
     # /Program Files (x86)/Inno Setup 6/ISCC.exe
     Invoke-Native-Command -Command "ISCC.exe" `
         -Arguments ("$RootPath\kdinstaller.iss", `
-         "/FKoordASIO-${AppVersion}")
+         "/FKoordASIO-$APP_BUILD_VERSION")
 
 }
 
+Function SignExe
+{
+    $WindowsOVCertPwd = Get-Content "C:\KoordOVCertPwd" 
+
+    Invoke-Native-Command -Command "SignTool" `
+        -Arguments ("sign", "/f", "C:\KoordOVCert.pfx", `
+        "/p", $WindowsOVCertPwd, `
+        "/tr", "http://timestamp.sectigo.com", `
+        "/td", "SHA256", "/fd", "SHA256", `
+        "Output\KoordASIO-$APP_BUILD_VERSION.exe" )
+}
 
 Clean-Build-Environment
 Install-Dependencies
 Build-App-Variants -QtInstallPath $QtInstallPath
 Build-Installer
+SignExe
