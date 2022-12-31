@@ -28,6 +28,8 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
 
     // init mmcpl proc
     mmcplProc = nullptr;
+    // init our singleton QMediaDevices object
+    m_devices = new QMediaDevices();
 
     // set up signals
     connect(sharedPushButton, &QPushButton::clicked, this, &KdASIOConfig::sharedModeSet);
@@ -42,6 +44,10 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
     connect(koordLiveButton, &QPushButton::pressed, this, &KdASIOConfig::koordLiveClicked);
     connect(githubButton, &QPushButton::pressed, this, &KdASIOConfig::githubClicked);
     connect(versionButton, &QPushButton::pressed, this, &KdASIOConfig::versionButtonClicked);
+    // for device refresh
+    connect(m_devices, &QMediaDevices::audioInputsChanged, this, &KdASIOConfig::updateInputsList);
+    connect(m_devices, &QMediaDevices::audioOutputsChanged, this, &KdASIOConfig::updateOutputsList);
+
     // for URLs
     koordLiveButton->setCursor(Qt::PointingHandCursor);
     githubButton->setCursor(Qt::PointingHandCursor);
@@ -59,8 +65,8 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
     for (auto &deviceInfo: output_devices)
         outputDeviceBox->addItem(deviceInfo.description(), QVariant::fromValue(deviceInfo));
 
-
     // parse .KoordASIO.toml
+    // FIXME - doesn't actually test that the selected devices are correct with current device list
     std::ifstream ifs;
     ifs.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
     try {
@@ -81,9 +87,31 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
 
 }
 
+void KdASIOConfig::updateInputsList() {
+    inputDeviceBox->clear();
+    const auto input_devices = m_devices->audioInputs();
+    for (auto &deviceInfo: input_devices)
+        inputDeviceBox->addItem(deviceInfo.description(), QVariant::fromValue(deviceInfo));
+    // write the new resultant config
+    inputDeviceName = inputDeviceBox->currentText();
+    writeTomlFile();
+}
+
+void KdASIOConfig::updateOutputsList() {
+    // populate output device choices
+    outputDeviceBox->clear();
+    const auto output_devices = m_devices->audioOutputs();
+    for (auto &deviceInfo: output_devices)
+        outputDeviceBox->addItem(deviceInfo.description(), QVariant::fromValue(deviceInfo));
+    qInfo() << "Updating Outputs ...";
+    // write the new resultant config
+    outputDeviceName = outputDeviceBox->currentText();
+    writeTomlFile();
+}
+
 void KdASIOConfig::setValuesFromToml(std::ifstream *ifs, toml::ParseResult *pr)
 {
-    qInfo("We have parsed a valid TOML file.");
+    qInfo("Parsed a valid TOML file.");
     // only recognise our accepted INPUT values - the others are hardcoded
     const toml::Value& v = pr->value;
     // get bufferSize
@@ -140,11 +168,14 @@ void KdASIOConfig::setDefaults()
 {
     // set defaults
     qInfo("Setting defaults");
-    bufferSize = 64;
-    exclusive_mode = false;
-    inputDeviceName = "Default Input Device";
-    outputDeviceName = "Default Output Device";
-    // set stuff - up to 4 file updates in quick succession
+    bufferSize = 32;
+    exclusive_mode = true;
+    // find system audio device defaults
+    QAudioDevice inputInfo(QMediaDevices::defaultAudioInput());
+    inputDeviceName = inputInfo.description();
+    QAudioDevice outputInfo(QMediaDevices::defaultAudioOutput());
+    outputDeviceName = outputInfo.description();
+    // set stuff - up to 4 file updates in quick succession - FIXME
     bufferSizeSlider->setValue(bufferSizes.indexOf(bufferSize));
     bufferSizeDisplay->display(bufferSize);
     bufferSizeChanged(bufferSizes.indexOf(bufferSize));

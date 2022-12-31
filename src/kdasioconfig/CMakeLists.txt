@@ -34,6 +34,11 @@ qt_add_executable(kdasioconfig
     ${app_icon_resource_windows}
 )
 
+set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/singleapplication")
+
+target_link_libraries(kdasioconfig PRIVATE SingleApplication::SingleApplication)
+
 target_link_libraries(kdasioconfig PRIVATE Qt6::Widgets)
 target_link_libraries(kdasioconfig PRIVATE Qt6::Multimedia)
 

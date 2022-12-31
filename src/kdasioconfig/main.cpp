@@ -49,16 +49,31 @@
 ****************************************************************************/
 
 #include <QtWidgets>
+#include <singleapplication.h>
 
 #include "kdasioconfig.h"
 
-int main(int argv, char **args)
+int main(int argc, char **argv)
 {
-    QApplication app(argv, args);
+    SingleApplication app( argc, argv );
+//    QApplication app(argc, argv);
     app.setApplicationName("KoordASIO Control");
 
     KdASIOConfig audio;
-    audio.show();
 
+    // For installation: we need to set sensible defaults to make KoordASIO immediately loadable
+    //      -ds - run silent no-gui setDefaultMode - shared
+    //      -de - run silent no-gui setDefaultMode - exclusive
+    // VERY BASIC ARG-PARSING:
+    // IF there is one arg AND it is "-defaults" THEN app runs setDefaults() and exits
+//    qInfo() << "ARGV2" << argv[1];
+    if ( !QString("-defaults").compare ( argv[1] ) ) {
+        audio.setDefaults();
+        app.exit(0);
+        return 0;
+    }
+
+    // in normal mode - show GUI
+    audio.show();
     return app.exec();
 }
