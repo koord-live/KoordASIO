@@ -3,8 +3,8 @@ param(
     # Replace default path with system Qt installation folder if necessary
     [string] $QtPath = "C:\Qt",
     [string] $QtInstallPath = "C:\Qt\6.4.1",
-    [string] $QtCompile32 = "msvc2019",
-    [string] $QtCompile64 = "msvc2019_64",
+    # [string] $QtCompile32 = "msvc2019",
+    [string] $QtCompile64 = "win64_msvc2019_64",
     # [string] $AsioSDKName = "ASIOSDK2.3.3",
     [string] $AsioSDKName = "asiosdk_2.3.3_2019-06-14",
     [string] $AsioSDKUrl = "https://download.steinberg.net/sdk_downloads/asiosdk_2.3.3_2019-06-14.zip",
@@ -167,11 +167,11 @@ Function Initialize-Build-Environment
         $VcVarsBin = "$VsInstallPath\VC\Auxiliary\build\vcvars64.bat"
         $QtMsvcSpecPath = "$QtInstallPath\$QtCompile64\bin"
     }
-    else
-    {
-        $VcVarsBin = "$VsInstallPath\VC\Auxiliary\build\vcvars32.bat"
-        $QtMsvcSpecPath = "$QtInstallPath\$QtCompile32\bin"
-    }
+    # else
+    # {
+    #     $VcVarsBin = "$VsInstallPath\VC\Auxiliary\build\vcvars32.bat"
+    #     $QtMsvcSpecPath = "$QtInstallPath\$QtCompile32\bin"
+    # }
 
     # Setup Qt executables paths for later calls
     Set-Item Env:QtQmakePath "$QtMsvcSpecPath\qmake.exe"
