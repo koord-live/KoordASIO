@@ -2,7 +2,7 @@ param(
     [string] $APP_BUILD_VERSION = "1.0.0",
     # Replace default path with system Qt installation folder if necessary
     [string] $QtPath = "C:\Qt",
-    [string] $QtInstallPath = "C:\Qt\6.3.2",
+    [string] $QtInstallPath = "C:\Qt\6.4.1",
     [string] $QtCompile32 = "msvc2019",
     [string] $QtCompile64 = "msvc2019_64",
     # [string] $AsioSDKName = "ASIOSDK2.3.3",
