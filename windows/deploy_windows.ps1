@@ -336,6 +336,9 @@ Function Build-Installer
 
 Function SignExe
 {
+    # echo path for debug
+    $env:PATH
+
     $WindowsOVCertPwd = Get-Content "C:\KoordOVCertPwd" 
 
     Invoke-Native-Command -Command "SignTool" `
