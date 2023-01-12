@@ -341,7 +341,10 @@ Function SignExe
 
     $WindowsOVCertPwd = Get-Content "C:\KoordOVCertPwd" 
 
-    Invoke-Native-Command -Command "SignTool" `
+    #FIXME - use hardcoded path right now
+    # "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\\x64\signtool.exe"
+    # Invoke-Native-Command -Command "SignTool" `
+    Invoke-Native-Command -Command "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\\x64\signtool.exe" `
         -Arguments ("sign", "/f", "C:\KoordOVCert.pfx", `
         "/p", $WindowsOVCertPwd, `
         "/tr", "http://timestamp.sectigo.com", `
