@@ -156,7 +156,7 @@ jobs:
       # Upload Artifact to Job
       - name:                       Upload Artifact 1 to Job
         if:                         ${{ steps.step_cmd3_postbuild.outputs.artifact_1 }}
-        uses:                       actions/upload-artifact@v2
+        uses:                       actions/upload-artifact@v3
         with:
           name:                     ${{ steps.step_cmd3_postbuild.outputs.artifact_1 }}
           path:                     deploy/${{ steps.step_cmd3_postbuild.outputs.artifact_1 }}
@@ -166,7 +166,7 @@ jobs:
       # Upload Artifact to Job
       - name:                       Upload Artifact 2 to Job
         if:                         ${{ steps.step_cmd3_postbuild.outputs.artifact_2 }}
-        uses:                       actions/upload-artifact@v2
+        uses:                       actions/upload-artifact@v3
         with:
           name:                     ${{ steps.step_cmd3_postbuild.outputs.artifact_2 }}
           path:                     deploy/${{ steps.step_cmd3_postbuild.outputs.artifact_2 }}

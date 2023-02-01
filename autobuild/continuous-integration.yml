@@ -65,7 +65,7 @@ jobs:
           Move-Item -Path "$BuildPath\$BuildConfig\flexasio\install\bin\PortAudioDevices.exe" -Destination "$DeployPath\$BuildArch" -Force
           Move-Item -Path "$WindowsPath\kdinstaller.iss" -Destination "$RootPath" -Force
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: FlexASIO-${{ matrix.msvc_config }}
           path: src/out/install/${{ matrix.msvc_config }}/
@@ -108,7 +108,7 @@ jobs:
       #     path: src/out/install/x86-Release
       - run: cmake -P installer.cmake
         working-directory: src
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: FlexASIO-installer
           path: src/out/installer/*
