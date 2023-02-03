@@ -66,7 +66,7 @@ KdASIOConfig::KdASIOConfig(QWidget *parent)
         outputDeviceBox->addItem(deviceInfo.description(), QVariant::fromValue(deviceInfo));
 
 
-    // parse .KoordASIO_builtin.toml
+    // parse .kdasio_builtin.toml
     // parse .KoordASIO.toml
     // FIXME - doesn't actually test that the selected devices are correct with current device list
     std::ifstream ifs;
@@ -192,7 +192,7 @@ void KdASIOConfig::setDefaults()
 void KdASIOConfig::writeTomlFile()
 {
     // REF: https://github.com/dechamps/FlexASIO/blob/master/CONFIGURATION.md
-    // Write MINIMAL config to .KoordASIO_builtin.toml, like this:
+    // Write MINIMAL config to .kdasio_builtin.toml, like this:
     /*
         backend = "Windows WASAPI"
         bufferSizeSamples = bufferSize

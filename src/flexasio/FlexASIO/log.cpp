@@ -22,7 +22,7 @@ namespace flexasio {
 						return nullptr;
 					}
 					// path.append("KoordASIO-builtin.log");
-					path.append("KoordASIO_builtin.log");
+					path.append("kdasio_builtin.log");
 
 					if (!std::filesystem::exists(path)) return nullptr;
 
