@@ -29,7 +29,10 @@ Source:"deploy\x86_64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs 
 Name: "{group}\KoordASIO (Built-in) Control"; Filename: "{app}\KoordASIOControl_builtin.exe"; WorkingDir: "{app}"
 
 [Run]
-Filename: "{app}\KoordASIOControl_builtin.exe"; Description: "Run KoordASIO (Built-in) Control"; Flags: postinstall nowait skipifsilent
+; make sure we have SOME working default configuration after installation
+Filename: "{app}\KoordASIOControl.exe"; Parameters: "-defaults"; Description: "Set KoordASIO defaults"; Flags: nowait
+; also allow user to configure immediately after installation
+Filename: "{app}\KoordASIOControl.exe"; Description: "Run KoordASIO Control"; Flags: postinstall nowait skipifsilent
 
 ; install reg key to locate KoordASIOControl_builtin at runtime
 [Registry]

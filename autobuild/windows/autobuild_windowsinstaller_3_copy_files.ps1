@@ -50,7 +50,7 @@ Function github_output_value
     )
     
     echo "github_output_value() $name = $value"
-    echo "::set-output name=$name::$value"
+    echo "$name=$value"
 }
 
 github_output_value -name "artifact_1" -value "$artifact_deploy_filename"

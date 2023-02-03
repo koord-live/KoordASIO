@@ -1,7 +1,7 @@
 # KoordASIO, a user-friendly universal ASIO driver
 
 **If you are looking for an installer, see the 
-[GitHub releases page][releases].**
+[GitHub releases page][releases], or install directly from the [Microsoft App Store][windowstore].**
 
 ## Description
 
@@ -56,3 +56,4 @@ music@koord.live.
 [releases]: https://github.com/koord-live/KoordASIO/releases
 [issues]: https://github.com/koord-live/KoordASIO/issues
 [BACKENDS]: BACKENDS.md
+[windowstore]: https://apps.microsoft.com/store/detail/koordasio-universal-driver/XP9CSS6NZBDV21

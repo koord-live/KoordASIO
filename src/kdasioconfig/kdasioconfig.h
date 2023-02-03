@@ -93,6 +93,9 @@ private:
     QList<int> bufferSizes = { 32, 64, 128, 256, 512, 1024, 2048 };
     QProcess *mmcplProc;
 
+public slots:
+    void setDefaults();
+
 private slots:
     void bufferSizeChanged(int idx);
     void bufferSizeDisplayChange(int idx);
@@ -103,13 +106,16 @@ private slots:
     void writeTomlFile();
     void inputDeviceChanged(int idx);
     void outputDeviceChanged(int idx);
-    void setDefaults();
+
     void setValuesFromToml(std::ifstream *ifs, toml::ParseResult *pr);
     void inputAudioSettClicked();
     void outputAudioSettClicked();
     void koordLiveClicked();
     void githubClicked();
     void versionButtonClicked();
+
+    void updateInputsList();
+    void updateOutputsList();
 };
 
 #endif

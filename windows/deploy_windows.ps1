@@ -1,8 +1,9 @@
 param(
+    [string] $APP_BUILD_VERSION = "1.0.0",
     # Replace default path with system Qt installation folder if necessary
     [string] $QtPath = "C:\Qt",
-    [string] $QtInstallPath = "C:\Qt\6.3.0",
-    [string] $QtCompile32 = "msvc2019",
+    [string] $QtInstallPath = "C:\Qt\6.4.1",
+    # [string] $QtCompile32 = "msvc2019",
     [string] $QtCompile64 = "msvc2019_64",
     # [string] $AsioSDKName = "ASIOSDK2.3.3",
     [string] $AsioSDKName = "asiosdk_2.3.3_2019-06-14",
@@ -166,11 +167,11 @@ Function Initialize-Build-Environment
         $VcVarsBin = "$VsInstallPath\VC\Auxiliary\build\vcvars64.bat"
         $QtMsvcSpecPath = "$QtInstallPath\$QtCompile64\bin"
     }
-    else
-    {
-        $VcVarsBin = "$VsInstallPath\VC\Auxiliary\build\vcvars32.bat"
-        $QtMsvcSpecPath = "$QtInstallPath\$QtCompile32\bin"
-    }
+    # else
+    # {
+    #     $VcVarsBin = "$VsInstallPath\VC\Auxiliary\build\vcvars32.bat"
+    #     $QtMsvcSpecPath = "$QtInstallPath\$QtCompile32\bin"
+    # }
 
     # Setup Qt executables paths for later calls
     Set-Item Env:QtQmakePath "$QtMsvcSpecPath\qmake.exe"
@@ -237,6 +238,7 @@ Function Build-App
     )
 
     # Build kdasioconfig Qt project with CMake / nmake
+    # # Build FlexASIO dlls with CMake / nmake
     Invoke-Native-Command -Command "$Env:QtCmakePath" `
         -Arguments ("-DCMAKE_PREFIX_PATH='$QtInstallPath\$QtCompile64\lib\cmake'", `
             "-DCMAKE_BUILD_TYPE=Release", `
@@ -247,17 +249,6 @@ Function Build-App
     # Invoke-Native-Command -Command "nmake" -Arguments ("$BuildConfig")
     Invoke-Native-Command -Command "nmake"
     
-    # # Build FlexASIO dlls with CMake / nmake
-    # Invoke-Native-Command -Command "$Env:QtCmakePath" `
-    #     -Arguments ("-DCMAKE_PREFIX_PATH='$QtInstallPath\$QtCompile64\lib\cmake:$RootPath\src\dechamps_cpputil:$RootPath\src\dechamps_ASIOUtil'", `
-    #         "-DCMAKE_BUILD_TYPE=Release", `
-    #         "-S", "$RootPath\src", `
-    #         "-B", "$BuildPath\$BuildConfig\flexasio", `
-    #         "-G", "Ninja")
-    # Set-Location -Path "$BuildPath\$BuildConfig\flexasio"
-    # Invoke-Native-Command -Command "nmake"
-
-    # Set-Location -Path "$BuildPath\$BuildConfig\flexasio"
     Set-Location -Path "$RootPath"
 
     # Ninja! 
@@ -334,26 +325,35 @@ function Build-App-Variants
 # Build Windows installer
 Function Build-Installer
 {
-    foreach ($_ in Get-Content -Path "$RootPath\kdASIOVersion.txt")
-    {
-        if ($_ -Match "^VERSION *= *(.*)$")
-        {
-            $AppVersion = $Matches[1]
-            break
-        }
-    }
-
     #FIXME for 64bit build only
     Set-Location -Path "$RootPath"
     # /Program Files (x86)/Inno Setup 6/ISCC.exe
     Invoke-Native-Command -Command "ISCC.exe" `
         -Arguments ("$RootPath\kdinstaller.iss", `
-         "/FKoordASIO-${AppVersion}")
+         "/FKoordASIO-$APP_BUILD_VERSION")
 
 }
 
+Function SignExe
+{
+    # echo path for debug
+    $env:PATH
+
+    $WindowsOVCertPwd = Get-Content "C:\KoordOVCertPwd" 
+
+    #FIXME - use hardcoded path right now
+    # "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\\x64\signtool.exe"
+    # Invoke-Native-Command -Command "SignTool" `
+    Invoke-Native-Command -Command "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\\x64\signtool.exe" `
+        -Arguments ("sign", "/f", "C:\KoordOVCert.pfx", `
+        "/p", $WindowsOVCertPwd, `
+        "/tr", "http://timestamp.sectigo.com", `
+        "/td", "SHA256", "/fd", "SHA256", `
+        "Output\KoordASIO-$APP_BUILD_VERSION.exe" )
+}
 
 Clean-Build-Environment
 Install-Dependencies
 Build-App-Variants -QtInstallPath $QtInstallPath
 Build-Installer
+SignExe
