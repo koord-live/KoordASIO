@@ -1,6 +1,6 @@
 HKCR
 {
-	ForceRemove koordasio.kdasio_builtin.1 = s 'KoordASIO'
+	ForceRemove koordasio.Built-in.1 = s 'KoordASIO'
 	{
 		CLSID = s '{481A01F8-8C63-4573-9163-BB06B0601E60}'
 	}
@@ -9,7 +9,7 @@ HKCR
 	{
 		ForceRemove {481A01F8-8C63-4573-9163-BB06B0601E60} = s 'KoordASIO'
 		{
-			ProgID = s 'koordasio.kdasio_builtin.1'
+			ProgID = s 'koordasio.Built-in.1'
 			InprocServer32 = s '%MODULE%'
 			{
 				val ThreadingModel = s 'Both'
