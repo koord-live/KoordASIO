@@ -9,7 +9,8 @@
 
 # Get the source path via parameter
 param (
-    [string] $koordasio_project_path = $Env:koordasio_project_path
+    [string] $koordasio_project_path = $Env:koordasio_project_path,
+    [string] $koordasio_buildversionstring = $Env:koordasio_buildversionstring
 )
 # Sanity check of parameters
 if (("$koordasio_project_path" -eq $null) -or ("$koordasio_project_path" -eq "")) {
