@@ -105,7 +105,7 @@ else:
 #helper function: set github variable and print it to console
 def set_github_variable(varname, varval):
     print("{}='{}'".format(varname, varval)) #console output
-    print("{}={}".format(varname, varval))
+    # print("{}={}".format(varname, varval))
 
 #set github-available variables
 set_github_variable("PUBLISH_TO_RELEASE", str(publish_to_release).lower())

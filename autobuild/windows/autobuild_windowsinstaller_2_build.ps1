@@ -28,5 +28,5 @@ if (("$koordasio_project_path" -eq $null) -or ("$koordasio_project_path" -eq "")
 
 echo "Build installer..."
 # Build the installer
-$ExtraArgs += ("-APP_BUILD_VERSION", $Env:koordasio_buildversionstring)
+$ExtraArgs += ("-APP_BUILD_VERSION", $koordasio_buildversionstring)
 powershell "$koordasio_project_path\windows\deploy_windows.ps1" @ExtraArgs
