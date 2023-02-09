@@ -3,17 +3,21 @@
 [Setup]
 AppID=KoordASIO
 AppName=KoordASIO
-AppVersion=2.1.0
+AppVerName=KoordASIO
+AppVersion={#ApplicationVersion}
+VersionInfoVersion={#ApplicationVersion}
 AppPublisher=Koord.Live
 AppPublisherURL=https://github.com/koord-live/KoordASIO
 AppSupportURL=https://github.com/koord-live/KoordASIO/issues
 AppUpdatesURL=https://github.com/koord-live/KoordASIO/releases
 AppContact=contact@koord.live
 WizardStyle=modern
-
+DefaultGroupName=KoordASIO
 DefaultDirName={autopf}\KoordASIO
 AppendDefaultDirName=no
 ArchitecturesInstallIn64BitMode=x64
+; disk space isn't calculated accurately - set here to 29Mb x 1024 x 1024 bytes
+ExtraDiskSpaceRequired=30408704
 
 ; for 100% dpi setting should be 164x314 - https://jrsoftware.org/ishelp/
 WizardImageFile=windows\koordasio.bmp
