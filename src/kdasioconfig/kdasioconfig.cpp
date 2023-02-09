@@ -215,19 +215,19 @@ void KdASIOConfig::writeTomlFile()
     out.setEncoding(QStringConverter::Utf8);
     // out.setCodec("UTF-8");
     //FIXME should really write to intermediate buffer, THEN to file - to make single write on file
-    out << "backend = \"Windows WASAPI\"" << "\n";
-    out << "bufferSizeSamples = " << bufferSize << "\n";
-    out << "\n";
-    out << "[input]" << "\n";
-    out << "device = \"" << inputDeviceName << "\"\n";
-    out << "suggestedLatencySeconds = 0.0" << "\n";
-    out << "wasapiExclusiveMode = " << (exclusive_mode ? "true" : "false") << "\n";
-    out << "\n";
-    out << "[output]" << "\n";
-    out << "device = \"" << outputDeviceName << "\"\n";
-    out << "suggestedLatencySeconds = 0.0" << "\n";
-    out << "wasapiExclusiveMode = " << (exclusive_mode ? "true" : "false") << "\n";
-//    qDebug("Just wrote toml file...");
+    out << "backend = \"Windows WASAPI\"" << "\n"
+        << "bufferSizeSamples = " << bufferSize << "\n"
+        << "\n"
+        << "[input]" << "\n"
+        << "device = \"" << inputDeviceName << "\"\n"
+        << "suggestedLatencySeconds = 0.0" << "\n"
+        << "wasapiExclusiveMode = " << (exclusive_mode ? "true" : "false") << "\n"
+        << "\n"
+        << "[output]" << "\n"
+        << "device = \"" << outputDeviceName << "\"\n"
+        << "suggestedLatencySeconds = 0.0" << "\n"
+        << "wasapiExclusiveMode = " << (exclusive_mode ? "true" : "false") << "\n";
+    // qInfo("Just wrote toml file...");
 
 }
 

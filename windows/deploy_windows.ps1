@@ -330,7 +330,8 @@ Function Build-Installer
     # /Program Files (x86)/Inno Setup 6/ISCC.exe
     Invoke-Native-Command -Command "ISCC.exe" `
         -Arguments ("$RootPath\kdinstaller.iss", `
-         "/FKoordASIO-$APP_BUILD_VERSION")
+         "/FKoordASIO-$APP_BUILD_VERSION", `
+         "/DApplicationVersion=${APP_BUILD_VERSION}")
 
 }
 
