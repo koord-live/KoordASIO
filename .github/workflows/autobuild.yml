@@ -16,7 +16,6 @@
 #          - publish the created binaries/packs only as artifacts/appendix as a release
 #
 
-
 on:
   workflow_dispatch:
   push:
@@ -24,9 +23,8 @@ on:
       - "r*"
     branches:
       - "autobuild*"  # for developers: branches starting with autobuild will be built and evaluated on each push
-      - "autobuild/*" # for developers: branches starting with autobuild will be built and evaluated on each push
       - "master"
-    #  - "*"
+
   pull_request: # The branches below must be a subset of the branches in "push"
     branches:
       - master
@@ -43,7 +41,6 @@ jobs:
       version_name:                 ${{ steps.koordasio-build-vars.outputs.RELEASE_VERSION_NAME }}
       x_github_workspace:           ${{ steps.koordasio-build-vars.outputs.X_GITHUB_WORKSPACE }} #needed, because matrix can not directly access ${{ github.workspace }} aparrently
 
-
      steps:
          # Checkout code
          - name:                    Checkout code
@@ -55,36 +52,6 @@ jobs:
            run:                     python3 ${{ github.workspace }}/.github/actions_scripts/analyse_git_reference.py
            id:                      koordasio-build-vars
 
-         # remove release, if it exists (with this releasetag)
-         - name:                    Remove release, if existing (for branches)
-           if:                      ${{ contains(steps.koordasio-build-vars.outputs.PUBLISH_TO_RELEASE, 'true') }}
-           continue-on-error:       true
-           uses:                    dev-drprasad/delete-tag-and-release@v0.1.2
-           with:
-             delete_release:        true
-             tag_name:              ${{ steps.koordasio-build-vars.outputs.RELEASE_TAG }}
-           env:
-             GITHUB_TOKEN:          ${{ secrets.GITHUB_TOKEN }}
-         # create release (empty, filled by next jobs)
-         - name:                    'Create Release ${{steps.koordasio-build-vars.outputs.RELEASE_TAG}}  {{steps.koordasio-build-vars.outputs.RELEASE_TITLE}}'
-           if:                      ${{ contains(steps.koordasio-build-vars.outputs.PUBLISH_TO_RELEASE, 'true') }}
-           id:                      create_release_step
-           uses:                    actions/create-release@v1
-           env:
-             GITHUB_TOKEN:          ${{ secrets.GITHUB_TOKEN }}
-           with:
-             tag_name:              ${{ steps.koordasio-build-vars.outputs.RELEASE_TAG }}
-             release_name:          ${{ steps.koordasio-build-vars.outputs.RELEASE_TITLE }}
-             body_path:             ${{ github.workspace }}/autoLatestChangelog.md
-             prerelease:            ${{ steps.koordasio-build-vars.outputs.IS_PRERELEASE }}
-             draft:                 false
-
-
-         ### CANCEL ### can be used for development concerning release-creation
-         #- name:                    Cancelthrougherroe
-         #  run:                     myundefinedfunction
-
-
   release_assets:
     name:                           Build assets for ${{ matrix.config.config_name }}
     needs:                          create_release
@@ -92,23 +59,13 @@ jobs:
       fail-fast:                    false
       matrix: # Think of this like a foreach loop. Basically runs the steps with every combination of the contents of this. More info: https://docs.github.com/en/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
         config:
-          #  - config_name:           WinRT (artifact+codeQL)
-          #    target_os:             winrt
-          #    building_on_os:        windows-latest
-          #    cmd1_prebuild:         powershell .\autobuild\windows\autobuild_windowsinstaller_1_prepare.ps1
-          #    cmd2_build:            powershell .\autobuild\windows\autobuild_windowsinstaller_2_build.ps1
-          #    cmd3_postbuild:        powershell .\autobuild\windows\autobuild_windowsinstaller_3_copy_files.ps1
-          #    uses_codeql:           true
-
-           - config_name:           Windows (artifact+codeQL)
+           - config_name:           Windows 10+ (exe, msix)
              target_os:             windows
-             building_on_os:        windows-latest
-             cmd1_prebuild:         powershell .\autobuild\windows\autobuild_windowsinstaller_1_prepare.ps1
-             cmd2_build:            powershell .\autobuild\windows\autobuild_windowsinstaller_2_build.ps1
-             cmd3_postbuild:        powershell .\autobuild\windows\autobuild_windowsinstaller_3_copy_files.ps1
+             building_on_os:        windows-2022
+             base_command:          powershell .\.github\autobuild\windows.ps1 -Stage
              uses_codeql:           true
 
-    runs-on:                        ${{ matrix.config.building_on_os }}
+    runs-on:                        windows-2022
     steps:
       # Checkout code
       - name:                       Checkout code
@@ -117,86 +74,122 @@ jobs:
           submodules:               true
 
       # Prepare (install QT & dependencies)
-      - name:                       "Prepare for ${{ matrix.config.config_name }}"
-        if:                         ${{ matrix.config.cmd1_prebuild }}
-        run:                        ${{ matrix.config.cmd1_prebuild }}
+      - name:                               "Prepare for ${{ matrix.config.config_name }}"
+        id:                                 setup
+        run:                                ${{ matrix.config.base_command }} setup
         env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'  # allow setting environment variables
-          koordasio_project_path:     ${{ github.workspace }}
-          koordasio_buildversionstring: ${{ needs.create_release.outputs.version_name }}
-          WINDOWS_CODESIGN_CERT:    ${{ secrets.WINDOWS_CODESIGN_CERT }}
-          WINDOWS_CODESIGN_PWD:     ${{ secrets.WINDOWS_CODESIGN_PWD }}
+          ACTIONS_ALLOW_UNSECURE_COMMANDS:  'true'  # allow setting environment variables
+          koordasio_project_path:           ${{ github.workspace }}
+          koordasio_buildversionstring:     ${{ needs.create_release.outputs.version_name }}
+          WINDOWS_CODESIGN_CERT:            ${{ secrets.WINDOWS_CODESIGN_CERT }}
+          WINDOWS_CODESIGN_PWD:             ${{ secrets.WINDOWS_CODESIGN_PWD }}
 
-      # # Initialize CodeQL tools for code-scanning for security
-      # - name:                       Initialize CodeQL
-      #   if:                         matrix.config.uses_codeql
-      #   uses:                       github/codeql-action/init@v1
+      # # from Koord build ....
+      # - name:                       Pre-build KoordASIO on Windows - set up msvc dev cmd
+      #   uses:                       ilammy/msvc-dev-cmd@v1
       #   with:
-      #     languages: 'cpp'
-      #     # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python' ]
-      #     # Learn more:
-      #     # https://docs.github.com/en/free-pro-team@latest/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#changing-the-languages-that-are-analyzed
+      #     arch:                     amd64
+      # - name:                       Pre-build KoordASIO on Windows - cmake
+      #   run:                        cmake -S KoordASIO/src -B KoordASIO/src/out/build/x64-Release -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX:PATH=${{ github.workspace }}/KoordASIO/src/out/install/x64-Release
+      # - name:                       Pre-build KoordASIO on Windows - cmake --build
+      #   run:                        cmake --build KoordASIO/src/out/build/x64-Release
+      # - name:                       Pre-build KoordASIO on Windows - cmake --install
+      #   run:                        cmake --install KoordASIO/src/out/build/x64-Release
 
       # Build
-      - name:                       "Build for ${{ matrix.config.config_name }}"
-        if:                         ${{ matrix.config.cmd2_build }}
-        run:                        ${{ matrix.config.cmd2_build }} ${{ github.workspace }}
+      - name:                               "Build for ${{ matrix.config.config_name }}"
+        id:                                 build
+        run:                                ${{ matrix.config.base_command }} build
         env:
-          koordasio_project_path:       ${{ github.workspace }}
-          koordasio_buildversionstring: ${{ needs.create_release.outputs.version_name }}
+          koordasio_project_path:           ${{ github.workspace }}
+          koordasio_buildversionstring:     ${{ needs.create_release.outputs.version_name }}
 
-      - name:                       "Post-Build for ${{ matrix.config.config_name }}"
-        id:                         step_cmd3_postbuild
-        if:                         ${{ matrix.config.cmd3_postbuild }}
-        run:                        ${{ matrix.config.cmd3_postbuild }} ${{ github.workspace }}
+      # Get artifacts
+      - name:                               "Post-Build for ${{ matrix.config.config_name }}"
+        id:                                 get-artifacts
+        run:                                ${{ matrix.config.base_command }} get-artifacts
         env:
-          koordasio_project_path:       ${{ github.workspace }}
-          koordasio_buildversionstring: ${{ needs.create_release.outputs.version_name }}
+          koordasio_project_path:           ${{ github.workspace }}
+          koordasio_buildversionstring:     ${{ needs.create_release.outputs.version_name }}
 
-      # Upload Artifact to Job
-      - name:                       Upload Artifact 1 to Job
-        if:                         ${{ steps.step_cmd3_postbuild.outputs.artifact_1 }}
-        uses:                       actions/upload-artifact@v3
+      # Upload Artifact1 to Job
+      - name:                               Upload Artifact 1 to Job
+        if:                                 ${{ steps.get-artifacts.outputs.artifact_1 }}
+        uses:                               actions/upload-artifact@v3
         with:
-          name:                     ${{ steps.step_cmd3_postbuild.outputs.artifact_1 }}
-          path:                     deploy/${{ steps.step_cmd3_postbuild.outputs.artifact_1 }}
-          retention-days:           31
-          if-no-files-found:        error # 'warn' or 'ignore' are also available, defaults to `warn`
+          name:                             ${{ steps.get-artifacts.outputs.artifact_1 }}
+          path:                             deploy/${{ steps.get-artifacts.outputs.artifact_1 }}
+          retention-days:                   31
+          if-no-files-found:                error # 'warn' or 'ignore' are also available, defaults to `warn`
 
-      # Upload Artifact to Job
-      - name:                       Upload Artifact 2 to Job
-        if:                         ${{ steps.step_cmd3_postbuild.outputs.artifact_2 }}
-        uses:                       actions/upload-artifact@v3
+      # Upload Artifact2 to Job
+      - name:                               Upload Artifact 2 to Job
+        if:                                 ${{ steps.get-artifacts.outputs.artifact_2 }}
+        uses:                               actions/upload-artifact@v3
         with:
-          name:                     ${{ steps.step_cmd3_postbuild.outputs.artifact_2 }}
-          path:                     deploy/${{ steps.step_cmd3_postbuild.outputs.artifact_2 }}
-          retention-days:           31
-          if-no-files-found:        error # 'warn' or 'ignore' are also available, defaults to `warn`
+          name:                             ${{ steps.get-artifacts.outputs.artifact_2 }}
+          path:                             deploy/${{ steps.get-artifacts.outputs.artifact_2 }}
+          retention-days:                   31
+          if-no-files-found:                error # 'warn' or 'ignore' are also available, defaults to `warn`
 
-      # Upload Artifact to Release
-      - name:                       Upload Artifact 1 to Release
-        if:                         ${{ (steps.step_cmd3_postbuild.outputs.artifact_1 != '') &&  contains(needs.create_release.outputs.publish_to_release, 'true') }}
-        id:                         upload-release-asset1
-        uses:                       actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN:             ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url:               ${{ needs.create_release.outputs.upload_url }} # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path:               deploy/${{ steps.step_cmd3_postbuild.outputs.artifact_1 }}
-          asset_name:               ${{ steps.step_cmd3_postbuild.outputs.artifact_1 }}
-          asset_content_type:       application/octet-stream
-      # Upload Artifact to Release
-      - name:                       Upload Artifact 2 to Release
-        if:                         ${{ (steps.step_cmd3_postbuild.outputs.artifact_2 != '') &&  contains(needs.create_release.outputs.publish_to_release, 'true') }}
-        id:                         upload-release-asset2
-        uses:                       actions/upload-release-asset@v1
+      # Create Release and upload Artifact1
+      - name:                       Create Release1 ${{needs.create_release.outputs.release_tag}}  ${{needs.create_release.outputs.release_title}}
+        if:                         >-
+                                    needs.create_release.outputs.publish_to_release == 'true'
+        id:                         create-release-n-upload1
+        uses:                       softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN:             ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url:               ${{ needs.create_release.outputs.upload_url }} # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path:               deploy/${{ steps.step_cmd3_postbuild.outputs.artifact_2 }}
-          asset_name:               ${{ steps.step_cmd3_postbuild.outputs.artifact_2 }}
-          asset_content_type:       application/octet-stream
+          tag_name:                 ${{ steps.get-build-vars.outputs.RELEASE_TAG }}
+          name:                     ${{ steps.get-build-vars.outputs.RELEASE_TITLE }}
+          # body_path:                ${{ env.release_changelog_path }}
+          prerelease:               ${{ steps.get-build-vars.outputs.IS_PRERELEASE }}
+          draft:                    true
+          files:                    deploy/${{ steps.get-artifacts.outputs.artifact_1 }}
+
+      # Upload Artifact2 to release
+      - name:                       Create Release2 ${{needs.create_release.outputs.release_tag}}  ${{needs.create_release.outputs.release_title}}
+        if:                         >-
+                                    steps.get-artifacts.outputs.artifact_2 != '' &&
+                                    needs.create_release.outputs.publish_to_release == 'true'
+        id:                         create-release-n-upload2
+        uses:                       softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN:             ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name:                 ${{ steps.get-build-vars.outputs.RELEASE_TAG }}
+          name:                     ${{ steps.get-build-vars.outputs.RELEASE_TITLE }}
+          # body_path:                ${{ env.release_changelog_path }}
+          prerelease:               ${{ steps.get-build-vars.outputs.IS_PRERELEASE }}
+          draft:                    true
+          files:                    deploy/${{ steps.get-artifacts.outputs.artifact_2 }}
+
+      # # Upload Artifact1 to Release
+      # - name:                       Upload Artifact 1 to Release
+      #   if:                         ${{ (steps.step_cmd3_postbuild.outputs.artifact_1 != '') &&  contains(needs.create_release.outputs.publish_to_release, 'true') }}
+      #   id:                         upload-release-asset1
+      #   uses:                       actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN:             ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url:               ${{ needs.create_release.outputs.upload_url }} # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+      #     asset_path:               deploy/${{ steps.step_cmd3_postbuild.outputs.artifact_1 }}
+      #     asset_name:               ${{ steps.step_cmd3_postbuild.outputs.artifact_1 }}
+      #     asset_content_type:       application/octet-stream
+      # # Upload Artifact2 to Release
+      # - name:                       Upload Artifact 2 to Release
+      #   if:                         ${{ (steps.step_cmd3_postbuild.outputs.artifact_2 != '') &&  contains(needs.create_release.outputs.publish_to_release, 'true') }}
+      #   id:                         upload-release-asset2
+      #   uses:                       actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN:             ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url:               ${{ needs.create_release.outputs.upload_url }} # See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+      #     asset_path:               deploy/${{ steps.step_cmd3_postbuild.outputs.artifact_2 }}
+      #     asset_name:               ${{ steps.step_cmd3_postbuild.outputs.artifact_2 }}
+      #     asset_content_type:       application/octet-stream
+
 
       #FIXME - leave out for now
       # # Run CodeQL tools for code-scanning for security
