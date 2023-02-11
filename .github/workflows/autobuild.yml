@@ -35,11 +35,11 @@ jobs:
      name:                          Prepare Auto-Build/Release
      runs-on:                       ubuntu-20.04
      outputs:
-      publish_to_release:           ${{ steps.koordasio-build-vars.outputs.PUBLISH_TO_RELEASE }}
+      publish_to_release:           ${{ steps.get-build-vars.outputs.PUBLISH_TO_RELEASE }}
       # upload_url:                   ${{ steps.create_release_step.outputs.upload_url }}
-      version:                      ${{ steps.koordasio-build-vars.outputs.KOORDASIO_VERSION }}
-      version_name:                 ${{ steps.koordasio-build-vars.outputs.RELEASE_VERSION_NAME }}
-      x_github_workspace:           ${{ steps.koordasio-build-vars.outputs.X_GITHUB_WORKSPACE }} #needed, because matrix can not directly access ${{ github.workspace }} aparrently
+      version:                      ${{ steps.get-build-vars.outputs.KOORDASIO_VERSION }}
+      version_name:                 ${{ steps.get-build-vars.outputs.RELEASE_VERSION_NAME }}
+      x_github_workspace:           ${{ steps.get-build-vars.outputs.X_GITHUB_WORKSPACE }} #needed, because matrix can not directly access ${{ github.workspace }} aparrently
 
      steps:
          # Checkout code
@@ -49,8 +49,8 @@ jobs:
          # Set variables
          # Determine release / pre-release
          - name:                    Get koordasio build info, determine actions & variables
-           run:                     python3 ${{ github.workspace }}/.github/actions_scripts/analyse_git_reference.py
-           id:                      koordasio-build-vars
+           run:                     python3 ${{ github.workspace }}/.github/autobuild/get_build_vars.py
+           id:                      get-build-vars
 
   release_assets:
     name:                           Build assets for ${{ matrix.config.config_name }}
