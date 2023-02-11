@@ -120,6 +120,7 @@ Function buildAppWithInstaller
         $ExtraArgs += ("-BuildOption", $BuildOption)
     }
     $ExtraArgs += ("-APP_BUILD_VERSION", $KoordASIOVersion)
+    $ExtraArgs += ("-QtInstallPath", "C:\Qt\${$Qt64Version}")
     powershell ".\windows\deploy_windows.ps1" @ExtraArgs
     if ( !$? )
     {
