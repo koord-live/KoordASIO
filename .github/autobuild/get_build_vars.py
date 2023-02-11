@@ -48,7 +48,7 @@ def get_build_version(koordasio_version):
 
 
 def set_github_variable(varname, varval):
-    print("{}='{}'".format(varname, varval))  # console output
+    print("{}={}".format(varname, varval))  # console output
     outputfile = os.getenv('GITHUB_OUTPUT')
     with open(outputfile, "a") as ghout:
         ghout.write(f"{varname}={varval}\n")
