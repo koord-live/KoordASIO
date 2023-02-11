@@ -62,7 +62,7 @@ jobs:
            - config_name:           Windows 10+ (exe, msix)
              target_os:             windows
              building_on_os:        windows-2022
-             base_command:          powershell .\autobuild\windows.ps1 -Stage
+             base_command:          powershell ${{ github.workspace }}/.github/autobuild/windows.ps1 -Stage
              uses_codeql:           true
 
     runs-on:                        windows-2022
