@@ -36,8 +36,8 @@ jobs:
      runs-on:                       ubuntu-20.04
      outputs:
       publish_to_release:           ${{ steps.koordasio-build-vars.outputs.PUBLISH_TO_RELEASE }}
-      upload_url:                   ${{ steps.create_release_step.outputs.upload_url }}
-      version:                      ${{ steps.koordasio-build-vars.outputs.koordasio_VERSION }}
+      # upload_url:                   ${{ steps.create_release_step.outputs.upload_url }}
+      version:                      ${{ steps.koordasio-build-vars.outputs.KOORDASIO_VERSION }}
       version_name:                 ${{ steps.koordasio-build-vars.outputs.RELEASE_VERSION_NAME }}
       x_github_workspace:           ${{ steps.koordasio-build-vars.outputs.X_GITHUB_WORKSPACE }} #needed, because matrix can not directly access ${{ github.workspace }} aparrently
 
