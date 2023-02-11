@@ -2,7 +2,7 @@ param(
     [string] $APP_BUILD_VERSION = "1.0.0",
     # Replace default path with system Qt installation folder if necessary
     [string] $QtPath = "C:\Qt",
-    [string] $QtInstallPath = "C:\Qt\6.4.1",
+    [string] $QtInstallPath = "none",
     # [string] $QtCompile32 = "msvc2019",
     [string] $QtCompile64 = "msvc2019_64",
     # [string] $AsioSDKName = "ASIOSDK2.3.3",
@@ -342,16 +342,18 @@ Function SignExe
 
     $WindowsOVCertPwd = Get-Content "C:\KoordOVCertPwd" 
 
-    #FIXME - use hardcoded path right now
+    #FIXME - use hardcoded path right now - for some reason Windows Kits are not in path
     # "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\\x64\signtool.exe"
     # Invoke-Native-Command -Command "SignTool" `
-    Invoke-Native-Command -Command "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\\x64\signtool.exe" `
-        -Arguments ("sign", "/f", "C:\KoordOVCert.pfx", `
+    Invoke-Native-Command -Command "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\signtool.exe" `
+        -Arguments ( "sign", "/f", "C:\KoordOVCert.pfx", `
         "/p", $WindowsOVCertPwd, `
+        "/fd", "SHA256", "/td", "SHA256", `
         "/tr", "http://timestamp.sectigo.com", `
-        "/td", "SHA256", "/fd", "SHA256", `
-        "Output\KoordASIO-$APP_BUILD_VERSION.exe" )
+        "Output\KoordASIO-${APP_BUILD_VERSION}.exe" )
+
 }
+
 
 Clean-Build-Environment
 Install-Dependencies
