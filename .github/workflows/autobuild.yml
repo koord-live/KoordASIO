@@ -36,11 +36,7 @@ jobs:
      runs-on:                       ubuntu-20.04
      outputs:
       publish_to_release:           ${{ steps.get-build-vars.outputs.PUBLISH_TO_RELEASE }}
-      # upload_url:                   ${{ steps.create_release_step.outputs.upload_url }}
       version:                      ${{ steps.get-build-vars.outputs.KOORDASIO_VERSION }}
-      version_name:                 ${{ steps.get-build-vars.outputs.RELEASE_VERSION_NAME }}
-      x_github_workspace:           ${{ steps.get-build-vars.outputs.X_GITHUB_WORKSPACE }} #needed, because matrix can not directly access ${{ github.workspace }} aparrently
-
      steps:
          # Checkout code
          - name:                    Checkout code
@@ -80,7 +76,7 @@ jobs:
         env:
           # ACTIONS_ALLOW_UNSECURE_COMMANDS:  'true'  # allow setting environment variables
           koordasio_project_path:           ${{ github.workspace }}
-          koordasio_buildversionstring:     ${{ needs.create_release.outputs.version_name }}
+          koordasio_buildversionstring:     ${{ needs.create_release.outputs.version }}
           # WINDOWS_CODESIGN_CERT:            ${{ secrets.WINDOWS_CODESIGN_CERT }}
           # WINDOWS_CODESIGN_PWD:             ${{ secrets.WINDOWS_CODESIGN_PWD }}
 
@@ -102,7 +98,7 @@ jobs:
         run:                                ${{ matrix.config.base_command }} build
         env:
           koordasio_project_path:           ${{ github.workspace }}
-          koordasio_buildversionstring:     ${{ needs.create_release.outputs.version_name }}
+          koordasio_buildversionstring:     ${{ needs.create_release.outputs.version }}
 
       # Get artifacts
       - name:                               "Post-Build for ${{ matrix.config.config_name }}"
@@ -110,7 +106,7 @@ jobs:
         run:                                ${{ matrix.config.base_command }} get-artifacts
         env:
           koordasio_project_path:           ${{ github.workspace }}
-          koordasio_buildversionstring:     ${{ needs.create_release.outputs.version_name }}
+          koordasio_buildversionstring:     ${{ needs.create_release.outputs.version }}
 
       # Upload Artifact1 to Job
       - name:                               Upload Artifact 1 to Job
