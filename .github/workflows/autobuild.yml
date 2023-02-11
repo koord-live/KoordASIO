@@ -78,11 +78,11 @@ jobs:
         id:                                 setup
         run:                                ${{ matrix.config.base_command }} setup
         env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS:  'true'  # allow setting environment variables
+          # ACTIONS_ALLOW_UNSECURE_COMMANDS:  'true'  # allow setting environment variables
           koordasio_project_path:           ${{ github.workspace }}
           koordasio_buildversionstring:     ${{ needs.create_release.outputs.version_name }}
-          WINDOWS_CODESIGN_CERT:            ${{ secrets.WINDOWS_CODESIGN_CERT }}
-          WINDOWS_CODESIGN_PWD:             ${{ secrets.WINDOWS_CODESIGN_PWD }}
+          # WINDOWS_CODESIGN_CERT:            ${{ secrets.WINDOWS_CODESIGN_CERT }}
+          # WINDOWS_CODESIGN_PWD:             ${{ secrets.WINDOWS_CODESIGN_PWD }}
 
       # # from Koord build ....
       # - name:                       Pre-build KoordASIO on Windows - set up msvc dev cmd
