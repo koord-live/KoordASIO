@@ -12,9 +12,9 @@ import subprocess
 REPO_PATH = os.path.join(os.path.dirname(__file__), '..', '..')
 
 # get the koordasio version from the version file
-def get_koordasio_version(repo_path_on_disk):
+def get_koordasio_version():
     koordasio_version = ""
-    with open (repo_path_on_disk + '/kdASIOVersion.txt','r') as f:
+    with open (REPO_PATH + '/kdASIOVersion.txt','r') as f:
         ver_content = f.read()
     ver_content = ver_content.replace('\r','')
     ver_lines = ver_content.split('\n')
